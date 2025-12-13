@@ -8,6 +8,7 @@
 
 import config from './data.config';
 import type {
+  SiteMetadata,
   PersonalInfo,
   Stat,
   SkillCategory,
@@ -18,6 +19,7 @@ import type {
 } from './data.types';
 
 // Re-export all config data
+export const siteMetadata: SiteMetadata = config.siteMetadata;
 export const personalInfo: PersonalInfo = config.personalInfo;
 export const roles: string[] = config.roles;
 export const stats: Stat[] = config.stats;

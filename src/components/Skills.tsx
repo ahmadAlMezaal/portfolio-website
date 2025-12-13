@@ -10,6 +10,9 @@ const categoryIcons: Record<string, React.ReactNode> = {
   Frontend: <Code2 className="w-6 h-6" />,
   Backend: <Server className="w-6 h-6" />,
   "Tools & Others": <Wrench className="w-6 h-6" />,
+  "Backend & Data": <Server className="w-6 h-6" />,
+  "Cloud & DevOps": <Wrench className="w-6 h-6" />,
+  "Frontend & Mobile": <Code2 className="w-6 h-6" />,
 };
 
 export default function Skills() {
@@ -76,37 +79,19 @@ export default function Skills() {
                   </div>
 
                   {/* Skills List */}
-                  <div className="space-y-4">
+                  <div className="flex flex-wrap gap-2">
                     {category.items.map((skill, skillIndex) => (
-                      <motion.div
+                      <motion.span
                         key={skill.name}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={isInView ? { opacity: 1, x: 0 } : {}}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={isInView ? { opacity: 1, scale: 1 } : {}}
                         transition={{
                           delay: 0.3 + categoryIndex * 0.1 + skillIndex * 0.05,
                         }}
+                        className="px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gradient-to-r hover:from-purple-600 hover:via-pink-500 hover:to-blue-500 hover:text-white transition-all duration-300"
                       >
-                        <div className="flex justify-between items-center mb-1">
-                          <span className="text-gray-700 dark:text-gray-300 font-medium">
-                            {skill.name}
-                          </span>
-                          <span className="text-sm text-gray-500 dark:text-gray-400">
-                            {skill.level}%
-                          </span>
-                        </div>
-                        <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                          <motion.div
-                            className="h-full bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 rounded-full"
-                            initial={{ width: 0 }}
-                            animate={isInView ? { width: `${skill.level}%` } : {}}
-                            transition={{
-                              duration: 1,
-                              delay: 0.5 + categoryIndex * 0.1 + skillIndex * 0.05,
-                              ease: "easeOut",
-                            }}
-                          />
-                        </div>
-                      </motion.div>
+                        {skill.name}
+                      </motion.span>
                     ))}
                   </div>
                 </div>

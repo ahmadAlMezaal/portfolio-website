@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { siteMetadata, personalInfo } from "@/lib/data";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,31 +15,20 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ahmad Almezaal | Full Stack Developer",
-  description:
-    "Full Stack Developer specializing in building beautiful, scalable web applications. Available for freelance projects.",
-  keywords: [
-    "Full Stack Developer",
-    "Web Developer",
-    "React Developer",
-    "Next.js",
-    "TypeScript",
-    "Portfolio",
-    "Freelance",
-  ],
-  authors: [{ name: "Ahmad Almezaal" }],
+  title: siteMetadata.title,
+  description: siteMetadata.description,
+  keywords: siteMetadata.keywords,
+  authors: [{ name: personalInfo.name }],
   openGraph: {
-    title: "Ahmad Almezaal | Full Stack Developer",
-    description:
-      "Full Stack Developer specializing in building beautiful, scalable web applications.",
+    title: siteMetadata.title,
+    description: siteMetadata.description,
     type: "website",
-    locale: "en_US",
+    locale: siteMetadata.locale,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ahmad Almezaal | Full Stack Developer",
-    description:
-      "Full Stack Developer specializing in building beautiful, scalable web applications.",
+    title: siteMetadata.title,
+    description: siteMetadata.description,
   },
   robots: {
     index: true,

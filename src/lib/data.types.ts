@@ -18,6 +18,13 @@ export interface PersonalInfo {
   };
 }
 
+export interface SiteMetadata {
+  title: string;
+  description: string;
+  keywords: string[];
+  locale: string;
+}
+
 export interface Stat {
   label: string;
   value: string;
@@ -65,6 +72,7 @@ export interface NavLink {
 }
 
 export interface PortfolioConfig {
+  siteMetadata: SiteMetadata;
   personalInfo: PersonalInfo;
   roles: string[];
   stats: Stat[];

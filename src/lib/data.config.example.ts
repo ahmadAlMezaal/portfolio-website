@@ -13,6 +13,21 @@ import type { PortfolioConfig } from './data.types';
 
 const config: PortfolioConfig = {
   // ---------------------------------------------------------------------------
+  // SITE METADATA (used for SEO and social sharing)
+  // ---------------------------------------------------------------------------
+  siteMetadata: {
+    title: "Your Name | Your Title",
+    description: "A brief description of yourself for search engines and social sharing.",
+    keywords: [
+      "Your Title",
+      "Skill 1",
+      "Skill 2",
+      "Your Location",
+    ],
+    locale: "en_GB", // e.g., "en_US", "en_GB", etc.
+  },
+
+  // ---------------------------------------------------------------------------
   // PERSONAL INFORMATION
   // ---------------------------------------------------------------------------
   personalInfo: {
