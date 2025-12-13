@@ -82,6 +82,20 @@ yarn lint     # Run ESLint
 - `src/lib/data.config.ts` - Personal configuration
 - `.ai/` - AI assistant working files
 
+## Static HTML Version (Parent Directory)
+
+There's also a static HTML portfolio in the parent directory (`../`):
+
+- `index.html` - Static HTML page
+- `styles.css` - Styling
+- `main.js` - Loads data from JSON and populates the page
+- `data.json` - Personal data (GITIGNORED)
+- `data.example.json` - Template for cloning
+
+**To customize the static version:**
+1. Copy `data.example.json` to `data.json`
+2. Fill in your personal information
+
 ## Notes for AI Assistants
 
 - All personal data flows through `data.config.ts` → `data.ts` → components

@@ -72,12 +72,12 @@ export default function Experience() {
                   {/* Content */}
                   <div className={`md:w-1/2 pl-8 md:pl-0 ${index % 2 === 0 ? "md:pr-12" : "md:pl-12"}`}>
                     <motion.div
-                      className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl border border-gray-200 dark:border-gray-700 relative group"
+                      className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl border border-gray-200 dark:border-gray-700 relative group hover:border-purple-500/50 dark:hover:border-purple-400/50 transition-colors duration-300"
                       whileHover={{ y: -5 }}
                       transition={{ duration: 0.2 }}
                     >
-                      {/* Gradient border on hover */}
-                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur-sm" />
+                      {/* Subtle glow on hover */}
+                      <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300 -z-10" />
 
                       {/* Header */}
                       <div className="flex items-start gap-4 mb-4">
@@ -85,7 +85,7 @@ export default function Experience() {
                           <Briefcase className="w-6 h-6" />
                         </div>
                         <div>
-                          <h3 className="text-xl font-bold text-gray-800 dark:text-white">
+                          <h3 className="text-xl font-bold text-gray-800 dark:text-white group-hover:text-purple-700 dark:group-hover:text-purple-300 transition-colors">
                             {exp.title}
                           </h3>
                           <p className="text-purple-600 dark:text-purple-400 font-semibold">
