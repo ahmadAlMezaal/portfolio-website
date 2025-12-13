@@ -10,16 +10,30 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Light theme (default) */
+/* Light theme (default) - warm, professional palette */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #faf8f5;
+  --foreground: #2d3748;
+  --card-bg: #ffffff;
+  --card-border: #e8e4df;
+  --muted: #6b7280;
+  --muted-bg: #f3f1ed;
+  --accent-purple: #7c3aed;
+  --accent-pink: #db2777;
+  --accent-blue: #2563eb;
 }
 
 /* Dark theme */
 .dark {
   --background: #0a0a0a;
   --foreground: #ededed;
+  --card-bg: #171717;
+  --card-border: #2d2d2d;
+  --muted: #9ca3af;
+  --muted-bg: #1f1f1f;
+  --accent-purple: #a78bfa;
+  --accent-pink: #f472b6;
+  --accent-blue: #60a5fa;
 }
 
 body {
