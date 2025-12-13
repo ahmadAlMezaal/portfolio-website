@@ -36,6 +36,9 @@ yarn-error.log*
 # portfolio config (contains personal information)
 src/lib/data.config.ts
 
+# AI assistant working files
+.ai/
+
 # vercel
 .vercel
 
