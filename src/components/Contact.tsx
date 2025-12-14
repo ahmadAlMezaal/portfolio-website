@@ -11,12 +11,11 @@ import {
   Twitter,
   MapPin,
   MessageSquare,
-  CheckCircle,
+  Calendar,
   Youtube,
   Instagram,
   Facebook,
   Dribbble,
-  Code2,
   Codepen,
   type LucideIcon,
 } from "lucide-react";
@@ -89,22 +88,16 @@ export default function Contact() {
     email: "",
     message: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const subject = encodeURIComponent("Portfolio Enquiry");
+    const body = encodeURIComponent(
+      `Hi Ahmad,\n\n${formState.message}\n\n---\nFrom: ${formState.name}\nEmail: ${formState.email}`
+    );
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    setFormState({ name: "", email: "", message: "" });
-
-    // Reset success message after 3 seconds
-    setTimeout(() => setIsSubmitted(false), 3000);
+    window.location.href = `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
   };
 
   const containerVariants = {
@@ -253,7 +246,7 @@ export default function Contact() {
                 onSubmit={handleSubmit}
                 className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl border border-gray-200 dark:border-gray-700"
               >
-                <div className="flex items-center gap-3 mb-6">
+                <div className="flex items-center gap-3 mb-2">
                   <div className="p-3 rounded-xl bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-white">
                     <MessageSquare className="w-6 h-6" />
                   </div>
@@ -261,6 +254,9 @@ export default function Contact() {
                     Send me a message
                   </h3>
                 </div>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                  Fill in the details below and click to open your email client
+                </p>
 
                 <div className="space-y-5">
                   <div>
@@ -323,31 +319,31 @@ export default function Contact() {
                     />
                   </div>
 
-                  <motion.button
-                    type="submit"
-                    disabled={isSubmitting || isSubmitted}
-                    className="w-full py-4 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-white font-semibold rounded-xl shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                    whileHover={{ scale: isSubmitting || isSubmitted ? 1 : 1.02 }}
-                    whileTap={{ scale: isSubmitting || isSubmitted ? 1 : 0.98 }}
-                  >
-                    {isSubmitted ? (
-                      <>
-                        <CheckCircle className="w-5 h-5" />
-                        Message Sent!
-                      </>
-                    ) : isSubmitting ? (
-                      <motion.div
-                        className="w-6 h-6 border-2 border-white border-t-transparent rounded-full"
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                      />
-                    ) : (
-                      <>
-                        <Send className="w-5 h-5" />
-                        Send Message
-                      </>
+                  <div className="space-y-3">
+                    <motion.button
+                      type="submit"
+                      className="w-full py-4 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-white font-semibold rounded-xl shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transition-all flex items-center justify-center gap-2"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <Mail className="w-5 h-5" />
+                      Open Email Client
+                    </motion.button>
+
+                    {personalInfo.bookingUrl && (
+                      <motion.a
+                        href={personalInfo.bookingUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-4 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white font-semibold rounded-xl border border-gray-300 dark:border-gray-600 hover:border-purple-500 dark:hover:border-purple-500 transition-all flex items-center justify-center gap-2"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <Calendar className="w-5 h-5" />
+                        Book a Chat
+                      </motion.a>
                     )}
-                  </motion.button>
+                  </div>
                 </div>
               </form>
             </motion.div>

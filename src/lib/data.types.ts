@@ -39,6 +39,7 @@ export interface PersonalInfo {
   location: string;
   bio: string;
   resumeUrl: string;
+  bookingUrl?: string;
   socialLinks: SocialLink[];
 }
 
