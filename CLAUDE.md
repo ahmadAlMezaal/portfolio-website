@@ -47,11 +47,12 @@ All personal information is stored in `src/lib/data.config.ts` which is gitignor
 2. Fill in your personal information
 3. Place your CV at `public/cv.pdf`
 4. Add project images to `public/projects/`
+5. (Optional) Replace `public/icon.svg` with your own favicon
 
 **Config includes:**
 
 - `siteMetadata`: SEO title, description, keywords, locale
-- `personalInfo`: Name, title, bio, email, social links
+- `personalInfo`: Name, title, bio, email, status, social links
 - `roles`: Typing animation roles
 - `stats`: Career statistics
 - `skills`: Categorized skills (displayed as tags, no percentages)
@@ -59,6 +60,35 @@ All personal information is stored in `src/lib/data.config.ts` which is gitignor
 - `projects`: Portfolio projects
 - `education`: Educational background
 - `certifications`: Professional certifications
+
+### Status Options
+
+The `status` field in personalInfo accepts one of these predefined values:
+- `"Open to Opportunities"` - Looking for new roles
+- `"Open to Freelance"` - Available for freelance work
+- `"Currently Employed"` - Not actively looking
+- `"Available for Hire"` - Ready to start immediately
+- `"Not Available"` - Not taking on work
+
+### Social Links
+
+Social links are now fully configurable. Only include the platforms you use:
+
+```typescript
+socialLinks: [
+  { platform: "github", url: "https://github.com/username" },
+  { platform: "linkedin", url: "https://linkedin.com/in/username" },
+  { platform: "medium", url: "https://medium.com/@username" },
+]
+```
+
+**Supported platforms:** github, linkedin, twitter, medium, youtube, instagram, facebook, dribbble, behance, stackoverflow, codepen, dev
+
+### Favicon
+
+The portfolio uses SVG favicon by default (`public/icon.svg`). To customize:
+- Replace `public/icon.svg` with your own SVG icon
+- For full browser support, also add `public/favicon.ico` and `public/apple-touch-icon.png`
 
 ## Theme System
 
@@ -77,9 +107,31 @@ yarn start    # Start production server
 yarn lint     # Run ESLint
 ```
 
+## Public Assets
+
+The `public/` folder structure for assets:
+
+```
+public/
+├── icon.svg              # Main favicon (SVG format)
+├── favicon.ico           # (Optional) ICO favicon for older browsers
+├── apple-touch-icon.png  # (Optional) Apple touch icon
+├── cv.pdf                # Your CV/Resume (not tracked in git)
+├── CV_README.md          # Instructions for CV setup
+└── projects/             # Project images
+    ├── .gitkeep          # Instructions for project images
+    ├── project1.jpg      # Your project images (not tracked in git)
+    └── ...
+```
+
+**Note:** CV and project images are not tracked in git. Each person cloning the repo should add their own.
+
 ## Gitignored Files
 
 - `src/lib/data.config.ts` - Personal configuration
+- `public/cv.pdf` - CV/Resume file
+- `public/projects/*.jpg` - Project images (except .gitkeep)
+- `public/projects/*.png` - Project images
 - `.ai/` - AI assistant working files
 
 ## Notes for AI Assistants

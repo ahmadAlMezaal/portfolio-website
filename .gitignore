@@ -36,6 +36,14 @@ yarn-error.log*
 # portfolio config (contains personal information)
 src/lib/data.config.ts
 
+# personal assets (CV and project images)
+public/cv.pdf
+public/projects/*.jpg
+public/projects/*.png
+public/projects/*.jpeg
+public/projects/*.webp
+!public/projects/.gitkeep
+
 # AI assistant working files
 .ai/
 

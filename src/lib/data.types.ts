@@ -2,20 +2,44 @@
 // TYPE DEFINITIONS FOR PORTFOLIO DATA
 // =============================================================================
 
+// Available status options for the portfolio
+export type StatusOption =
+  | "Open to Opportunities"
+  | "Open to Freelance"
+  | "Currently Employed"
+  | "Available for Hire"
+  | "Not Available";
+
+// Supported social media platforms
+export type SocialPlatform =
+  | "github"
+  | "linkedin"
+  | "twitter"
+  | "medium"
+  | "youtube"
+  | "instagram"
+  | "facebook"
+  | "dribbble"
+  | "behance"
+  | "stackoverflow"
+  | "codepen"
+  | "dev";
+
+export interface SocialLink {
+  platform: SocialPlatform;
+  url: string;
+}
+
 export interface PersonalInfo {
   name: string;
   title: string;
   tagline: string;
-  status: string;
+  status: StatusOption;
   email: string;
   location: string;
   bio: string;
   resumeUrl: string;
-  socialLinks: {
-    github: string;
-    linkedin: string;
-    twitter: string;
-  };
+  socialLinks: SocialLink[];
 }
 
 export interface SiteMetadata {

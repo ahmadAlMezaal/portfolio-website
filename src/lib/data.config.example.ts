@@ -34,18 +34,23 @@ const config: PortfolioConfig = {
     name: "Your Name",
     title: "Your Job Title",
     tagline: "Your catchy tagline or motto",
-    status: "Available for Freelance", // or "Open to Work", "Currently Employed", etc.
+    // Status options: "Open to Opportunities" | "Open to Freelance" | "Currently Employed" | "Available for Hire" | "Not Available"
+    status: "Open to Opportunities",
     email: "your.email@example.com",
     location: "City, Country",
     bio: `Write a brief bio about yourself here. This can span multiple lines.
     Talk about your passion, what drives you, and what makes you unique.
     Keep it professional but personable.`,
     resumeUrl: "/cv.pdf", // Place your CV in the public folder
-    socialLinks: {
-      github: "https://github.com/yourusername",
-      linkedin: "https://linkedin.com/in/yourusername",
-      twitter: "https://twitter.com/yourusername",
-    },
+    // Social links - add only the platforms you use
+    // Supported platforms: github, linkedin, twitter, medium, youtube, instagram, facebook, dribbble, behance, stackoverflow, codepen, dev
+    socialLinks: [
+      { platform: "github", url: "https://github.com/yourusername" },
+      { platform: "linkedin", url: "https://linkedin.com/in/yourusername" },
+      // { platform: "twitter", url: "https://twitter.com/yourusername" },
+      // { platform: "medium", url: "https://medium.com/@yourusername" },
+      // Add more social links as needed...
+    ],
   },
 
   // ---------------------------------------------------------------------------

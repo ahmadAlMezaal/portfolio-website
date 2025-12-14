@@ -1,0 +1,12 @@
+# Project Images
+
+Place your project images here. Recommended:
+- Format: JPG or PNG
+- Size: 800x600px or similar 4:3 ratio
+- Names should match what's in data.config.ts (e.g., openbanking.jpg, esim.jpg)
+
+Example images referenced in the default config:
+- openbanking.jpg
+- esim.jpg
+- pipeline.jpg
+- crypto.jpg
