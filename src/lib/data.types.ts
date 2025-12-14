@@ -78,6 +78,7 @@ export interface ExperienceRole {
 // 2. Multiple roles (promotions): uses roles array, title/period/description/achievements are ignored
 export interface Experience {
   company: string;
+  companyUrl?: string; // Optional link to company website
   location: string;
   // Single role fields (used when roles array is not provided)
   title?: string;

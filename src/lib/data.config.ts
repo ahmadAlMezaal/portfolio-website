@@ -103,6 +103,7 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
         { name: "React", level: 88 },
         { name: "React Native", level: 85 },
         { name: "Redux", level: 82 },
+        { name: "Next.js", level: 60 },
       ],
     },
   ],
@@ -114,6 +115,7 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
     {
       title: "Senior Software Engineer",
       company: "Shuffle Finance",
+      companyUrl: "https://getshuffle.co.uk/",
       location: "London, UK",
       period: "Aug 2024 - Present",
       description:
@@ -128,6 +130,7 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
     },
     {
       company: "ZIM Connections",
+      companyUrl: "https://zimconnections.com",
       location: "London, UK",
       roles: [
         {
@@ -159,7 +162,8 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
     },
     {
       title: "Product Engineer (Open Source)",
-      company: "Athena Group of Companies",
+      company: "DeSofy",
+      companyUrl: "https://www.deso.com/",
       location: "Remote",
       period: "Jan 2021 - Dec 2021",
       description:
@@ -173,6 +177,7 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
     {
       title: "Mobile Developer",
       company: "HelloTree",
+      companyUrl: "https://hellotree.com/",
       location: "Jounieh, Lebanon",
       period: "Jul 2020 - Jan 2021",
       description:
@@ -186,6 +191,7 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
     {
       title: "Lecturer",
       company: "Geek Express",
+      companyUrl: "https://www.geekexpress.com/en",
       location: "Beirut, Lebanon",
       period: "Aug 2019 - Jul 2020",
       description:

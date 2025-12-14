@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
-import { Briefcase, MapPin, Calendar, CheckCircle2, TrendingUp } from "lucide-react";
+import { Briefcase, MapPin, Calendar, CheckCircle2, TrendingUp, ExternalLink } from "lucide-react";
 import { experiences } from "@/lib/data";
 import type { Experience as ExperienceType, ExperienceRole } from "@/lib/data.types";
 
@@ -20,6 +20,72 @@ function getOverallPeriod(roles: ExperienceRole[]): string {
   const startYear = lastRole.period.split(" - ")[0];
   const endYear = firstRole.period.split(" - ")[1] || "Present";
   return `${startYear} - ${endYear}`;
+}
+
+// Helper to calculate duration from period string (e.g., "Apr 2022 - Aug 2024")
+function calculateDuration(period: string): string {
+  const months: Record<string, number> = {
+    Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+    Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11,
+  };
+
+  const parts = period.split(" - ");
+  if (parts.length !== 2) return "";
+
+  const parseDate = (dateStr: string): Date | null => {
+    if (dateStr === "Present") {
+      return new Date();
+    }
+    const [monthStr, yearStr] = dateStr.trim().split(" ");
+    const month = months[monthStr];
+    const year = parseInt(yearStr, 10);
+    if (month === undefined || isNaN(year)) return null;
+    return new Date(year, month);
+  };
+
+  const startDate = parseDate(parts[0]);
+  const endDate = parseDate(parts[1]);
+
+  if (!startDate || !endDate) return "";
+
+  let totalMonths = (endDate.getFullYear() - startDate.getFullYear()) * 12;
+  totalMonths += endDate.getMonth() - startDate.getMonth();
+  totalMonths += 1; // Include the start month (LinkedIn-style)
+  totalMonths = Math.max(1, totalMonths); // At least 1 month
+
+  const years = Math.floor(totalMonths / 12);
+  const remainingMonths = totalMonths % 12;
+
+  if (years === 0) {
+    return `${remainingMonths} mo${remainingMonths !== 1 ? "s" : ""}`;
+  } else if (remainingMonths === 0) {
+    return `${years} yr${years !== 1 ? "s" : ""}`;
+  } else {
+    return `${years} yr${years !== 1 ? "s" : ""} ${remainingMonths} mo${remainingMonths !== 1 ? "s" : ""}`;
+  }
+}
+
+// Company name component with optional link
+function CompanyName({ name, url, isMultiRole }: { name: string; url?: string; isMultiRole: boolean }) {
+  const baseClasses = isMultiRole
+    ? "text-xl font-bold text-purple-600 dark:text-purple-400"
+    : "text-purple-600 dark:text-purple-400 font-semibold";
+
+  if (url) {
+    return (
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${baseClasses} inline-flex items-center gap-1.5 hover:text-purple-700 dark:hover:text-purple-300 transition-colors group/link`}
+      >
+        {name}
+        <ExternalLink className="w-4 h-4 opacity-0 -translate-y-0.5 group-hover/link:opacity-100 group-hover/link:translate-y-0 transition-all duration-200" />
+      </a>
+    );
+  }
+
+  return <span className={baseClasses}>{name}</span>;
 }
 
 export default function Experience() {
@@ -47,43 +113,50 @@ export default function Experience() {
     expIndex: number,
     roleIndex: number = 0,
     isMultiRole: boolean = false
-  ) => (
-    <div className={isMultiRole ? "pl-4 border-l-2 border-purple-500/30 ml-1" : ""}>
-      {isMultiRole && (
-        <div className="flex items-center gap-2 mb-2">
-          <div className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 -ml-[21px]" />
-          <h4 className="text-lg font-semibold text-gray-800 dark:text-white">
-            {role.title}
-          </h4>
+  ) => {
+    const duration = calculateDuration(role.period);
+
+    return (
+      <div className={isMultiRole ? "pl-4 border-l-2 border-purple-500/30 ml-1" : ""}>
+        {isMultiRole && (
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 -ml-[21px]" />
+            <h4 className="text-lg font-semibold text-gray-800 dark:text-white">
+              {role.title}
+            </h4>
+          </div>
+        )}
+        {isMultiRole && (
+          <div className="flex items-center gap-1 mb-2 text-sm text-gray-500 dark:text-gray-400">
+            <Calendar className="w-3.5 h-3.5" />
+            <span>{role.period}</span>
+            {duration && (
+              <span className="text-gray-400 dark:text-gray-500">· {duration}</span>
+            )}
+          </div>
+        )}
+        <p className={`text-gray-700 dark:text-gray-300 ${isMultiRole ? "text-sm mb-3" : "mb-4"}`}>
+          {role.description}
+        </p>
+        <div className="space-y-2">
+          {role.achievements.map((achievement, achIndex) => (
+            <motion.div
+              key={achIndex}
+              className="flex items-start gap-2"
+              initial={{ opacity: 0, x: -10 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ delay: 0.5 + expIndex * 0.2 + roleIndex * 0.15 + achIndex * 0.1 }}
+            >
+              <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
+              <span className="text-sm text-gray-600 dark:text-gray-400">
+                {achievement}
+              </span>
+            </motion.div>
+          ))}
         </div>
-      )}
-      {isMultiRole && (
-        <div className="flex items-center gap-1 mb-2 text-sm text-gray-500 dark:text-gray-400">
-          <Calendar className="w-3.5 h-3.5" />
-          <span>{role.period}</span>
-        </div>
-      )}
-      <p className={`text-gray-700 dark:text-gray-300 ${isMultiRole ? "text-sm mb-3" : "mb-4"}`}>
-        {role.description}
-      </p>
-      <div className="space-y-2">
-        {role.achievements.map((achievement, achIndex) => (
-          <motion.div
-            key={achIndex}
-            className="flex items-start gap-2"
-            initial={{ opacity: 0, x: -10 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ delay: 0.5 + expIndex * 0.2 + roleIndex * 0.15 + achIndex * 0.1 }}
-          >
-            <CheckCircle2 className={`${isMultiRole ? "w-4 h-4" : "w-5 h-5"} text-green-500 shrink-0 mt-0.5`} />
-            <span className={`${isMultiRole ? "text-xs" : "text-sm"} text-gray-600 dark:text-gray-400`}>
-              {achievement}
-            </span>
-          </motion.div>
-        ))}
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <section id="experience" className="py-20 bg-gray-50 dark:bg-[#132238]/50">
@@ -118,6 +191,7 @@ export default function Experience() {
                 const displayPeriod = isMultiRole
                   ? getOverallPeriod(exp.roles!)
                   : exp.period || "";
+                const totalDuration = calculateDuration(displayPeriod);
 
                 return (
                   <motion.div
@@ -157,9 +231,7 @@ export default function Experience() {
                           <div>
                             {isMultiRole ? (
                               <>
-                                <p className="text-xl font-bold text-purple-600 dark:text-purple-400">
-                                  {exp.company}
-                                </p>
+                                <CompanyName name={exp.company} url={exp.companyUrl} isMultiRole={true} />
                                 <p className="text-sm text-gray-500 dark:text-gray-400">
                                   {exp.roles!.length} roles · Career progression
                                 </p>
@@ -169,9 +241,7 @@ export default function Experience() {
                                 <h3 className="text-xl font-bold text-gray-800 dark:text-white group-hover:text-purple-700 dark:group-hover:text-purple-300 transition-colors">
                                   {exp.title}
                                 </h3>
-                                <p className="text-purple-600 dark:text-purple-400 font-semibold">
-                                  {exp.company}
-                                </p>
+                                <CompanyName name={exp.company} url={exp.companyUrl} isMultiRole={false} />
                               </>
                             )}
                           </div>
@@ -186,6 +256,9 @@ export default function Experience() {
                           <div className="flex items-center gap-1">
                             <Calendar className="w-4 h-4" />
                             <span>{displayPeriod}</span>
+                            {totalDuration && (
+                              <span className="text-gray-400 dark:text-gray-500">· {totalDuration}</span>
+                            )}
                           </div>
                         </div>
 

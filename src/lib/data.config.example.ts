@@ -113,6 +113,7 @@ const config: PortfolioConfig = {
     // Example: Multiple roles at same company (promotions)
     {
       company: "Tech Company Inc.",
+      companyUrl: "https://techcompany.com", // Optional: link to company website
       location: "San Francisco, CA",
       roles: [
         {
