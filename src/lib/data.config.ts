@@ -127,32 +127,34 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
       ],
     },
     {
-      title: "Lead Software Engineer",
       company: "ZIM Connections",
       location: "London, UK",
-      period: "Apr 2022 - Aug 2024",
-      description:
-        "Led a team of engineers building backend services and mobile applications for a global eSIM platform.",
-      achievements: [
-        "Led team of 3 engineers, increasing delivery velocity by 40%",
-        "Architected backend services and React Native apps supporting 100k+ users worldwide",
-        "Optimised PostgreSQL and MongoDB queries, reducing API response times by 50%",
-        "Integrated Stripe payments and eSIM provider APIs, enabling 200k+ secure transactions",
-        "Built CI/CD pipelines accelerating release cycles by 70%",
-      ],
-    },
-    {
-      title: "Full-Stack Engineer",
-      company: "ZIM Connections",
-      location: "London, UK",
-      period: "Sep 2021 - Apr 2022",
-      description:
-        "Built and maintained scalable applications using Node.js, React.js, and React Native.",
-      achievements: [
-        "Improved API performance by 30% through indexing and query optimisation",
-        "Integrated multiple third-party APIs (authentication, payments, eSIM)",
-        "Established Jest testing framework, raising unit test coverage to 80%",
-        "Supported smooth deployments via CI/CD automation",
+      roles: [
+        {
+          title: "Lead Software Engineer",
+          period: "Apr 2022 - Aug 2024",
+          description:
+            "Led a team of engineers building backend services and mobile applications for a global eSIM platform.",
+          achievements: [
+            "Led team of 3 engineers, increasing delivery velocity by 40%",
+            "Architected backend services and React Native apps supporting 100k+ users worldwide",
+            "Optimised PostgreSQL and MongoDB queries, reducing API response times by 50%",
+            "Integrated Stripe payments and eSIM provider APIs, enabling 200k+ secure transactions",
+            "Built CI/CD pipelines accelerating release cycles by 70%",
+          ],
+        },
+        {
+          title: "Full-Stack Engineer",
+          period: "Sep 2021 - Apr 2022",
+          description:
+            "Built and maintained scalable applications using Node.js, React.js, and React Native.",
+          achievements: [
+            "Improved API performance by 30% through indexing and query optimisation",
+            "Integrated multiple third-party APIs (authentication, payments, eSIM)",
+            "Established Jest testing framework, raising unit test coverage to 80%",
+            "Supported smooth deployments via CI/CD automation",
+          ],
+        },
       ],
     },
     {

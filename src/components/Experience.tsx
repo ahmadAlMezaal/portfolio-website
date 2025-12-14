@@ -3,8 +3,24 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
-import { Briefcase, MapPin, Calendar, CheckCircle2 } from "lucide-react";
+import { Briefcase, MapPin, Calendar, CheckCircle2, TrendingUp } from "lucide-react";
 import { experiences } from "@/lib/data";
+import type { Experience as ExperienceType, ExperienceRole } from "@/lib/data.types";
+
+// Helper to check if experience has multiple roles
+function hasMultipleRoles(exp: ExperienceType): exp is ExperienceType & { roles: ExperienceRole[] } {
+  return Array.isArray(exp.roles) && exp.roles.length > 0;
+}
+
+// Helper to get the overall period for multi-role experiences
+function getOverallPeriod(roles: ExperienceRole[]): string {
+  if (roles.length === 0) return "";
+  const lastRole = roles[roles.length - 1];
+  const firstRole = roles[0];
+  const startYear = lastRole.period.split(" - ")[0];
+  const endYear = firstRole.period.split(" - ")[1] || "Present";
+  return `${startYear} - ${endYear}`;
+}
 
 export default function Experience() {
   const ref = useRef(null);
@@ -24,6 +40,50 @@ export default function Experience() {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0 },
   };
+
+  // Render a single role's content (achievements and description)
+  const renderRoleContent = (
+    role: { title: string; period: string; description: string; achievements: string[] },
+    expIndex: number,
+    roleIndex: number = 0,
+    isMultiRole: boolean = false
+  ) => (
+    <div className={isMultiRole ? "pl-4 border-l-2 border-purple-500/30 ml-1" : ""}>
+      {isMultiRole && (
+        <div className="flex items-center gap-2 mb-2">
+          <div className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 -ml-[21px]" />
+          <h4 className="text-lg font-semibold text-gray-800 dark:text-white">
+            {role.title}
+          </h4>
+        </div>
+      )}
+      {isMultiRole && (
+        <div className="flex items-center gap-1 mb-2 text-sm text-gray-500 dark:text-gray-400">
+          <Calendar className="w-3.5 h-3.5" />
+          <span>{role.period}</span>
+        </div>
+      )}
+      <p className={`text-gray-700 dark:text-gray-300 ${isMultiRole ? "text-sm mb-3" : "mb-4"}`}>
+        {role.description}
+      </p>
+      <div className="space-y-2">
+        {role.achievements.map((achievement, achIndex) => (
+          <motion.div
+            key={achIndex}
+            className="flex items-start gap-2"
+            initial={{ opacity: 0, x: -10 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: 0.5 + expIndex * 0.2 + roleIndex * 0.15 + achIndex * 0.1 }}
+          >
+            <CheckCircle2 className={`${isMultiRole ? "w-4 h-4" : "w-5 h-5"} text-green-500 shrink-0 mt-0.5`} />
+            <span className={`${isMultiRole ? "text-xs" : "text-sm"} text-gray-600 dark:text-gray-400`}>
+              {achievement}
+            </span>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
 
   return (
     <section id="experience" className="py-20 bg-gray-50 dark:bg-[#132238]/50">
@@ -53,88 +113,112 @@ export default function Experience() {
 
             {/* Experience Items */}
             <div className="space-y-12">
-              {experiences.map((exp, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  className={`relative flex flex-col md:flex-row gap-8 ${
-                    index % 2 === 0 ? "md:flex-row-reverse" : ""
-                  }`}
-                >
-                  {/* Timeline Dot */}
+              {experiences.map((exp, index) => {
+                const isMultiRole = hasMultipleRoles(exp);
+                const displayPeriod = isMultiRole
+                  ? getOverallPeriod(exp.roles!)
+                  : exp.period || "";
+
+                return (
                   <motion.div
-                    className="absolute left-0 md:left-1/2 w-4 h-4 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full transform -translate-x-1/2 border-4 border-white dark:border-[#0d1b2a]"
-                    initial={{ scale: 0 }}
-                    animate={isInView ? { scale: 1 } : {}}
-                    transition={{ delay: 0.3 + index * 0.2 }}
-                  />
-
-                  {/* Content */}
-                  <div className={`md:w-1/2 pl-8 md:pl-0 ${index % 2 === 0 ? "md:pr-12" : "md:pl-12"}`}>
+                    key={index}
+                    variants={itemVariants}
+                    className={`relative flex flex-col md:flex-row gap-8 ${
+                      index % 2 === 0 ? "md:flex-row-reverse" : ""
+                    }`}
+                  >
+                    {/* Timeline Dot */}
                     <motion.div
-                      className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl border border-gray-200 dark:border-gray-700 relative group hover:border-purple-500/50 dark:hover:border-purple-400/50 transition-colors duration-300"
-                      whileHover={{ y: -5 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      {/* Subtle glow on hover */}
-                      <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300 -z-10" />
+                      className="absolute left-0 md:left-1/2 w-4 h-4 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full transform -translate-x-1/2 border-4 border-white dark:border-[#0d1b2a]"
+                      initial={{ scale: 0 }}
+                      animate={isInView ? { scale: 1 } : {}}
+                      transition={{ delay: 0.3 + index * 0.2 }}
+                    />
 
-                      {/* Header */}
-                      <div className="flex items-start gap-4 mb-4">
-                        <div className="p-3 rounded-xl bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-white shrink-0">
-                          <Briefcase className="w-6 h-6" />
+                    {/* Content */}
+                    <div className={`md:w-1/2 pl-8 md:pl-0 ${index % 2 === 0 ? "md:pr-12" : "md:pl-12"}`}>
+                      <motion.div
+                        className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl border border-gray-200 dark:border-gray-700 relative group hover:border-purple-500/50 dark:hover:border-purple-400/50 transition-colors duration-300"
+                        whileHover={{ y: -5 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        {/* Subtle glow on hover */}
+                        <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300 -z-10" />
+
+                        {/* Header */}
+                        <div className="flex items-start gap-4 mb-4">
+                          <div className="p-3 rounded-xl bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-white shrink-0">
+                            {isMultiRole ? (
+                              <TrendingUp className="w-6 h-6" />
+                            ) : (
+                              <Briefcase className="w-6 h-6" />
+                            )}
+                          </div>
+                          <div>
+                            {isMultiRole ? (
+                              <>
+                                <p className="text-xl font-bold text-purple-600 dark:text-purple-400">
+                                  {exp.company}
+                                </p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                  {exp.roles!.length} roles · Career progression
+                                </p>
+                              </>
+                            ) : (
+                              <>
+                                <h3 className="text-xl font-bold text-gray-800 dark:text-white group-hover:text-purple-700 dark:group-hover:text-purple-300 transition-colors">
+                                  {exp.title}
+                                </h3>
+                                <p className="text-purple-600 dark:text-purple-400 font-semibold">
+                                  {exp.company}
+                                </p>
+                              </>
+                            )}
+                          </div>
                         </div>
-                        <div>
-                          <h3 className="text-xl font-bold text-gray-800 dark:text-white group-hover:text-purple-700 dark:group-hover:text-purple-300 transition-colors">
-                            {exp.title}
-                          </h3>
-                          <p className="text-purple-600 dark:text-purple-400 font-semibold">
-                            {exp.company}
-                          </p>
+
+                        {/* Meta Info */}
+                        <div className="flex flex-wrap gap-4 mb-4 text-sm text-gray-600 dark:text-gray-400">
+                          <div className="flex items-center gap-1">
+                            <MapPin className="w-4 h-4" />
+                            <span>{exp.location}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Calendar className="w-4 h-4" />
+                            <span>{displayPeriod}</span>
+                          </div>
                         </div>
-                      </div>
 
-                      {/* Meta Info */}
-                      <div className="flex flex-wrap gap-4 mb-4 text-sm text-gray-600 dark:text-gray-400">
-                        <div className="flex items-center gap-1">
-                          <MapPin className="w-4 h-4" />
-                          <span>{exp.location}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          <span>{exp.period}</span>
-                        </div>
-                      </div>
+                        {/* Content - Single Role vs Multiple Roles */}
+                        {isMultiRole ? (
+                          <div className="space-y-6">
+                            {exp.roles!.map((role, roleIndex) => (
+                              <div key={roleIndex}>
+                                {renderRoleContent(role, index, roleIndex, true)}
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          renderRoleContent(
+                            {
+                              title: exp.title || "",
+                              period: exp.period || "",
+                              description: exp.description || "",
+                              achievements: exp.achievements || [],
+                            },
+                            index,
+                            0,
+                            false
+                          )
+                        )}
+                      </motion.div>
+                    </div>
 
-                      {/* Description */}
-                      <p className="text-gray-700 dark:text-gray-300 mb-4">
-                        {exp.description}
-                      </p>
-
-                      {/* Achievements */}
-                      <div className="space-y-2">
-                        {exp.achievements.map((achievement, achIndex) => (
-                          <motion.div
-                            key={achIndex}
-                            className="flex items-start gap-2"
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={isInView ? { opacity: 1, x: 0 } : {}}
-                            transition={{ delay: 0.5 + index * 0.2 + achIndex * 0.1 }}
-                          >
-                            <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
-                            <span className="text-sm text-gray-600 dark:text-gray-400">
-                              {achievement}
-                            </span>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </motion.div>
-                  </div>
-
-                  {/* Spacer for alternating layout */}
-                  <div className="hidden md:block md:w-1/2" />
-                </motion.div>
-              ))}
+                    {/* Spacer for alternating layout */}
+                    <div className="hidden md:block md:w-1/2" />
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </motion.div>

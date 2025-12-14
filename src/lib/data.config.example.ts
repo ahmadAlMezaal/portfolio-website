@@ -106,13 +106,44 @@ const config: PortfolioConfig = {
   // ---------------------------------------------------------------------------
   // WORK EXPERIENCE (most recent first)
   // ---------------------------------------------------------------------------
+  // You can use either:
+  // 1. Single role format (title, period, description, achievements)
+  // 2. Multiple roles format (roles array) - for promotions at same company
   experiences: [
+    // Example: Multiple roles at same company (promotions)
     {
-      title: "Job Title",
-      company: "Company Name",
-      location: "City, Country or Remote",
-      period: "YYYY - Present",
-      description: "Brief description of your role and responsibilities.",
+      company: "Tech Company Inc.",
+      location: "San Francisco, CA",
+      roles: [
+        {
+          title: "Lead Software Engineer",
+          period: "2023 - Present",
+          description: "Leading a team of 5 engineers on the core platform.",
+          achievements: [
+            "Promoted to lead after demonstrating technical excellence",
+            "Mentored 3 junior developers",
+            "Architected new microservices infrastructure",
+          ],
+        },
+        {
+          title: "Software Engineer",
+          period: "2021 - 2023",
+          description: "Full-stack development on the main product.",
+          achievements: [
+            "Built key features that increased user engagement by 40%",
+            "Reduced API response times by 60%",
+            "Introduced automated testing practices",
+          ],
+        },
+      ],
+    },
+    // Example: Single role at a company
+    {
+      title: "Junior Developer",
+      company: "Startup Co.",
+      location: "Remote",
+      period: "2019 - 2021",
+      description: "Full-stack web development for early-stage startup.",
       achievements: [
         "Key achievement #1",
         "Key achievement #2",
