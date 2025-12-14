@@ -56,7 +56,7 @@ export default function About() {
   ];
 
   return (
-    <section id="about" className="py-20 bg-gray-50 dark:bg-gray-800/50">
+    <section id="about" className="py-20 bg-gray-50 dark:bg-[#132238]/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           ref={ref}
@@ -124,7 +124,7 @@ export default function About() {
 
                 {/* Main initials container */}
                 <div className="absolute inset-16 rounded-full bg-gradient-to-br from-purple-600 via-pink-500 to-blue-500 p-1 shadow-2xl shadow-purple-500/25">
-                  <div className="w-full h-full rounded-full bg-gray-100 dark:bg-gray-900 flex items-center justify-center overflow-hidden">
+                  <div className="w-full h-full rounded-full bg-gray-100 dark:bg-[#0d1b2a] flex items-center justify-center overflow-hidden">
                     {/* Animated initials */}
                     <div className="flex items-center justify-center perspective-1000">
                       {initials.split("").map((letter, i) => (
