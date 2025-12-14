@@ -47,7 +47,10 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
     bookingUrl: "https://calendly.com/ahmad-al-mezaal/30min",
     socialLinks: [
       { platform: "github", url: "https://github.com/ahmadAlMezaal" },
-      { platform: "linkedin", url: "https://linkedin.com/in/ahmadAlMezaal" },
+      {
+        platform: "linkedin",
+        url: "https://www.linkedin.com/in/ahmad-al-mezaal/",
+      },
       { platform: "medium", url: "https://medium.com/@ahmad.almezaal" },
     ],
   },
@@ -114,10 +117,26 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
   experiences: [
     {
       title: "Senior Software Engineer",
+      company: "Borderless",
+      companyUrl: "https://www.getborderless.co.uk/",
+      location: "London, UK",
+      period: "Nov 2025 - Present",
+      description:
+        "Architecting AI-driven features and automating complex immigration workflows for a high-autonomy visa processing platform.",
+      achievements: [
+        "Architected AI-driven features using OpenAI and Anthropic APIs, automating complex immigration workflows and enabling semantic search to reduce manual data entry",
+        "Championed AI-native development, leveraging LLM workflows to accelerate feature delivery and prototype autonomous agents for high-autonomy platform logic",
+        "Partnered with Product teams to translate intricate UK immigration policies into scalable backend logic, driving the platform's ability to process visas autonomously",
+        "Engineered resilient integrations with third-party HR systems and Stripe, automating complex financial flows including invoicing and card issuance",
+        "Enhanced system reliability and performance by implementing comprehensive monitoring, optimizing database queries, and reducing latency for data-heavy dashboards",
+      ],
+    },
+    {
+      title: "Senior Software Engineer",
       company: "Shuffle Finance",
       companyUrl: "https://getshuffle.co.uk/",
       location: "London, UK",
-      period: "Aug 2024 - Present",
+      period: "Aug 2024 - Oct 2025",
       description:
         "Building and scaling Open Banking APIs and data pipelines in a high-growth fintech environment.",
       achievements: [
