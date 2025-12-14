@@ -26,7 +26,7 @@ export default function Experience() {
   };
 
   return (
-    <section id="experience" className="py-20 bg-gray-50 dark:bg-gray-800/50">
+    <section id="experience" className="py-20 bg-gray-50 dark:bg-[#132238]/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           ref={ref}
@@ -63,7 +63,7 @@ export default function Experience() {
                 >
                   {/* Timeline Dot */}
                   <motion.div
-                    className="absolute left-0 md:left-1/2 w-4 h-4 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full transform -translate-x-1/2 border-4 border-white dark:border-gray-900"
+                    className="absolute left-0 md:left-1/2 w-4 h-4 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full transform -translate-x-1/2 border-4 border-white dark:border-[#0d1b2a]"
                     initial={{ scale: 0 }}
                     animate={isInView ? { scale: 1 } : {}}
                     transition={{ delay: 0.3 + index * 0.2 }}

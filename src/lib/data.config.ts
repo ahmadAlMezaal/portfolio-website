@@ -123,6 +123,7 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
         "Designed transaction deduplication and enrichment pipelines, improving data accuracy by 35%",
         "Introduced hybrid serverless + containerised architecture, reducing costs by 20% and increasing throughput by 40%",
         "Implemented monitoring and alerting, reducing incident response time from hours to minutes",
+        "Collaborated with product/design to prioritise features, ensuring engineering decisions directly supported faster feature delivery and higher customer satisfaction.",
       ],
     },
     {
