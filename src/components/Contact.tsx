@@ -156,15 +156,15 @@ export default function Contact() {
               <div className="grid sm:grid-cols-2 gap-4">
                 <motion.a
                   href={`mailto:${personalInfo.email}`}
-                  className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 group hover:border-purple-500 transition-colors"
+                  className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 group hover:border-purple-500 transition-colors overflow-hidden"
                   whileHover={{ y: -5 }}
                 >
-                  <div className="p-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 text-white">
+                  <div className="p-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 text-white flex-shrink-0">
                     <Mail className="w-6 h-6" />
                   </div>
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <p className="text-sm text-gray-500 dark:text-gray-400">Email</p>
-                    <p className="text-gray-800 dark:text-white font-medium group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                    <p className="text-gray-800 dark:text-white font-medium group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors truncate">
                       {personalInfo.email}
                     </p>
                   </div>
