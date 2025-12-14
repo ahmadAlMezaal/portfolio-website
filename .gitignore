@@ -37,7 +37,6 @@ yarn-error.log*
 src/lib/data.config.ts
 
 # personal assets (CV and project images)
-public/cv.pdf
 public/projects/*.jpg
 public/projects/*.png
 public/projects/*.jpeg

@@ -24,8 +24,9 @@ export function assetPath(path: string): string {
 
 /**
  * Check if the CV is available for download.
- * This is set during build time based on whether cv.pdf exists.
+ * Defaults to true (show button). Only hides if explicitly set to "false" during CI
+ * when CV_PDF_URL is not configured and no cv.pdf exists.
  */
 export function isCvAvailable(): boolean {
-  return process.env.NEXT_PUBLIC_CV_AVAILABLE === "true";
+  return process.env.NEXT_PUBLIC_CV_AVAILABLE !== "false";
 }
