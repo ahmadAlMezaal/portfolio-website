@@ -35,6 +35,9 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Create data config from secret
+        run: echo "${{ secrets.DATA_CONFIG_TS }}" > src/lib/data.config.ts
+
       - name: Build with Next.js
         env:
           # For custom domain (theaam.dev): leave empty (default)
