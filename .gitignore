@@ -33,9 +33,6 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
-# portfolio config (contains personal information)
-src/lib/data.config.ts
-
 # personal assets (CV and project images)
 public/projects/*.jpg
 public/projects/*.png
