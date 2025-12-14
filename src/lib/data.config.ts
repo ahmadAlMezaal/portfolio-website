@@ -103,6 +103,7 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
         { name: "React", level: 88 },
         { name: "React Native", level: 85 },
         { name: "Redux", level: 82 },
+        { name: "Next.js", level: 60 },
       ],
     },
   ],
@@ -114,6 +115,7 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
     {
       title: "Senior Software Engineer",
       company: "Shuffle Finance",
+      companyUrl: "https://getshuffle.co.uk/",
       location: "London, UK",
       period: "Aug 2024 - Present",
       description:
@@ -127,37 +129,41 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
       ],
     },
     {
-      title: "Lead Software Engineer",
       company: "ZIM Connections",
+      companyUrl: "https://zimconnections.com",
       location: "London, UK",
-      period: "Apr 2022 - Aug 2024",
-      description:
-        "Led a team of engineers building backend services and mobile applications for a global eSIM platform.",
-      achievements: [
-        "Led team of 3 engineers, increasing delivery velocity by 40%",
-        "Architected backend services and React Native apps supporting 100k+ users worldwide",
-        "Optimised PostgreSQL and MongoDB queries, reducing API response times by 50%",
-        "Integrated Stripe payments and eSIM provider APIs, enabling 200k+ secure transactions",
-        "Built CI/CD pipelines accelerating release cycles by 70%",
-      ],
-    },
-    {
-      title: "Full-Stack Engineer",
-      company: "ZIM Connections",
-      location: "London, UK",
-      period: "Sep 2021 - Apr 2022",
-      description:
-        "Built and maintained scalable applications using Node.js, React.js, and React Native.",
-      achievements: [
-        "Improved API performance by 30% through indexing and query optimisation",
-        "Integrated multiple third-party APIs (authentication, payments, eSIM)",
-        "Established Jest testing framework, raising unit test coverage to 80%",
-        "Supported smooth deployments via CI/CD automation",
+      roles: [
+        {
+          title: "Lead Software Engineer",
+          period: "Apr 2022 - Aug 2024",
+          description:
+            "Led a team of engineers building backend services and mobile applications for a global eSIM platform.",
+          achievements: [
+            "Led team of 3 engineers, increasing delivery velocity by 40%",
+            "Architected backend services and React Native apps supporting 100k+ users worldwide",
+            "Optimised PostgreSQL and MongoDB queries, reducing API response times by 50%",
+            "Integrated Stripe payments and eSIM provider APIs, enabling 200k+ secure transactions",
+            "Built CI/CD pipelines accelerating release cycles by 70%",
+          ],
+        },
+        {
+          title: "Full-Stack Engineer",
+          period: "Sep 2021 - Apr 2022",
+          description:
+            "Built and maintained scalable applications using Node.js, React.js, and React Native.",
+          achievements: [
+            "Improved API performance by 30% through indexing and query optimisation",
+            "Integrated multiple third-party APIs (authentication, payments, eSIM)",
+            "Established Jest testing framework, raising unit test coverage to 80%",
+            "Supported smooth deployments via CI/CD automation",
+          ],
+        },
       ],
     },
     {
       title: "Product Engineer (Open Source)",
-      company: "Athena Group of Companies",
+      company: "DeSofy",
+      companyUrl: "https://www.deso.com/",
       location: "Remote",
       period: "Jan 2021 - Dec 2021",
       description:
@@ -171,6 +177,7 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
     {
       title: "Mobile Developer",
       company: "HelloTree",
+      companyUrl: "https://hellotree.com/",
       location: "Jounieh, Lebanon",
       period: "Jul 2020 - Jan 2021",
       description:
@@ -184,6 +191,7 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
     {
       title: "Lecturer",
       company: "Geek Express",
+      companyUrl: "https://www.geekexpress.com/en",
       location: "Beirut, Lebanon",
       period: "Aug 2019 - Jul 2020",
       description:

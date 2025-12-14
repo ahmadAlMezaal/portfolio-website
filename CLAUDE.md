@@ -56,7 +56,7 @@ All personal information is stored in `src/lib/data.config.ts` which is gitignor
 - `roles`: Typing animation roles
 - `stats`: Career statistics
 - `skills`: Categorized skills (displayed as tags, no percentages)
-- `experiences`: Work history
+- `experiences`: Work history (supports single role or multiple roles/promotions)
 - `projects`: Portfolio projects
 - `education`: Educational background
 - `certifications`: Professional certifications
@@ -83,6 +83,50 @@ socialLinks: [
 ```
 
 **Supported platforms:** github, linkedin, twitter, medium, youtube, instagram, facebook, dribbble, behance, stackoverflow, codepen, dev
+
+### Experience with Promotions
+
+The Experience section supports two formats:
+
+**Single role (standard):**
+```typescript
+{
+  title: "Software Engineer",
+  company: "Company Name",
+  location: "City, Country",
+  period: "2021 - Present",
+  description: "Role description",
+  achievements: ["Achievement 1", "Achievement 2"],
+}
+```
+
+**Multiple roles (promotions at same company):**
+```typescript
+{
+  company: "Company Name",
+  location: "City, Country",
+  roles: [
+    {
+      title: "Lead Engineer",        // Most recent role first
+      period: "2023 - Present",
+      description: "Current role description",
+      achievements: ["Achievement 1"],
+    },
+    {
+      title: "Software Engineer",    // Previous role
+      period: "2021 - 2023",
+      description: "Previous role description",
+      achievements: ["Achievement 1"],
+    },
+  ],
+}
+```
+
+When using multiple roles, the component displays:
+- Company name prominently with a "Career progression" indicator
+- A TrendingUp icon instead of Briefcase
+- Each role as a sub-item with its own timeline dot
+- The overall period is calculated automatically (earliest start to latest end)
 
 ### Favicon
 

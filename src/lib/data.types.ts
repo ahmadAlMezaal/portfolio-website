@@ -65,13 +65,28 @@ export interface SkillCategory {
   items: SkillItem[];
 }
 
-export interface Experience {
+// Individual role within a company (for promotions/multiple positions)
+export interface ExperienceRole {
   title: string;
-  company: string;
-  location: string;
   period: string;
   description: string;
   achievements: string[];
+}
+
+// Experience can be either:
+// 1. Single role: uses title, period, description, achievements directly
+// 2. Multiple roles (promotions): uses roles array, title/period/description/achievements are ignored
+export interface Experience {
+  company: string;
+  companyUrl?: string; // Optional link to company website
+  location: string;
+  // Single role fields (used when roles array is not provided)
+  title?: string;
+  period?: string;
+  description?: string;
+  achievements?: string[];
+  // Multiple roles at same company (promotions)
+  roles?: ExperienceRole[];
 }
 
 export interface Project {
