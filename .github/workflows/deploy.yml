@@ -35,27 +35,10 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Download CV PDF
-        if: ${{ vars.CV_PDF_URL != '' }}
-        run: |
-          echo "Downloading CV from configured URL..."
-          curl -L -o public/cv.pdf "${{ vars.CV_PDF_URL }}"
-          echo "CV downloaded successfully"
-
-      - name: Set CV availability flag
-        run: |
-          if [ -f "public/cv.pdf" ]; then
-            echo "NEXT_PUBLIC_CV_AVAILABLE=true" >> $GITHUB_ENV
-            echo "CV file found, enabling download button"
-          else
-            echo "NEXT_PUBLIC_CV_AVAILABLE=false" >> $GITHUB_ENV
-            echo "CV file not found, download button will be hidden"
-          fi
-
       - name: Build with Next.js
         env:
-          # For project pages (username.github.io/portfolio-website), set basePath
-          # For custom domain or user pages (username.github.io), leave empty
+          # For custom domain (theaam.dev): leave empty (default)
+          # For project pages (username.github.io/repo): set to "/portfolio-website"
           NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH || '' }}
         run: yarn build
 
