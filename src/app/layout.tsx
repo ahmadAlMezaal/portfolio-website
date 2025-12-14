@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { siteMetadata, personalInfo } from "@/lib/data";
+import { getBasePath } from "@/lib/utils";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,6 +15,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const basePath = getBasePath();
+
 export const metadata: Metadata = {
   title: siteMetadata.title,
   description: siteMetadata.description,
@@ -21,11 +24,11 @@ export const metadata: Metadata = {
   authors: [{ name: personalInfo.name }],
   icons: {
     icon: [
-      { url: "/icon.svg", sizes: "any" },
-      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: `${basePath}/icon.svg`, sizes: "any" },
+      { url: `${basePath}/icon.svg`, type: "image/svg+xml" },
     ],
-    shortcut: "/icon.svg",
-    apple: "/icon.svg",
+    shortcut: `${basePath}/icon.svg`,
+    apple: `${basePath}/icon.svg`,
   },
   openGraph: {
     title: siteMetadata.title,

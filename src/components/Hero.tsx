@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowDown, Download, Mail } from "lucide-react";
 import { personalInfo, roles } from "@/lib/data";
+import { assetPath, isCvAvailable } from "@/lib/utils";
 
 export default function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
@@ -156,16 +157,18 @@ export default function Hero() {
               />
             </motion.a>
 
-            <motion.a
-              href={personalInfo.resumeUrl}
-              download
-              className="group px-8 py-4 border-2 border-purple-600 dark:border-purple-400 text-purple-600 dark:text-purple-400 font-semibold rounded-full hover:bg-purple-600 hover:text-white dark:hover:bg-purple-400 dark:hover:text-gray-900 transition-all duration-300 flex items-center gap-2"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Download size={20} />
-              Download CV
-            </motion.a>
+            {isCvAvailable() && (
+              <motion.a
+                href={assetPath(personalInfo.resumeUrl)}
+                download
+                className="group px-8 py-4 border-2 border-purple-600 dark:border-purple-400 text-purple-600 dark:text-purple-400 font-semibold rounded-full hover:bg-purple-600 hover:text-white dark:hover:bg-purple-400 dark:hover:text-gray-900 transition-all duration-300 flex items-center gap-2"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Download size={20} />
+                Download CV
+              </motion.a>
+            )}
           </motion.div>
         </div>
 
