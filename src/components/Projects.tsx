@@ -2,20 +2,21 @@
 
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useMemo } from "react";
 import {
   ExternalLink,
   Github,
-  Folder,
   Star,
   Globe,
   FileText,
   Lock,
   Clock,
+  Hammer,
+  Layers,
 } from "lucide-react";
 import Image from "next/image";
 import { projects } from "@/lib/data";
-import type { ProjectLinkType, Project } from "@/lib/data.types";
+import type { ProjectLinkType, Project, ProjectStatus } from "@/lib/data.types";
 
 // Custom brand icons (not available in lucide-react)
 const AppleIcon = ({ className }: { className?: string }) => (
@@ -42,19 +43,174 @@ const linkIcons: Record<
   "case-study": FileText,
 };
 
+// Filter type
+type FilterOption = "all" | ProjectStatus;
+
+// Sort projects by: featured > live > in_progress > private (stable sort)
+const sortProjects = (projectList: Project[]): Project[] => {
+  const statusOrder: Record<ProjectStatus | "undefined", number> = {
+    live: 1,
+    in_progress: 2,
+    private: 3,
+    undefined: 1,
+  };
+
+  return [...projectList].sort((a, b) => {
+    // Featured first
+    if (a.featured && !b.featured) return -1;
+    if (!a.featured && b.featured) return 1;
+
+    // Then by status
+    const statusA = a.status || "live";
+    const statusB = b.status || "live";
+    const orderA = statusOrder[statusA] ?? statusOrder["undefined"];
+    const orderB = statusOrder[statusB] ?? statusOrder["undefined"];
+
+    return orderA - orderB;
+  });
+};
+
+// Get counts for each filter
+const getFilterCounts = (projectList: Project[]) => {
+  const counts = {
+    all: projectList.length,
+    live: 0,
+    in_progress: 0,
+    private: 0,
+  };
+
+  projectList.forEach((p) => {
+    const status = p.status || "live";
+    if (status in counts) {
+      counts[status as ProjectStatus]++;
+    }
+  });
+
+  return counts;
+};
+
 // Check if links should be hidden (private status or no links)
 const shouldHideLinks = (project: Project): boolean => {
   return project.status === "private" || project.links.length === 0;
 };
+
+// Placeholder background component
+const ProjectPlaceholder = ({ status }: { status: ProjectStatus }) => {
+  if (status === "in_progress") {
+    return (
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Animated diagonal stripes background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 via-orange-500/15 to-yellow-500/20" />
+        <div
+          className="absolute inset-0 opacity-30"
+          style={{
+            backgroundImage: `repeating-linear-gradient(
+              -45deg,
+              transparent,
+              transparent 10px,
+              rgba(251, 191, 36, 0.1) 10px,
+              rgba(251, 191, 36, 0.1) 20px
+            )`,
+          }}
+        />
+        {/* Subtle icon */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Hammer className="w-16 h-16 text-amber-500/20" />
+        </div>
+      </div>
+    );
+  }
+
+  if (status === "private") {
+    return (
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Darker matte gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-600/30 via-gray-700/25 to-gray-800/30" />
+        {/* Subtle icon */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Lock className="w-16 h-16 text-gray-500/20" />
+        </div>
+      </div>
+    );
+  }
+
+  // Default: "live" status
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      {/* Clean purple/pink/blue gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 via-pink-500/15 to-blue-500/20" />
+      {/* Mesh-style gradient overlay */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-purple-500/10 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent" />
+      {/* Subtle icon */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <Layers className="w-16 h-16 text-purple-500/15" />
+      </div>
+    </div>
+  );
+};
+
+// Filter pill component
+const FilterPill = ({
+  label,
+  count,
+  isActive,
+  onClick,
+}: {
+  label: string;
+  count: number;
+  isActive: boolean;
+  onClick: () => void;
+}) => (
+  <button
+    onClick={onClick}
+    className={`
+      px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+      ${
+        isActive
+          ? "bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-white shadow-lg shadow-purple-500/25"
+          : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
+      }
+    `}
+  >
+    {label}
+    <span
+      className={`ml-1.5 text-xs ${
+        isActive ? "text-white/80" : "text-gray-400 dark:text-gray-500"
+      }`}
+    >
+      ({count})
+    </span>
+  </button>
+);
 
 export default function Projects() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [showAll, setShowAll] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
+  const [activeFilter, setActiveFilter] = useState<FilterOption>("all");
 
-  const featuredProjects = projects.filter((p) => p.featured).slice(0, 3);
-  const displayedProjects = showAll ? projects : featuredProjects;
+  // Featured projects for home page (max 3)
+  const featuredProjects = useMemo(
+    () => projects.filter((p) => p.featured).slice(0, 3),
+    []
+  );
+
+  // Sorted and filtered projects for "all" view
+  const allProjectsSorted = useMemo(() => sortProjects(projects), []);
+
+  const filteredProjects = useMemo(() => {
+    if (activeFilter === "all") return allProjectsSorted;
+    return allProjectsSorted.filter(
+      (p) => (p.status || "live") === activeFilter
+    );
+  }, [allProjectsSorted, activeFilter]);
+
+  const filterCounts = useMemo(() => getFilterCounts(projects), []);
+
+  // Determine which projects to display
+  const displayedProjects = showAll ? filteredProjects : featuredProjects;
 
   // Animation should play if: section is in view OR user has clicked show all
   const shouldAnimate = isInView || hasInteracted;
@@ -74,12 +230,16 @@ export default function Projects() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.4 }
+      transition: { duration: 0.4 },
     },
   };
 
+  // Reset filter when collapsing back to featured view
   const handleToggleShowAll = () => {
     setHasInteracted(true);
+    if (showAll) {
+      setActiveFilter("all"); // Reset filter when going back to featured
+    }
     setShowAll(!showAll);
   };
 
@@ -93,20 +253,55 @@ export default function Projects() {
           animate={shouldAnimate ? "visible" : "hidden"}
         >
           {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center mb-16">
+          <motion.div variants={itemVariants} className="text-center mb-12">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">
               <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
-                Featured Projects
+                {showAll ? "All Projects" : "Featured Projects"}
               </span>
             </h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Some of my recent work that I'm proud of
+              {showAll
+                ? "A complete collection of my work"
+                : "Some of my recent work that I'm proud of"}
             </p>
           </motion.div>
 
+          {/* Filter Pills - only shown when viewing all projects */}
+          {showAll && (
+            <motion.div
+              variants={itemVariants}
+              className="flex flex-wrap justify-center gap-3 mb-10"
+            >
+              <FilterPill
+                label="All"
+                count={filterCounts.all}
+                isActive={activeFilter === "all"}
+                onClick={() => setActiveFilter("all")}
+              />
+              <FilterPill
+                label="Live"
+                count={filterCounts.live}
+                isActive={activeFilter === "live"}
+                onClick={() => setActiveFilter("live")}
+              />
+              <FilterPill
+                label="In Progress"
+                count={filterCounts.in_progress}
+                isActive={activeFilter === "in_progress"}
+                onClick={() => setActiveFilter("in_progress")}
+              />
+              <FilterPill
+                label="Private"
+                count={filterCounts.private}
+                isActive={activeFilter === "private"}
+                onClick={() => setActiveFilter("private")}
+              />
+            </motion.div>
+          )}
+
           {/* Projects Grid - key forces re-animation when toggling */}
           <motion.div
-            key={showAll ? "all" : "featured"}
+            key={`${showAll ? "all" : "featured"}-${activeFilter}`}
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
             variants={containerVariants}
             initial="hidden"
@@ -148,9 +343,7 @@ export default function Projects() {
                           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/45 to-black/15" />
                         </>
                       ) : (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <Folder className="w-20 h-20 text-purple-600/30 dark:text-purple-400/30" />
-                        </div>
+                        <ProjectPlaceholder status={project.status || "live"} />
                       )}
 
                       {/* Badges - stacked in top-right */}
@@ -257,7 +450,9 @@ export default function Projects() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {showAll ? "Show Less" : `View All Projects (${projects.length})`}
+                {showAll
+                  ? "Show Less"
+                  : `View All Projects (${projects.length})`}
               </motion.button>
             </motion.div>
           )}

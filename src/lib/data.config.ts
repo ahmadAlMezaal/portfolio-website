@@ -310,7 +310,7 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
         {
           type: "github",
           label: "GitHub",
-          url: "https://github.com/ahmadAlMezaal/<alfred-brief-repo>",
+          url: "https://github.com/ahmadAlMezaal/the-alfred-brief",
         },
       ],
       featured: true,
@@ -326,7 +326,7 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
         {
           type: "github",
           label: "GitHub",
-          url: "https://github.com/ahmadAlMezaal/<friday-repo>",
+          url: "https://github.com/ahmadAlMezaal/friday",
         },
       ],
       featured: true,
