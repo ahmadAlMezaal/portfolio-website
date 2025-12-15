@@ -99,20 +99,24 @@ export default function Projects() {
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
 
                 <div className="relative bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700 h-full flex flex-col">
-                  {/* Project Image / Placeholder - fixed height container for consistency */}
-                  <div className="relative h-48 bg-gray-100 dark:bg-gray-900 overflow-hidden flex items-center justify-center">
+                  {/* Project Image / Placeholder */}
+                  <div className="relative h-48 bg-gradient-to-br from-purple-600/10 via-pink-500/10 to-blue-500/10 overflow-hidden">
                     {/* Show actual image if available, otherwise show placeholder */}
                     {project.image ? (
-                      <Image
-                        src={project.image}
-                        alt={project.title}
-                        fill
-                        className="object-contain p-4"
-                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                        priority={project.featured}
-                      />
+                      <>
+                        <Image
+                          src={project.image}
+                          alt={project.title}
+                          fill
+                          className="object-cover"
+                          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                          priority={project.featured}
+                        />
+                        {/* Soft overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                      </>
                     ) : (
-                      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-purple-600/20 via-pink-500/20 to-blue-500/20">
+                      <div className="absolute inset-0 flex items-center justify-center">
                         <Folder className="w-20 h-20 text-purple-600/30 dark:text-purple-400/30" />
                       </div>
                     )}
