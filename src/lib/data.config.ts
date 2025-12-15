@@ -242,14 +242,14 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
           url: "https://www.getshuffle.co.uk",
         },
         {
-          type: "playstore",
-          label: "Play Store",
-          url: "https://play.google.com/store/apps/details?id=com.shuffle.finance&pcampaignid=web_share",
-        },
-        {
           type: "appstore",
           label: "App Store",
           url: "https://apps.apple.com/gb/app/shuffle-rewards/id6474543590",
+        },
+        {
+          type: "playstore",
+          label: "Play Store",
+          url: "https://play.google.com/store/apps/details?id=com.shuffle.finance&pcampaignid=web_share",
         },
       ],
       featured: true,
@@ -317,16 +317,37 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
       status: "in_progress",
     },
     {
-      title: "Friday",
+      title: "Friday (Claude-Primary Engineering Agent)",
       description:
-        "Habit and identity-building app inspired by streak systems — designed to help users build routines, stay consistent, and track progress with a clean, mobile-first experience.",
+        "Claude-primary CLI agent for software engineering tasks, combining safe repo operations, controlled automation, and optional AI advisors — with Claude as the single decision-maker.",
       image: null,
-      tags: ["React Native", "TypeScript", "UX", "Product"],
+      tags: ["CLI", "AI Agents", "TypeScript", "MCP", "Developer Tools"],
       links: [
         {
           type: "github",
           label: "GitHub",
           url: "https://github.com/ahmadAlMezaal/friday",
+        },
+      ],
+      featured: true,
+      status: "live",
+    },
+    {
+      title: "Mystic Decision Tools",
+      description:
+        "AI-powered decision-making game with physics-based animations, procedural audio, and Gemini-generated explanations — blending playful UX with modern web tech.",
+      image: null,
+      tags: ["JavaScript", "Gemini", "Canvas", "Interactive UI"],
+      links: [
+        {
+          type: "website",
+          label: "Website",
+          url: "https://ahmadalmezaal.github.io/decidr/",
+        },
+        {
+          type: "github",
+          label: "GitHub",
+          url: "https://github.com/ahmadAlMezaal/decidr",
         },
       ],
       featured: true,
