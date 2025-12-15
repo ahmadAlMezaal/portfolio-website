@@ -51,24 +51,36 @@ export default function Projects() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [showAll, setShowAll] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
 
-  const displayedProjects = showAll
-    ? projects
-    : projects.filter((p) => p.featured);
+  const featuredProjects = projects.filter((p) => p.featured);
+  const displayedProjects = showAll ? projects : featuredProjects;
+
+  // Animation should play if: section is in view OR user has clicked show all
+  const shouldAnimate = isInView || hasInteracted;
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
+        staggerChildren: 0.1,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0 },
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.4 }
+    },
+  };
+
+  const handleToggleShowAll = () => {
+    setHasInteracted(true);
+    setShowAll(!showAll);
   };
 
   return (
@@ -78,7 +90,7 @@ export default function Projects() {
           ref={ref}
           variants={containerVariants}
           initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
+          animate={shouldAnimate ? "visible" : "hidden"}
         >
           {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center mb-16">
@@ -92,8 +104,14 @@ export default function Projects() {
             </p>
           </motion.div>
 
-          {/* Projects Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Projects Grid - key forces re-animation when toggling */}
+          <motion.div
+            key={showAll ? "all" : "featured"}
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
             {displayedProjects.map((project) => {
               const hideLinks = shouldHideLinks(project);
               const imageFit = project.imageFit || "cover";
@@ -228,18 +246,18 @@ export default function Projects() {
                 </motion.div>
               );
             })}
-          </div>
+          </motion.div>
 
-          {/* Show More/Less Button */}
-          {projects.length > 3 && (
+          {/* Show More/Less Button - only show if there are non-featured projects */}
+          {projects.length > featuredProjects.length && (
             <motion.div variants={itemVariants} className="text-center mt-12">
               <motion.button
-                onClick={() => setShowAll(!showAll)}
+                onClick={handleToggleShowAll}
                 className="px-8 py-3 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-white font-semibold rounded-full shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transition-shadow"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {showAll ? "Show Less" : "View All Projects"}
+                {showAll ? "Show Less" : `View All Projects (${projects.length})`}
               </motion.button>
             </motion.div>
           )}
