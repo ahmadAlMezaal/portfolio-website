@@ -53,7 +53,7 @@ export default function Projects() {
   const [showAll, setShowAll] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
 
-  const featuredProjects = projects.filter((p) => p.featured);
+  const featuredProjects = projects.filter((p) => p.featured).slice(0, 3);
   const displayedProjects = showAll ? projects : featuredProjects;
 
   // Animation should play if: section is in view OR user has clicked show all
