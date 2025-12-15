@@ -5,20 +5,19 @@ import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Moon, Menu, X } from "lucide-react";
 import { navLinks, personalInfo } from "@/lib/data";
+import { useScrollPosition, useIsMobile } from "@/lib/hooks";
 
 export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const { theme, setTheme } = useTheme();
+
+  // Use throttled scroll position for better performance
+  const scrolled = useScrollPosition(20);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     setMounted(true);
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const toggleTheme = () => {
@@ -74,7 +73,10 @@ export default function Navbar() {
               className="hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-green-400/20 to-emerald-500/20 border border-green-500/30"
             >
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                {/* Ping animation disabled on mobile for performance */}
+                {!isMobile && (
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                )}
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
               </span>
               <span className="text-xs font-medium text-green-600 dark:text-green-400">
@@ -143,7 +145,7 @@ export default function Navbar() {
                 <div className="px-4 py-2">
                   <div className="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-green-400/20 to-emerald-500/20 border border-green-500/30 w-fit">
                     <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                      {/* Static dot on mobile - no ping animation */}
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                     </span>
                     <span className="text-xs font-medium text-green-600 dark:text-green-400">

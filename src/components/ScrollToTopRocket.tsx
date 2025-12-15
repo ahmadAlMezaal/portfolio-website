@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Rocket } from "lucide-react";
+import { useThrottledScroll, useIsMobile } from "@/lib/hooks";
 
 // ============================================================================
 // CONSTANTS
@@ -105,26 +106,20 @@ export default function ScrollToTopRocket() {
   const [rocketState, setRocketState] = useState<RocketState>("idle");
   const prefersReducedMotion = useReducedMotion();
   const isLaunchingRef = useRef(false);
+  const isMobile = useIsMobile();
 
-  // Track scroll position to show/hide button
-  useEffect(() => {
-    const handleScroll = () => {
-      // Don't update visibility while launching
-      if (isLaunchingRef.current) return;
+  // Track scroll position with throttling for better performance
+  useThrottledScroll((scrollY) => {
+    // Don't update visibility while launching
+    if (isLaunchingRef.current) return;
 
-      const shouldShow = window.scrollY > SCROLL_THRESHOLD;
-      setIsVisible(shouldShow);
+    const shouldShow = scrollY > SCROLL_THRESHOLD;
+    setIsVisible(shouldShow);
 
-      // Reset to idle when becoming visible again
-      if (shouldShow && rocketState === "launched") {
-        setRocketState("idle");
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // Check initial position
-
-    return () => window.removeEventListener("scroll", handleScroll);
+    // Reset to idle when becoming visible again
+    if (shouldShow && rocketState === "launched") {
+      setRocketState("idle");
+    }
   }, [rocketState]);
 
   // Handle launch sequence
@@ -308,20 +303,27 @@ export default function ScrollToTopRocket() {
             whileTap={rocketState === "idle" ? { scale: 0.95 } : undefined}
             aria-label="Scroll to top"
           >
-            {/* Animated glow ring */}
-            <motion.div
-              className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400"
-              animate={rocketState === "idle" ? {
-                opacity: [0.5, 0.8, 0.5],
-                scale: [1, 1.15, 1],
-              } : { opacity: 0 }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              style={{ filter: "blur(8px)" }}
-            />
+            {/* Animated glow ring - static on mobile for performance */}
+            {isMobile ? (
+              <div
+                className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400 opacity-50"
+                style={{ filter: "blur(8px)" }}
+              />
+            ) : (
+              <motion.div
+                className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400"
+                animate={rocketState === "idle" ? {
+                  opacity: [0.5, 0.8, 0.5],
+                  scale: [1, 1.15, 1],
+                } : { opacity: 0 }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                style={{ filter: "blur(8px)" }}
+              />
+            )}
 
             {/* Glow trail during launch */}
             <motion.div
