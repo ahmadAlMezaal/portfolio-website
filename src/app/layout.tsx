@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import ScrollToTopRocket from "@/components/ScrollToTopRocket";
 import { siteMetadata, personalInfo } from "@/lib/data";
 import { getBasePath } from "@/lib/utils";
 
@@ -62,7 +63,10 @@ export default function RootLayout({
       className={`${inter.variable} ${plusJakartaSans.variable}`}
     >
       <body className="font-sans antialiased">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          {children}
+          <ScrollToTopRocket />
+        </ThemeProvider>
       </body>
     </html>
   );

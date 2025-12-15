@@ -6,7 +6,6 @@ import {
   Github,
   Linkedin,
   Twitter,
-  ArrowUp,
   Youtube,
   Instagram,
   Facebook,
@@ -76,10 +75,6 @@ const socialLabelMap: Record<SocialPlatform, string> = {
 };
 
 export default function Footer() {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   const socialLinks = personalInfo.socialLinks.map((link) => ({
     icon: socialIconMap[link.platform],
     href: link.url,
@@ -165,7 +160,7 @@ export default function Footer() {
         <div className="h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent mb-8" />
 
         {/* Bottom Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <p className="text-gray-400 text-sm flex items-center gap-1">
             Made with <Heart className="w-4 h-4 text-red-500 fill-red-500" /> by{" "}
             <span className="text-purple-400">Claude</span>
@@ -174,17 +169,6 @@ export default function Footer() {
           <p className="text-gray-500 text-sm">
             &copy; {new Date().getFullYear()} All rights reserved.
           </p>
-
-          {/* Back to Top */}
-          <motion.button
-            onClick={scrollToTop}
-            className="p-3 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 rounded-full text-white shadow-lg shadow-purple-500/25"
-            whileHover={{ y: -3, scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            aria-label="Back to top"
-          >
-            <ArrowUp className="w-5 h-5" />
-          </motion.button>
         </div>
       </div>
     </footer>
