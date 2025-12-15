@@ -89,13 +89,26 @@ export interface Experience {
   roles?: ExperienceRole[];
 }
 
+// Supported project link types
+export type ProjectLinkType =
+  | "website"
+  | "github"
+  | "appstore"
+  | "playstore"
+  | "case-study";
+
+export interface ProjectLink {
+  type: ProjectLinkType;
+  label: string;
+  url: string;
+}
+
 export interface Project {
   title: string;
   description: string;
-  image: string;
+  image?: string | null; // Optional - shows placeholder if missing
   tags: string[];
-  liveUrl: string;
-  githubUrl: string;
+  links: ProjectLink[]; // Flexible links array - can be empty for private projects
   featured: boolean;
 }
 

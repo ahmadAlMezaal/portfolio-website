@@ -57,7 +57,7 @@ All personal information is stored in `src/lib/data.config.ts` which is gitignor
 - `stats`: Career statistics
 - `skills`: Categorized skills (displayed as tags, no percentages)
 - `experiences`: Work history (supports single role or multiple roles/promotions)
-- `projects`: Portfolio projects
+- `projects`: Portfolio projects (flexible links, optional images)
 - `education`: Educational background
 - `certifications`: Professional certifications
 
@@ -127,6 +127,37 @@ When using multiple roles, the component displays:
 - A TrendingUp icon instead of Briefcase
 - Each role as a sub-item with its own timeline dot
 - The overall period is calculated automatically (earliest start to latest end)
+
+### Projects with Flexible Links
+
+Projects use a flexible `links` array instead of fixed `liveUrl`/`githubUrl` fields. This supports any combination of link types:
+
+```typescript
+{
+  title: "Project Name",
+  description: "Project description",
+  image: "/projects/image.jpg",  // Optional - shows placeholder if null/missing
+  tags: ["Tech1", "Tech2"],
+  links: [
+    { type: "website", label: "Live Demo", url: "https://example.com" },
+    { type: "github", label: "Source Code", url: "https://github.com/..." },
+  ],
+  featured: true,
+}
+```
+
+**Supported link types:** `website`, `github`, `appstore`, `playstore`, `case-study`
+
+**Link icons mapping:**
+- `website` -> Globe icon
+- `github` -> GitHub icon
+- `appstore` -> Apple icon
+- `playstore` -> Smartphone icon
+- `case-study` -> FileText icon
+
+**Special cases:**
+- Empty `links: []` array shows "Private / available on request" badge
+- `image: null` or missing image shows a gradient placeholder with folder icon
 
 ### Favicon
 

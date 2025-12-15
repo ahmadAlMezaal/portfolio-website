@@ -157,15 +157,62 @@ const config: PortfolioConfig = {
   // ---------------------------------------------------------------------------
   // PROJECTS (featured projects appear first on the portfolio)
   // ---------------------------------------------------------------------------
+  // Each project can have flexible links (website, github, appstore, playstore, case-study)
+  // Image is optional - a nice placeholder is shown if missing
+  // Links array can be empty for private/internal projects
   projects: [
+    // Example: Web project with website + GitHub
     {
-      title: "Project Name",
+      title: "Web Application",
       description: "Brief description of the project and what it does.",
       image: "/projects/project-image.jpg", // Place images in public/projects/
-      tags: ["Tech1", "Tech2", "Tech3"],
-      liveUrl: "https://project-url.com",
-      githubUrl: "https://github.com/yourusername/project",
-      featured: true, // Set to true to highlight this project
+      tags: ["React", "Node.js", "PostgreSQL"],
+      links: [
+        { type: "website", label: "Live Demo", url: "https://project-url.com" },
+        { type: "github", label: "Source Code", url: "https://github.com/yourusername/project" },
+      ],
+      featured: true,
+    },
+    // Example: Mobile app (App Store only, no image)
+    {
+      title: "iOS Mobile App",
+      description: "A native iOS application available on the App Store.",
+      image: null, // Will show a nice gradient placeholder
+      tags: ["Swift", "SwiftUI", "Core Data"],
+      links: [
+        { type: "appstore", label: "App Store", url: "https://apps.apple.com/app/id123456" },
+      ],
+      featured: true,
+    },
+    // Example: Open source library (GitHub only)
+    {
+      title: "Open Source Library",
+      description: "A popular npm package for developers.",
+      tags: ["TypeScript", "npm", "Open Source"],
+      links: [
+        { type: "github", label: "GitHub", url: "https://github.com/yourusername/library" },
+      ],
+      featured: false,
+    },
+    // Example: Private/internal project (no public links)
+    {
+      title: "Enterprise Dashboard",
+      description: "Internal analytics platform built for a Fortune 500 client.",
+      tags: ["React", "D3.js", "AWS"],
+      links: [], // Empty = shows "Private / available on request" badge
+      featured: false,
+    },
+    // Example: Case study project
+    {
+      title: "Design System",
+      description: "Comprehensive design system for a fintech startup.",
+      image: "/projects/design-system.jpg",
+      tags: ["Figma", "Storybook", "React"],
+      links: [
+        { type: "case-study", label: "Read Case Study", url: "/case-studies/design-system" },
+        { type: "github", label: "Storybook", url: "https://github.com/yourusername/design-system" },
+      ],
+      featured: true,
     },
     // Add more projects...
   ],

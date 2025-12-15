@@ -3,15 +3,41 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { ExternalLink, Github, Folder, Star } from "lucide-react";
+import {
+  ExternalLink,
+  Github,
+  Folder,
+  Star,
+  Globe,
+  Apple,
+  Smartphone,
+  FileText,
+  Lock,
+} from "lucide-react";
+import Image from "next/image";
 import { projects } from "@/lib/data";
+import type { ProjectLinkType } from "@/lib/data.types";
+
+// Icon mapping for project link types
+const linkIcons: Record<
+  ProjectLinkType,
+  React.ComponentType<{ className?: string }>
+> = {
+  website: Globe,
+  github: Github,
+  appstore: Apple,
+  playstore: Smartphone,
+  "case-study": FileText,
+};
 
 export default function Projects() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [showAll, setShowAll] = useState(false);
 
-  const displayedProjects = showAll ? projects : projects.filter((p) => p.featured);
+  const displayedProjects = showAll
+    ? projects
+    : projects.filter((p) => p.featured);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -51,7 +77,7 @@ export default function Projects() {
 
           {/* Projects Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {displayedProjects.map((project, index) => (
+            {displayedProjects.map((project) => (
               <motion.div
                 key={project.title}
                 variants={itemVariants}
@@ -62,43 +88,69 @@ export default function Projects() {
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
 
                 <div className="relative bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700 h-full flex flex-col">
-                  {/* Project Image */}
-                  <div className="relative h-48 bg-gradient-to-br from-purple-600/20 via-pink-500/20 to-blue-500/20 overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <Folder className="w-20 h-20 text-purple-600/30 dark:text-purple-400/30" />
-                    </div>
+                  {/* Project Image / Placeholder - using aspect ratio for consistent sizing */}
+                  <div className="relative aspect-[4/3] bg-gradient-to-br from-purple-600/20 via-pink-500/20 to-blue-500/20 overflow-hidden">
+                    {/* Show actual image if available, otherwise show placeholder */}
+                    {project.image ? (
+                      <>
+                        <Image
+                          src={project.image}
+                          alt={project.title}
+                          fill
+                          className="object-contain"
+                          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                          priority={project.featured}
+                        />
+
+                        {/* Soft overlay for text readability on hover */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                      </>
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Folder className="w-20 h-20 text-purple-600/30 dark:text-purple-400/30" />
+                      </div>
+                    )}
+
+                    {/* Featured badge */}
                     {project.featured && (
-                      <div className="absolute top-4 right-4 flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-purple-600 to-pink-500 text-white text-xs font-semibold rounded-full">
+                      <div className="absolute top-4 right-4 flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-purple-600 to-pink-500 text-white text-xs font-semibold rounded-full z-10">
                         <Star className="w-3 h-3" />
                         Featured
                       </div>
                     )}
 
-                    {/* Hover Overlay */}
+                    {/* Hover Overlay with Links */}
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-r from-purple-600/90 via-pink-500/90 to-blue-500/90 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                       initial={false}
                     >
-                      <motion.a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-3 bg-white rounded-full text-gray-800 hover:scale-110 transition-transform"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                      >
-                        <ExternalLink className="w-5 h-5" />
-                      </motion.a>
-                      <motion.a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-3 bg-white rounded-full text-gray-800 hover:scale-110 transition-transform"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                      >
-                        <Github className="w-5 h-5" />
-                      </motion.a>
+                      {project.links.length > 0 ? (
+                        // Render link buttons dynamically
+                        project.links.map((link) => {
+                          const IconComponent =
+                            linkIcons[link.type] || ExternalLink;
+                          return (
+                            <motion.a
+                              key={`${link.type}-${link.url}`}
+                              href={link.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              title={link.label}
+                              className="p-3 bg-white rounded-full text-gray-800 hover:scale-110 transition-transform"
+                              whileHover={{ scale: 1.1 }}
+                              whileTap={{ scale: 0.9 }}
+                            >
+                              <IconComponent className="w-5 h-5" />
+                            </motion.a>
+                          );
+                        })
+                      ) : (
+                        // No links available - show private badge
+                        <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-medium">
+                          <Lock className="w-4 h-4" />
+                          Private / available on request
+                        </div>
+                      )}
                     </motion.div>
                   </div>
 

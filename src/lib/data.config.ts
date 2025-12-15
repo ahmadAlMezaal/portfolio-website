@@ -60,6 +60,7 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
   // ---------------------------------------------------------------------------
   roles: [
     "Senior Software Engineer",
+    "Product Engineer",
     "Backend Specialist",
     "Fintech Engineer",
     "Cloud-Native Developer",
@@ -228,43 +229,81 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
   // ---------------------------------------------------------------------------
   projects: [
     {
-      title: "Open Banking Platform",
+      title: "Desofy (DeSo Mobile)",
       description:
-        "High-performance Open Banking APIs processing 10M+ transactions monthly with 99.99% uptime, powering customer rewards and financial insights.",
-      image: "/projects/openbanking.jpg",
-      tags: ["Node.js", "AWS", "PostgreSQL", "Event-Driven"],
-      liveUrl: "https://shuffle.com",
-      githubUrl: "",
+        "Mobile client for the DeSo (Decentralized Social) blockchain — a censorship-resistant, decentralised social experience where users can connect, post, and own their content as a gateway into the wider DeSo ecosystem.",
+      image: "/assets/desofy-logo.jpg",
+      tags: ["React Native", "Blockchain", "DeSo", "Mobile"],
+      links: [
+        { type: "website", label: "Website", url: "https://www.deso.com" },
+        {
+          type: "github",
+          label: "GitHub",
+          url: "https://github.com/ahmadAlMezaal/mobileApp",
+        },
+      ],
       featured: true,
     },
     {
-      title: "Global eSIM Platform",
+      title: "ZIM: eSIM Calls & Data Plans",
       description:
-        "Backend services and React Native mobile apps supporting 100k+ users worldwide with integrated payments and eSIM provisioning.",
-      image: "/projects/esim.jpg",
-      tags: ["React Native", "Node.js", "Stripe", "MongoDB"],
-      liveUrl: "https://zimconnections.com",
-      githubUrl: "",
+        "UK eSIM marketplace offering flexible mobile plans and travel eSIMs — get set up quickly, stay connected in 200+ destinations, and manage your plan directly from the app.",
+      image: "/assets/zim-logo.jpg",
+      tags: ["React Native", "Node.js", "Payments", "eSIM"],
+      links: [
+        {
+          type: "website",
+          label: "Website",
+          url: "https://www.zimconnections.com",
+        },
+        {
+          type: "appstore",
+          label: "App Store",
+          url: "https://apps.apple.com/gb/app/zim-esim-calls-data-plans/id1611244114",
+        },
+        {
+          type: "playstore",
+          label: "Play Store",
+          url: "httpshttps://play.google.com/store/apps/details?id=com.zim_cli&pcampaignid=web_share",
+        },
+      ],
       featured: true,
     },
     {
-      title: "Transaction Data Pipeline",
+      title: "Shuffle Rewards",
       description:
-        "Scalable data pipeline for transaction deduplication and enrichment, improving data accuracy by 35% for user-facing insights.",
-      image: "/projects/pipeline.jpg",
+        "Cashback rewards app for eating out — members connect their bank account, visit partner venues, and earn cashback when qualifying purchases are detected and approved.",
+      image: "/assets/shuffle-rewards-logo.png",
+      tags: ["Fintech", "Open Banking", "Rewards", "Mobile"],
+      links: [
+        {
+          type: "website",
+          label: "Website",
+          url: "https://www.getshuffle.co.uk",
+        },
+        {
+          type: "playstore",
+          label: "Play Store",
+          url: "https://play.google.com/store/apps/details?id=com.shuffle.finance&pcampaignid=web_share",
+        },
+        {
+          type: "appstore",
+          label: "App Store",
+          url: "https://apps.apple.com/gb/app/shuffle-rewards/id6474543590",
+        },
+      ],
+      featured: true,
+    },
+    {
+      title: "Transaction Data Pipeline (Case Study)",
+      description:
+        "Scalable pipeline for transaction deduplication and enrichment — improving accuracy for user-facing insights. (No public deployment.)",
+      image: null, // <- important: UI should handle this
       tags: ["AWS Lambda", "SQS", "DynamoDB", "TypeScript"],
-      liveUrl: "",
-      githubUrl: "",
-      featured: true,
-    },
-    {
-      title: "Crypto Social Platform",
-      description:
-        "Open-source contributions to a crypto-focused social platform with mintable posts, real-time chat, and optimised pagination.",
-      image: "/projects/crypto.jpg",
-      tags: ["React Native", "Node.js", "WebSockets"],
-      liveUrl: "",
-      githubUrl: "",
+      links: [
+        // leave empty or add GitHub if public
+        // { type: "github", label: "GitHub", url: "https://github.com/<you>/<repo>" },
+      ],
       featured: false,
     },
   ],
