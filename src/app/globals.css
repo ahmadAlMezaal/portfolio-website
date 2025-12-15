@@ -4,14 +4,17 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* Typography - Modern font pairing */
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
+  /* Typography - Modern font pairing
+     These reference the CSS variables set by next/font on <html> */
+  --font-sans: var(--font-inter), "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-plus-jakarta), "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
 
 /* Base styles */
 html {
   scroll-behavior: smooth;
+  /* Ensure font variables are inherited by all descendants */
+  font-family: var(--font-sans);
 }
 
 /* Light theme (default) - warm, professional palette */
@@ -43,15 +46,20 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans);
   line-height: 1.6;
 }
 
 /* Headings - use display font with tighter tracking */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
   line-height: 1.2;
+}
+
+/* Utility class for display font (used by Tailwind's font-display) */
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.025em;
 }
 
 /* Override Tailwind gray colors in dark mode to use midnight blue palette */

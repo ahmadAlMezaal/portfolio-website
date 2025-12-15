@@ -56,10 +56,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.variable} ${plusJakartaSans.variable} antialiased`}
-      >
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${inter.variable} ${plusJakartaSans.variable}`}
+    >
+      <body className="font-sans antialiased">
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
