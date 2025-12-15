@@ -157,15 +157,76 @@ const config: PortfolioConfig = {
   // ---------------------------------------------------------------------------
   // PROJECTS (featured projects appear first on the portfolio)
   // ---------------------------------------------------------------------------
+  // Each project supports:
+  //   - links: Array of { type, label, url } - website, github, appstore, playstore, case-study
+  //   - image: Optional path - null shows a placeholder
+  //   - imageFit: "cover" (default, fills card) or "contain" (shows full logo with padding)
+  //   - status: "live" (default), "in_progress", or "private"
+  //   - featured: true to show on homepage
   projects: [
+    // Example: Live web project with screenshot
     {
-      title: "Project Name",
+      title: "Web Application",
       description: "Brief description of the project and what it does.",
-      image: "/projects/project-image.jpg", // Place images in public/projects/
-      tags: ["Tech1", "Tech2", "Tech3"],
-      liveUrl: "https://project-url.com",
-      githubUrl: "https://github.com/yourusername/project",
-      featured: true, // Set to true to highlight this project
+      image: "/projects/project-screenshot.jpg",
+      // imageFit: "cover", // Default - image fills the card
+      tags: ["React", "Node.js", "PostgreSQL"],
+      links: [
+        { type: "website", label: "Live Demo", url: "https://project-url.com" },
+        { type: "github", label: "Source Code", url: "https://github.com/yourusername/project" },
+      ],
+      featured: true,
+      status: "live", // Default - no badge shown
+    },
+    // Example: Mobile app with logo image (use imageFit: "contain" for logos)
+    {
+      title: "iOS Mobile App",
+      description: "A native iOS application available on the App Store.",
+      image: "/projects/app-logo.png",
+      imageFit: "contain", // Use "contain" for logos - shows full image with padding
+      tags: ["Swift", "SwiftUI", "Core Data"],
+      links: [
+        { type: "appstore", label: "App Store", url: "https://apps.apple.com/app/id123456" },
+        { type: "playstore", label: "Play Store", url: "https://play.google.com/store/apps/details?id=..." },
+      ],
+      featured: true,
+      status: "live",
+    },
+    // Example: Work in progress project
+    {
+      title: "AI Dashboard",
+      description: "An analytics dashboard with AI-powered insights - currently in development.",
+      image: null, // No image yet - shows gradient placeholder
+      tags: ["Next.js", "OpenAI", "TypeScript"],
+      links: [
+        { type: "github", label: "GitHub", url: "https://github.com/yourusername/ai-dashboard" },
+      ],
+      featured: true,
+      status: "in_progress", // Shows amber "In Progress" badge
+    },
+    // Example: Private/internal project
+    {
+      title: "Enterprise Dashboard",
+      description: "Internal analytics platform built for a Fortune 500 client.",
+      image: "/projects/enterprise-logo.png",
+      imageFit: "contain",
+      tags: ["React", "D3.js", "AWS"],
+      links: [], // Empty links + private status = "Available on request"
+      featured: false,
+      status: "private", // Shows gray "Private" badge, hides links
+    },
+    // Example: Case study
+    {
+      title: "Design System",
+      description: "Comprehensive design system for a fintech startup.",
+      image: "/projects/design-system.jpg",
+      tags: ["Figma", "Storybook", "React"],
+      links: [
+        { type: "case-study", label: "Read Case Study", url: "/case-studies/design-system" },
+        { type: "github", label: "Storybook", url: "https://github.com/yourusername/design-system" },
+      ],
+      featured: true,
+      // status defaults to "live" when not specified
     },
     // Add more projects...
   ],

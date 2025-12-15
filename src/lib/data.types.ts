@@ -89,14 +89,32 @@ export interface Experience {
   roles?: ExperienceRole[];
 }
 
+// Supported project link types
+export type ProjectLinkType =
+  | "website"
+  | "github"
+  | "appstore"
+  | "playstore"
+  | "case-study";
+
+// Project status
+export type ProjectStatus = "live" | "in_progress" | "private";
+
+export interface ProjectLink {
+  type: ProjectLinkType;
+  label: string;
+  url: string;
+}
+
 export interface Project {
   title: string;
   description: string;
-  image: string;
+  image?: string | null; // Optional - shows placeholder if missing
+  imageFit?: "cover" | "contain"; // How to fit image: cover (default) or contain (for logos)
   tags: string[];
-  liveUrl: string;
-  githubUrl: string;
+  links: ProjectLink[]; // Flexible links array - can be empty for private projects
   featured: boolean;
+  status?: ProjectStatus; // live (default), in_progress, or private
 }
 
 export interface Education {
