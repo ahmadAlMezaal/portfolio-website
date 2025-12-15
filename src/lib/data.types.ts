@@ -97,6 +97,9 @@ export type ProjectLinkType =
   | "playstore"
   | "case-study";
 
+// Project status
+export type ProjectStatus = "live" | "in_progress" | "private";
+
 export interface ProjectLink {
   type: ProjectLinkType;
   label: string;
@@ -107,9 +110,11 @@ export interface Project {
   title: string;
   description: string;
   image?: string | null; // Optional - shows placeholder if missing
+  imageFit?: "cover" | "contain"; // How to fit image: cover (default) or contain (for logos)
   tags: string[];
   links: ProjectLink[]; // Flexible links array - can be empty for private projects
   featured: boolean;
+  status?: ProjectStatus; // live (default), in_progress, or private
 }
 
 export interface Education {

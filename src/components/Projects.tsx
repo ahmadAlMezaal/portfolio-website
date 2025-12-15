@@ -11,10 +11,11 @@ import {
   Globe,
   FileText,
   Lock,
+  Clock,
 } from "lucide-react";
 import Image from "next/image";
 import { projects } from "@/lib/data";
-import type { ProjectLinkType } from "@/lib/data.types";
+import type { ProjectLinkType, Project } from "@/lib/data.types";
 
 // Custom brand icons (not available in lucide-react)
 const AppleIcon = ({ className }: { className?: string }) => (
@@ -39,6 +40,11 @@ const linkIcons: Record<
   appstore: AppleIcon,
   playstore: AndroidIcon,
   "case-study": FileText,
+};
+
+// Check if links should be hidden (private status or no links)
+const shouldHideLinks = (project: Project): boolean => {
+  return project.status === "private" || project.links.length === 0;
 };
 
 export default function Projects() {
@@ -88,106 +94,140 @@ export default function Projects() {
 
           {/* Projects Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {displayedProjects.map((project) => (
-              <motion.div
-                key={project.title}
-                variants={itemVariants}
-                className="group relative"
-                whileHover={{ y: -10 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
+            {displayedProjects.map((project) => {
+              const hideLinks = shouldHideLinks(project);
+              const imageFit = project.imageFit || "cover";
 
-                <div className="relative bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700 h-full flex flex-col">
-                  {/* Project Image / Placeholder */}
-                  <div className="relative h-48 bg-gradient-to-br from-purple-600/10 via-pink-500/10 to-blue-500/10 overflow-hidden">
-                    {/* Show actual image if available, otherwise show placeholder */}
-                    {project.image ? (
-                      <>
-                        <Image
-                          src={project.image}
-                          alt={project.title}
-                          fill
-                          className="object-cover"
-                          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                          priority={project.featured}
-                        />
-                        {/* Soft overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                      </>
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <Folder className="w-20 h-20 text-purple-600/30 dark:text-purple-400/30" />
-                      </div>
-                    )}
+              return (
+                <motion.div
+                  key={project.title}
+                  variants={itemVariants}
+                  className="group relative"
+                  whileHover={{ y: -10 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
 
-                    {/* Featured badge */}
-                    {project.featured && (
-                      <div className="absolute top-4 right-4 flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-purple-600 to-pink-500 text-white text-xs font-semibold rounded-full z-10">
-                        <Star className="w-3 h-3" />
-                        Featured
-                      </div>
-                    )}
-
-                    {/* Hover Overlay with Links */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-purple-600/90 via-pink-500/90 to-blue-500/90 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      initial={false}
-                    >
-                      {project.links.length > 0 ? (
-                        // Render link buttons dynamically
-                        project.links.map((link) => {
-                          const IconComponent =
-                            linkIcons[link.type] || ExternalLink;
-                          return (
-                            <motion.a
-                              key={`${link.type}-${link.url}`}
-                              href={link.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              title={link.label}
-                              className="p-3 bg-white rounded-full text-gray-800 hover:scale-110 transition-transform"
-                              whileHover={{ scale: 1.1 }}
-                              whileTap={{ scale: 0.9 }}
-                            >
-                              <IconComponent className="w-5 h-5" />
-                            </motion.a>
-                          );
-                        })
+                  <div className="relative bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700 h-full flex flex-col">
+                    {/* Project Image / Placeholder */}
+                    <div className="relative h-48 bg-gradient-to-br from-purple-600/10 via-pink-500/10 to-blue-500/10 overflow-hidden">
+                      {/* Show actual image if available, otherwise show placeholder */}
+                      {project.image ? (
+                        <>
+                          <Image
+                            src={project.image}
+                            alt={project.title}
+                            fill
+                            className={
+                              imageFit === "contain"
+                                ? "object-contain p-6"
+                                : "object-cover"
+                            }
+                            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                            priority={project.featured}
+                          />
+                          {/* Unified dark overlay */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/45 to-black/15" />
+                        </>
                       ) : (
-                        // No links available - show private badge
-                        <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-medium">
-                          <Lock className="w-4 h-4" />
-                          Private / available on request
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <Folder className="w-20 h-20 text-purple-600/30 dark:text-purple-400/30" />
                         </div>
                       )}
-                    </motion.div>
-                  </div>
 
-                  {/* Content */}
-                  <div className="p-6 flex-1 flex flex-col">
-                    <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
-                      {project.title}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 flex-1">
-                      {project.description}
-                    </p>
+                      {/* Badges - stacked in top-right */}
+                      <div className="absolute top-3 right-3 flex flex-col items-end gap-2 z-10">
+                        {/* Featured badge */}
+                        {project.featured && (
+                          <div className="flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-purple-600 to-pink-500 text-white text-xs font-semibold rounded-full shadow-lg">
+                            <Star className="w-3 h-3" />
+                            Featured
+                          </div>
+                        )}
 
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-2">
-                      {project.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-3 py-1 text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-full"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+                        {/* Status badge - only for in_progress and private */}
+                        {project.status === "in_progress" && (
+                          <div className="flex items-center gap-1 px-2.5 py-1 bg-amber-500/90 backdrop-blur-sm text-white text-xs font-medium rounded-full shadow-lg">
+                            <Clock className="w-3 h-3" />
+                            In Progress
+                          </div>
+                        )}
+                        {project.status === "private" && (
+                          <div className="flex items-center gap-1 px-2.5 py-1 bg-gray-600/90 backdrop-blur-sm text-white text-xs font-medium rounded-full shadow-lg">
+                            <Lock className="w-3 h-3" />
+                            Private
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Hover Overlay with Links */}
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-purple-600/90 via-pink-500/90 to-blue-500/90 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        initial={false}
+                      >
+                        {!hideLinks ? (
+                          // Render link buttons dynamically
+                          project.links.map((link) => {
+                            const IconComponent =
+                              linkIcons[link.type] || ExternalLink;
+                            return (
+                              <motion.a
+                                key={`${link.type}-${link.url}`}
+                                href={link.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                title={link.label}
+                                className="p-3 bg-white rounded-full text-gray-800 hover:scale-110 transition-transform shadow-lg"
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                              >
+                                <IconComponent className="w-5 h-5" />
+                              </motion.a>
+                            );
+                          })
+                        ) : (
+                          // Private or no links - show "available on request"
+                          <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-medium">
+                            <Lock className="w-4 h-4" />
+                            Available on request
+                          </div>
+                        )}
+                      </motion.div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="p-6 flex-1 flex flex-col">
+                      <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
+                        {project.title}
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 flex-1">
+                        {project.description}
+                      </p>
+
+                      {/* Tags */}
+                      <div className="flex flex-wrap gap-2">
+                        {project.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="px-3 py-1 text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-full"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* "Available on request" line for private/no links - shown below tags */}
+                      {hideLinks && (
+                        <div className="flex items-center gap-1.5 mt-4 pt-3 border-t border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 text-xs">
+                          <Lock className="w-3 h-3" />
+                          Available on request
+                        </div>
+                      )}
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
 
           {/* Show More/Less Button */}
