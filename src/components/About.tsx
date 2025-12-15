@@ -134,7 +134,7 @@ export default function About() {
                           variants={letterVariants}
                           initial="hidden"
                           animate={isInView ? "visible" : "hidden"}
-                          className="text-5xl sm:text-6xl font-bold bg-gradient-to-br from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent inline-block"
+                          className="text-5xl sm:text-6xl font-bold font-display tracking-tight bg-gradient-to-br from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent inline-block"
                           style={{ transformStyle: "preserve-3d" }}
                           whileHover={{
                             scale: 1.2,
@@ -234,7 +234,7 @@ export default function About() {
                     transition={{ delay: 0.5 + index * 0.1 }}
                     whileHover={{ scale: 1.05, y: -5 }}
                   >
-                    <div className="text-3xl font-bold bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
+                    <div className="text-3xl font-bold font-display tracking-tight bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
                       {stat.value}
                     </div>
                     <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">

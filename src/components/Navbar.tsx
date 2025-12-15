@@ -41,7 +41,7 @@ export default function Navbar() {
           {/* Logo */}
           <motion.a
             href="#"
-            className="text-xl font-bold bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent"
+            className="text-xl font-bold font-display tracking-tight bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
