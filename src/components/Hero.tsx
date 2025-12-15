@@ -100,7 +100,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-5xl sm:text-7xl lg:text-8xl font-bold mb-6"
+            className="text-5xl sm:text-7xl lg:text-8xl font-bold font-display tracking-tight mb-6"
           >
             <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
               {personalInfo.name}
@@ -112,7 +112,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-gray-700 dark:text-gray-300 mb-6 h-12"
+            className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-display tracking-tight text-gray-700 dark:text-gray-300 mb-6 h-12"
           >
             <span>{displayText}</span>
             <motion.span
