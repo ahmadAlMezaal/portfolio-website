@@ -5,11 +5,13 @@ import { motion } from "framer-motion";
 import { ArrowDown, Download, Mail } from "lucide-react";
 import { personalInfo, roles } from "@/lib/data";
 import { assetPath, isCvAvailable } from "@/lib/utils";
+import { useShouldReduceMotion } from "@/lib/hooks";
 
 export default function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+  const shouldReduceMotion = useShouldReduceMotion();
 
   useEffect(() => {
     const currentRole = roles[roleIndex];
@@ -41,46 +43,56 @@ export default function Hero() {
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-blue-50 dark:from-[#0d1b2a] dark:via-[#132238] dark:to-[#1b263b]" />
 
-        {/* Animated gradient orbs */}
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/30 dark:bg-sky-500/20 rounded-full blur-3xl"
-          animate={{
-            x: [0, 100, 0],
-            y: [0, -50, 0],
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-500/30 dark:bg-cyan-500/20 rounded-full blur-3xl"
-          animate={{
-            x: [0, -100, 0],
-            y: [0, 50, 0],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        <motion.div
-          className="absolute top-1/2 left-1/2 w-72 h-72 bg-blue-500/20 dark:bg-indigo-500/15 rounded-full blur-3xl"
-          animate={{
-            x: [0, 50, -50, 0],
-            y: [0, -30, 30, 0],
-            scale: [1, 1.3, 1],
-          }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
+        {/* Gradient orbs - static on mobile for performance, animated on desktop */}
+        {shouldReduceMotion ? (
+          <>
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/30 dark:bg-sky-500/20 rounded-full blur-3xl" />
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-500/30 dark:bg-cyan-500/20 rounded-full blur-3xl" />
+            <div className="absolute top-1/2 left-1/2 w-72 h-72 bg-blue-500/20 dark:bg-indigo-500/15 rounded-full blur-3xl" />
+          </>
+        ) : (
+          <>
+            <motion.div
+              className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/30 dark:bg-sky-500/20 rounded-full blur-3xl"
+              animate={{
+                x: [0, 100, 0],
+                y: [0, -50, 0],
+                scale: [1, 1.2, 1],
+              }}
+              transition={{
+                duration: 8,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+            <motion.div
+              className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-500/30 dark:bg-cyan-500/20 rounded-full blur-3xl"
+              animate={{
+                x: [0, -100, 0],
+                y: [0, 50, 0],
+                scale: [1, 1.1, 1],
+              }}
+              transition={{
+                duration: 10,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+            <motion.div
+              className="absolute top-1/2 left-1/2 w-72 h-72 bg-blue-500/20 dark:bg-indigo-500/15 rounded-full blur-3xl"
+              animate={{
+                x: [0, 50, -50, 0],
+                y: [0, -30, 30, 0],
+                scale: [1, 1.3, 1],
+              }}
+              transition={{
+                duration: 12,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          </>
+        )}
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">

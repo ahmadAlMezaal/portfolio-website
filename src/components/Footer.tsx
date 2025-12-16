@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { personalInfo, navLinks } from "@/lib/data";
 import type { SocialPlatform } from "@/lib/data.types";
+import { useIsMobile } from "@/lib/hooks";
 
 // Custom icons for platforms not in Lucide
 const MediumIcon = ({ className }: { className?: string }) => (
@@ -75,6 +76,7 @@ const socialLabelMap: Record<SocialPlatform, string> = {
 };
 
 export default function Footer() {
+  const isMobile = useIsMobile();
   const socialLinks = personalInfo.socialLinks.map((link) => ({
     icon: socialIconMap[link.platform],
     href: link.url,
@@ -103,7 +105,10 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-2 text-sm text-gray-400">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                {/* Ping animation disabled on mobile for performance */}
+                {!isMobile && (
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                )}
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
               </span>
               {personalInfo.status}

@@ -5,10 +5,12 @@ import { useInView } from "framer-motion";
 import { useRef } from "react";
 import { MapPin, Briefcase, GraduationCap, Heart, Code2, Database, Cloud, Terminal } from "lucide-react";
 import { personalInfo, stats } from "@/lib/data";
+import { useShouldReduceMotion } from "@/lib/hooks";
 
 export default function About() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const shouldReduceMotion = useShouldReduceMotion();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -77,55 +79,73 @@ export default function About() {
           </motion.div>
 
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Animated Initials Section */}
+            {/* Initials Section - simplified on mobile for performance */}
             <motion.div variants={itemVariants} className="relative">
               <div className="relative w-80 h-80 mx-auto">
-                {/* Outer rotating ring with dots */}
-                <motion.div
-                  className="absolute inset-0 rounded-full border-2 border-dashed border-purple-500/30"
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                >
-                  {[...Array(8)].map((_, i) => (
+                {shouldReduceMotion ? (
+                  <>
+                    {/* Static rings for mobile */}
+                    <div className="absolute inset-0 rounded-full border-2 border-dashed border-purple-500/30">
+                      {[...Array(8)].map((_, i) => (
+                        <div
+                          key={i}
+                          className="absolute w-2 h-2 bg-purple-500 rounded-full opacity-70"
+                          style={{
+                            top: '50%',
+                            left: '50%',
+                            transform: `rotate(${i * 45}deg) translateX(158px) translateY(-50%)`,
+                          }}
+                        />
+                      ))}
+                    </div>
+                    <div className="absolute inset-6 rounded-full border-2 border-pink-500/20" />
+                    <div className="absolute inset-12 rounded-full border-2 border-blue-500/30" />
+                    <div className="absolute inset-16 rounded-full bg-gradient-to-br from-purple-600/20 via-pink-500/20 to-blue-500/20 blur-xl" />
+                  </>
+                ) : (
+                  <>
+                    {/* Animated rings for desktop */}
                     <motion.div
-                      key={i}
-                      className="absolute w-2 h-2 bg-purple-500 rounded-full"
-                      style={{
-                        top: '50%',
-                        left: '50%',
-                        transform: `rotate(${i * 45}deg) translateX(158px) translateY(-50%)`,
-                      }}
-                      animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: i * 0.25 }}
+                      className="absolute inset-0 rounded-full border-2 border-dashed border-purple-500/30"
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                    >
+                      {[...Array(8)].map((_, i) => (
+                        <motion.div
+                          key={i}
+                          className="absolute w-2 h-2 bg-purple-500 rounded-full"
+                          style={{
+                            top: '50%',
+                            left: '50%',
+                            transform: `rotate(${i * 45}deg) translateX(158px) translateY(-50%)`,
+                          }}
+                          animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
+                          transition={{ duration: 2, repeat: Infinity, delay: i * 0.25 }}
+                        />
+                      ))}
+                    </motion.div>
+                    <motion.div
+                      className="absolute inset-6 rounded-full border-2 border-pink-500/20"
+                      animate={{ rotate: -360 }}
+                      transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
                     />
-                  ))}
-                </motion.div>
-
-                {/* Middle ring */}
-                <motion.div
-                  className="absolute inset-6 rounded-full border-2 border-pink-500/20"
-                  animate={{ rotate: -360 }}
-                  transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                />
-
-                {/* Inner ring with glow */}
-                <motion.div
-                  className="absolute inset-12 rounded-full border-2 border-blue-500/30"
-                  animate={{ rotate: 360, scale: [1, 1.02, 1] }}
-                  transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-                />
-
-                {/* Pulsing glow behind initials */}
-                <motion.div
-                  className="absolute inset-16 rounded-full bg-gradient-to-br from-purple-600/20 via-pink-500/20 to-blue-500/20 blur-xl"
-                  animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                />
+                    <motion.div
+                      className="absolute inset-12 rounded-full border-2 border-blue-500/30"
+                      animate={{ rotate: 360, scale: [1, 1.02, 1] }}
+                      transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                    />
+                    <motion.div
+                      className="absolute inset-16 rounded-full bg-gradient-to-br from-purple-600/20 via-pink-500/20 to-blue-500/20 blur-xl"
+                      animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
+                      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                  </>
+                )}
 
                 {/* Main initials container */}
                 <div className="absolute inset-16 rounded-full bg-gradient-to-br from-purple-600 via-pink-500 to-blue-500 p-1 shadow-2xl shadow-purple-500/25">
                   <div className="w-full h-full rounded-full bg-gray-100 dark:bg-[#0d1b2a] flex items-center justify-center overflow-hidden">
-                    {/* Animated initials */}
+                    {/* Initials - simplified animation on mobile */}
                     <div className="flex items-center justify-center perspective-1000">
                       {initials.split("").map((letter, i) => (
                         <motion.span
@@ -136,7 +156,7 @@ export default function About() {
                           animate={isInView ? "visible" : "hidden"}
                           className="text-5xl sm:text-6xl font-bold font-display tracking-tight bg-gradient-to-br from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent inline-block"
                           style={{ transformStyle: "preserve-3d" }}
-                          whileHover={{
+                          whileHover={shouldReduceMotion ? undefined : {
                             scale: 1.2,
                             rotateY: 15,
                             transition: { duration: 0.2 }
@@ -147,68 +167,81 @@ export default function About() {
                       ))}
                     </div>
 
-                    {/* Shimmer effect */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12"
-                      animate={{ x: ["-200%", "200%"] }}
-                      transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
-                    />
+                    {/* Shimmer effect - only on desktop */}
+                    {!shouldReduceMotion && (
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12"
+                        animate={{ x: ["-200%", "200%"] }}
+                        transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
+                      />
+                    )}
                   </div>
                 </div>
 
-                {/* Floating tech icons around the circle */}
+                {/* Floating tech icons - static on mobile, animated on desktop */}
                 {floatingIcons.map(({ Icon, color, position, delay }, index) => (
-                  <motion.div
-                    key={index}
-                    className={`absolute ${position} p-3 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700`}
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={isInView ? {
-                      opacity: 1,
-                      scale: 1,
-                      y: [0, -8, 0],
-                    } : {}}
-                    transition={{
-                      opacity: { delay: 0.5 + delay, duration: 0.3 },
-                      scale: { delay: 0.5 + delay, duration: 0.3 },
-                      y: { delay: 0.8 + delay, duration: 2 + index * 0.3, repeat: Infinity, ease: "easeInOut" },
-                    }}
-                    whileHover={{ scale: 1.2, rotate: 10 }}
-                  >
-                    <Icon className={`w-5 h-5 ${color}`} />
-                  </motion.div>
+                  shouldReduceMotion ? (
+                    <div
+                      key={index}
+                      className={`absolute ${position} p-3 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700`}
+                    >
+                      <Icon className={`w-5 h-5 ${color}`} />
+                    </div>
+                  ) : (
+                    <motion.div
+                      key={index}
+                      className={`absolute ${position} p-3 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700`}
+                      initial={{ opacity: 0, scale: 0 }}
+                      animate={isInView ? {
+                        opacity: 1,
+                        scale: 1,
+                        y: [0, -8, 0],
+                      } : {}}
+                      transition={{
+                        opacity: { delay: 0.5 + delay, duration: 0.3 },
+                        scale: { delay: 0.5 + delay, duration: 0.3 },
+                        y: { delay: 0.8 + delay, duration: 2 + index * 0.3, repeat: Infinity, ease: "easeInOut" },
+                      }}
+                      whileHover={{ scale: 1.2, rotate: 10 }}
+                    >
+                      <Icon className={`w-5 h-5 ${color}`} />
+                    </motion.div>
+                  )
                 ))}
 
-                {/* Orbiting particle */}
-                <motion.div
-                  className="absolute w-3 h-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg shadow-purple-500/50"
-                  style={{ top: "50%", left: "50%" }}
-                  animate={{
-                    rotate: 360,
-                    x: [0, 140, 0, -140, 0],
-                    y: [-140, 0, 140, 0, -140],
-                  }}
-                  transition={{
-                    duration: 8,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                />
-
-                {/* Second orbiting particle (opposite direction) */}
-                <motion.div
-                  className="absolute w-2 h-2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 shadow-lg shadow-blue-500/50"
-                  style={{ top: "50%", left: "50%" }}
-                  animate={{
-                    rotate: -360,
-                    x: [0, -120, 0, 120, 0],
-                    y: [120, 0, -120, 0, 120],
-                  }}
-                  transition={{
-                    duration: 6,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                />
+                {/* Orbiting particles - only on desktop */}
+                {!shouldReduceMotion && (
+                  <>
+                    <motion.div
+                      className="absolute w-3 h-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg shadow-purple-500/50"
+                      style={{ top: "50%", left: "50%" }}
+                      animate={{
+                        rotate: 360,
+                        x: [0, 140, 0, -140, 0],
+                        y: [-140, 0, 140, 0, -140],
+                      }}
+                      transition={{
+                        duration: 8,
+                        repeat: Infinity,
+                        ease: "linear",
+                      }}
+                    />
+                    <motion.div
+                      className="absolute w-2 h-2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 shadow-lg shadow-blue-500/50"
+                      style={{ top: "50%", left: "50%" }}
+                      animate={{
+                        rotate: -360,
+                        x: [0, -120, 0, 120, 0],
+                        y: [120, 0, -120, 0, 120],
+                      }}
+                      transition={{
+                        duration: 6,
+                        repeat: Infinity,
+                        ease: "linear",
+                      }}
+                    />
+                  </>
+                )}
               </div>
             </motion.div>
 
