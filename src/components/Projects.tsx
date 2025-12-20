@@ -17,6 +17,7 @@ import {
 import Image from "next/image";
 import { projects } from "@/lib/data";
 import type { ProjectLinkType, Project, ProjectStatus } from "@/lib/data.types";
+import { useIsMobile } from "@/lib/hooks";
 
 // Custom brand icons (not available in lucide-react)
 const AppleIcon = ({ className }: { className?: string }) => (
@@ -68,25 +69,6 @@ const sortProjects = (projectList: Project[]): Project[] => {
 
     return orderA - orderB;
   });
-};
-
-// Get counts for each filter
-const getFilterCounts = (projectList: Project[]) => {
-  const counts = {
-    all: projectList.length,
-    live: 0,
-    in_progress: 0,
-    private: 0,
-  };
-
-  projectList.forEach((p) => {
-    const status = p.status || "live";
-    if (status in counts) {
-      counts[status as ProjectStatus]++;
-    }
-  });
-
-  return counts;
 };
 
 // Check if links should be hidden (private status or no links)
@@ -153,12 +135,10 @@ const ProjectPlaceholder = ({ status }: { status: ProjectStatus }) => {
 // Filter pill component
 const FilterPill = ({
   label,
-  count,
   isActive,
   onClick,
 }: {
   label: string;
-  count: number;
   isActive: boolean;
   onClick: () => void;
 }) => (
@@ -174,13 +154,6 @@ const FilterPill = ({
     `}
   >
     {label}
-    <span
-      className={`ml-1.5 text-xs ${
-        isActive ? "text-white/80" : "text-gray-400 dark:text-gray-500"
-      }`}
-    >
-      ({count})
-    </span>
   </button>
 );
 
@@ -190,6 +163,7 @@ export default function Projects() {
   const [showAll, setShowAll] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
   const [activeFilter, setActiveFilter] = useState<FilterOption>("all");
+  const isMobile = useIsMobile();
 
   // Featured projects for home page (max 3)
   const featuredProjects = useMemo(
@@ -206,8 +180,6 @@ export default function Projects() {
       (p) => (p.status || "live") === activeFilter
     );
   }, [allProjectsSorted, activeFilter]);
-
-  const filterCounts = useMemo(() => getFilterCounts(projects), []);
 
   // Determine which projects to display
   const displayedProjects = showAll ? filteredProjects : featuredProjects;
@@ -269,30 +241,28 @@ export default function Projects() {
           {/* Filter Pills - only shown when viewing all projects */}
           {showAll && (
             <motion.div
-              variants={itemVariants}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
               className="flex flex-wrap justify-center gap-3 mb-10"
             >
               <FilterPill
                 label="All"
-                count={filterCounts.all}
                 isActive={activeFilter === "all"}
                 onClick={() => setActiveFilter("all")}
               />
               <FilterPill
                 label="Live"
-                count={filterCounts.live}
                 isActive={activeFilter === "live"}
                 onClick={() => setActiveFilter("live")}
               />
               <FilterPill
                 label="In Progress"
-                count={filterCounts.in_progress}
                 isActive={activeFilter === "in_progress"}
                 onClick={() => setActiveFilter("in_progress")}
               />
               <FilterPill
                 label="Private"
-                count={filterCounts.private}
                 isActive={activeFilter === "private"}
                 onClick={() => setActiveFilter("private")}
               />
@@ -371,39 +341,41 @@ export default function Projects() {
                         )}
                       </div>
 
-                      {/* Hover Overlay with Links */}
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-purple-600/90 via-pink-500/90 to-blue-500/90 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        initial={false}
-                      >
-                        {!hideLinks ? (
-                          // Render link buttons dynamically
-                          project.links.map((link) => {
-                            const IconComponent =
-                              linkIcons[link.type] || ExternalLink;
-                            return (
-                              <motion.a
-                                key={`${link.type}-${link.url}`}
-                                href={link.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                title={link.label}
-                                className="p-3 bg-white rounded-full text-gray-800 hover:scale-110 transition-transform shadow-lg"
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                              >
-                                <IconComponent className="w-5 h-5" />
-                              </motion.a>
-                            );
-                          })
-                        ) : (
-                          // Private or no links - show "available on request"
-                          <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-medium">
-                            <Lock className="w-4 h-4" />
-                            Available on request
-                          </div>
-                        )}
-                      </motion.div>
+                      {/* Hover Overlay with Links - Desktop only */}
+                      {!isMobile && (
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-purple-600/90 via-pink-500/90 to-blue-500/90 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          initial={false}
+                        >
+                          {!hideLinks ? (
+                            // Render link buttons dynamically
+                            project.links.map((link) => {
+                              const IconComponent =
+                                linkIcons[link.type] || ExternalLink;
+                              return (
+                                <motion.a
+                                  key={`${link.type}-${link.url}`}
+                                  href={link.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  title={link.label}
+                                  className="p-3 bg-white rounded-full text-gray-800 hover:scale-110 transition-transform shadow-lg"
+                                  whileHover={{ scale: 1.1 }}
+                                  whileTap={{ scale: 0.9 }}
+                                >
+                                  <IconComponent className="w-5 h-5" />
+                                </motion.a>
+                              );
+                            })
+                          ) : (
+                            // Private or no links - show "available on request"
+                            <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-medium">
+                              <Lock className="w-4 h-4" />
+                              Available on request
+                            </div>
+                          )}
+                        </motion.div>
+                      )}
                     </div>
 
                     {/* Content */}
@@ -426,6 +398,28 @@ export default function Projects() {
                           </span>
                         ))}
                       </div>
+
+                      {/* Mobile: Show link buttons inline */}
+                      {isMobile && !hideLinks && project.links.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+                          {project.links.map((link) => {
+                            const IconComponent =
+                              linkIcons[link.type] || ExternalLink;
+                            return (
+                              <a
+                                key={`mobile-${link.type}-${link.url}`}
+                                href={link.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-white text-xs font-medium rounded-full shadow-md active:scale-95 transition-transform"
+                              >
+                                <IconComponent className="w-3.5 h-3.5" />
+                                {link.label}
+                              </a>
+                            );
+                          })}
+                        </div>
+                      )}
 
                       {/* "Available on request" line for private/no links - shown below tags */}
                       {hideLinks && (
@@ -450,9 +444,7 @@ export default function Projects() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {showAll
-                  ? "Show Less"
-                  : `View All Projects (${projects.length})`}
+                {showAll ? "Show Less" : "View All Projects"}
               </motion.button>
             </motion.div>
           )}
