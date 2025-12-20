@@ -4,8 +4,15 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
 import { MapPin, Briefcase, GraduationCap, Heart, Code2, Database, Cloud, Terminal } from "lucide-react";
+import dynamic from "next/dynamic";
 import { personalInfo, stats } from "@/lib/data";
 import { useShouldReduceMotion } from "@/lib/hooks";
+
+// Dynamically import 3D background (no SSR)
+const Section3DBackground = dynamic(() => import("./Section3DBackground"), {
+  ssr: false,
+  loading: () => null,
+});
 
 export default function About() {
   const ref = useRef(null);
@@ -58,8 +65,11 @@ export default function About() {
   ];
 
   return (
-    <section id="about" className="py-20 bg-gray-50 dark:bg-[#132238]/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="about" className="relative py-20 bg-gray-50 dark:bg-[#132238]/50 overflow-hidden">
+      {/* 3D Background - only on desktop */}
+      {!shouldReduceMotion && <Section3DBackground type="particles" />}
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           ref={ref}
           variants={containerVariants}
