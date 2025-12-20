@@ -222,7 +222,7 @@ interface Section3DBackgroundProps {
 
 export default function Section3DBackground({ type, className = "" }: Section3DBackgroundProps) {
   return (
-    <div className={`absolute inset-0 -z-10 opacity-60 ${className}`}>
+    <div className={`absolute inset-0 -z-10 opacity-50 pointer-events-none ${className}`}>
       <Canvas
         camera={{ position: [0, 0, 8], fov: 50 }}
         dpr={[1, 1.5]}
@@ -231,7 +231,14 @@ export default function Section3DBackground({ type, className = "" }: Section3DB
           alpha: true,
           powerPreference: "high-performance",
         }}
-        style={{ background: "transparent" }}
+        style={{
+          background: "transparent",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+        }}
       >
         <Scene type={type} />
       </Canvas>

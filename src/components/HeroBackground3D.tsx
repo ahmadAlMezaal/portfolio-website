@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useMemo, useEffect, useState } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { useTheme } from "next-themes";
 import * as THREE from "three";
 
@@ -46,9 +46,10 @@ function InteractiveParticles({
     const pos = new Float32Array(count * 3);
     const origPos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      const x = (Math.random() - 0.5) * 15;
-      const y = (Math.random() - 0.5) * 10;
-      const z = (Math.random() - 0.5) * 8 - 2;
+      // Spread wider horizontally (full viewport width)
+      const x = (Math.random() - 0.5) * 25;
+      const y = (Math.random() - 0.5) * 14;
+      const z = (Math.random() - 0.5) * 6 - 3;
       pos[i * 3] = x;
       pos[i * 3 + 1] = y;
       pos[i * 3 + 2] = z;
@@ -102,10 +103,10 @@ function InteractiveParticles({
   return (
     <points ref={pointsRef} geometry={geometry}>
       <pointsMaterial
-        size={0.08}
+        size={0.06}
         color={color}
         transparent
-        opacity={0.7}
+        opacity={0.6}
         sizeAttenuation
         blending={THREE.AdditiveBlending}
       />
@@ -114,7 +115,7 @@ function InteractiveParticles({
 }
 
 // ============================================================================
-// GLOWING ORB
+// GLOWING ORB - Positioned at edges, away from center text
 // ============================================================================
 
 function GlowingOrb({
@@ -122,11 +123,13 @@ function GlowingOrb({
   color,
   size = 1,
   pulseSpeed = 1,
+  opacity = 0.1,
 }: {
   position: [number, number, number];
   color: string;
   size?: number;
   pulseSpeed?: number;
+  opacity?: number;
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const mouse = useMousePosition();
@@ -136,14 +139,14 @@ function GlowingOrb({
     const time = state.clock.elapsedTime;
 
     // Gentle pulsing
-    const pulse = 1 + Math.sin(time * pulseSpeed) * 0.1;
+    const pulse = 1 + Math.sin(time * pulseSpeed) * 0.08;
     meshRef.current.scale.setScalar(size * pulse);
 
-    // Subtle mouse following
-    const targetX = position[0] + mouse.x * 0.3;
-    const targetY = position[1] + mouse.y * 0.3;
-    meshRef.current.position.x += (targetX - meshRef.current.position.x) * 0.02;
-    meshRef.current.position.y += (targetY - meshRef.current.position.y) * 0.02;
+    // Very subtle mouse following (reduced)
+    const targetX = position[0] + mouse.x * 0.15;
+    const targetY = position[1] + mouse.y * 0.15;
+    meshRef.current.position.x += (targetX - meshRef.current.position.x) * 0.01;
+    meshRef.current.position.y += (targetY - meshRef.current.position.y) * 0.01;
   });
 
   return (
@@ -152,7 +155,7 @@ function GlowingOrb({
       <meshBasicMaterial
         color={color}
         transparent
-        opacity={0.15}
+        opacity={opacity}
         blending={THREE.AdditiveBlending}
       />
     </mesh>
@@ -160,7 +163,7 @@ function GlowingOrb({
 }
 
 // ============================================================================
-// FLOWING LINES
+// FLOWING LINES - Spread across full width
 // ============================================================================
 
 function FlowingLine({
@@ -175,13 +178,14 @@ function FlowingLine({
   const lineRef = useRef<THREE.Line>(null);
 
   const initialGeometry = useMemo(() => {
-    const yOffset = (index - count / 2) * 2;
+    const yOffset = (index - count / 2) * 2.5;
     const points: THREE.Vector3[] = [];
-    for (let j = 0; j <= 50; j++) {
-      const t = j / 50;
-      const x = (t - 0.5) * 20;
-      const y = yOffset + Math.sin(t * Math.PI * 2 + index) * 0.5;
-      const z = -5 + index * 0.5;
+    for (let j = 0; j <= 60; j++) {
+      const t = j / 60;
+      // Wider spread (30 units)
+      const x = (t - 0.5) * 30;
+      const y = yOffset + Math.sin(t * Math.PI * 2 + index) * 0.4;
+      const z = -6 + index * 0.3;
       points.push(new THREE.Vector3(x, y, z));
     }
     return new THREE.BufferGeometry().setFromPoints(points);
@@ -191,12 +195,12 @@ function FlowingLine({
     if (!lineRef.current) return;
     const time = state.clock.elapsedTime;
     const positionAttr = lineRef.current.geometry.attributes.position;
-    const yOffset = (index - count / 2) * 2;
+    const yOffset = (index - count / 2) * 2.5;
 
-    for (let j = 0; j <= 50; j++) {
-      const t = j / 50;
-      const baseY = yOffset + Math.sin(t * Math.PI * 2 + index) * 0.5;
-      const animatedY = baseY + Math.sin(time * 0.5 + t * Math.PI * 3 + index) * 0.1;
+    for (let j = 0; j <= 60; j++) {
+      const t = j / 60;
+      const baseY = yOffset + Math.sin(t * Math.PI * 2 + index) * 0.4;
+      const animatedY = baseY + Math.sin(time * 0.4 + t * Math.PI * 3 + index) * 0.08;
       positionAttr.setY(j, animatedY);
     }
     positionAttr.needsUpdate = true;
@@ -210,7 +214,7 @@ function FlowingLine({
         new THREE.LineBasicMaterial({
           color,
           transparent: true,
-          opacity: 0.2 - index * 0.03,
+          opacity: 0.15 - index * 0.02,
           blending: THREE.AdditiveBlending,
         })
       )}
@@ -229,60 +233,6 @@ function FlowingLines({ color, count = 5 }: { color: string; count?: number }) {
 }
 
 // ============================================================================
-// GRADIENT BACKGROUND PLANE
-// ============================================================================
-
-function GradientPlane({ colorTop, colorBottom }: { colorTop: string; colorBottom: string }) {
-  const materialRef = useRef<THREE.ShaderMaterial>(null);
-
-  const uniforms = useMemo(
-    () => ({
-      uColorTop: { value: new THREE.Color(colorTop) },
-      uColorBottom: { value: new THREE.Color(colorBottom) },
-      uTime: { value: 0 },
-    }),
-    [colorTop, colorBottom]
-  );
-
-  useFrame((state) => {
-    if (materialRef.current) {
-      materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
-    }
-  });
-
-  return (
-    <mesh position={[0, 0, -10]}>
-      <planeGeometry args={[30, 20]} />
-      <shaderMaterial
-        ref={materialRef}
-        uniforms={uniforms}
-        transparent
-        vertexShader={`
-          varying vec2 vUv;
-          void main() {
-            vUv = uv;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-          }
-        `}
-        fragmentShader={`
-          uniform vec3 uColorTop;
-          uniform vec3 uColorBottom;
-          uniform float uTime;
-          varying vec2 vUv;
-
-          void main() {
-            float noise = sin(vUv.x * 10.0 + uTime * 0.2) * 0.02;
-            float gradient = vUv.y + noise;
-            vec3 color = mix(uColorBottom, uColorTop, gradient);
-            gl_FragColor = vec4(color, 0.3);
-          }
-        `}
-      />
-    </mesh>
-  );
-}
-
-// ============================================================================
 // SCENE COMPOSITION
 // ============================================================================
 
@@ -290,39 +240,43 @@ function Scene() {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 
-  // Theme-based colors - improved for light mode
+  // Theme-based colors - adjusted for better contrast
   const colors = useMemo(
     () => ({
-      // Light mode: soft, muted purples and blues
-      // Dark mode: vibrant cyans and sky blues
-      particles: isDark ? "#60a5fa" : "#8b5cf6",
-      orb1: isDark ? "#3b82f6" : "#a78bfa",
-      orb2: isDark ? "#06b6d4" : "#c4b5fd",
-      orb3: isDark ? "#8b5cf6" : "#ddd6fe",
-      lines: isDark ? "#60a5fa" : "#a78bfa",
-      gradientTop: isDark ? "#1e3a5f" : "#f5f3ff",
-      gradientBottom: isDark ? "#0f172a" : "#ede9fe",
+      // Light mode: soft purples
+      // Dark mode: muted blues (less bright for better text readability)
+      particles: isDark ? "#4f8bbd" : "#8b5cf6",
+      orb1: isDark ? "#2d5a87" : "#a78bfa",
+      orb2: isDark ? "#1e6a7a" : "#c4b5fd",
+      orb3: isDark ? "#3d4f8a" : "#ddd6fe",
+      lines: isDark ? "#3d6a9f" : "#a78bfa",
     }),
     [isDark]
   );
 
+  // Lower opacity for dark mode to improve text readability
+  const orbOpacity = isDark ? 0.06 : 0.12;
+
   return (
     <>
-      {/* Subtle gradient background */}
-      <GradientPlane colorTop={colors.gradientTop} colorBottom={colors.gradientBottom} />
+      {/* Interactive particle field - spread wider */}
+      <InteractiveParticles count={100} color={colors.particles} mouseInfluence={0.3} />
 
-      {/* Interactive particle field */}
-      <InteractiveParticles count={80} color={colors.particles} mouseInfluence={0.4} />
+      {/* Glowing orbs - positioned at EDGES, away from center text area */}
+      {/* Left side orbs */}
+      <GlowingOrb position={[-9, 3, -5]} color={colors.orb1} size={3} pulseSpeed={0.6} opacity={orbOpacity} />
+      <GlowingOrb position={[-7, -2, -6]} color={colors.orb2} size={2.5} pulseSpeed={0.8} opacity={orbOpacity} />
 
-      {/* Glowing orbs - positioned around the scene */}
-      <GlowingOrb position={[-4, 2, -3]} color={colors.orb1} size={2.5} pulseSpeed={0.8} />
-      <GlowingOrb position={[4, -1, -4]} color={colors.orb2} size={2} pulseSpeed={1.2} />
-      <GlowingOrb position={[0, 0, -2]} color={colors.orb3} size={3} pulseSpeed={0.5} />
-      <GlowingOrb position={[-3, -2, -5]} color={colors.orb1} size={1.5} pulseSpeed={1} />
-      <GlowingOrb position={[5, 2, -6]} color={colors.orb2} size={1.8} pulseSpeed={0.7} />
+      {/* Right side orbs */}
+      <GlowingOrb position={[9, 2, -5]} color={colors.orb2} size={2.8} pulseSpeed={0.7} opacity={orbOpacity} />
+      <GlowingOrb position={[7, -3, -6]} color={colors.orb3} size={2.2} pulseSpeed={0.9} opacity={orbOpacity} />
 
-      {/* Flowing lines */}
-      <FlowingLines color={colors.lines} count={4} />
+      {/* Top/bottom orbs (away from center) */}
+      <GlowingOrb position={[-3, 5, -7]} color={colors.orb3} size={2} pulseSpeed={1} opacity={orbOpacity * 0.8} />
+      <GlowingOrb position={[4, -5, -7]} color={colors.orb1} size={1.8} pulseSpeed={1.1} opacity={orbOpacity * 0.8} />
+
+      {/* Flowing lines - wider spread */}
+      <FlowingLines color={colors.lines} count={5} />
     </>
   );
 }
@@ -333,16 +287,23 @@ function Scene() {
 
 export default function HeroBackground3D() {
   return (
-    <div className="absolute inset-0 -z-10">
+    <div className="absolute inset-0 -z-10 pointer-events-none">
       <Canvas
-        camera={{ position: [0, 0, 6], fov: 60 }}
+        camera={{ position: [0, 0, 8], fov: 70 }}
         dpr={[1, 1.5]}
         gl={{
           antialias: true,
           alpha: true,
           powerPreference: "high-performance",
         }}
-        style={{ background: "transparent" }}
+        style={{
+          background: "transparent",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+        }}
       >
         <Scene />
       </Canvas>
