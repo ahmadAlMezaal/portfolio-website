@@ -1,0 +1,9 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://theaam.dev/sitemap.xml
+
+# Host
+Host: https://theaam.dev
