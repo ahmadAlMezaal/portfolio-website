@@ -229,6 +229,23 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
   // ---------------------------------------------------------------------------
   projects: [
     {
+      title: "Atomic Streaks",
+      description:
+        "Identity-based habit tracking meets aggressive gamification — declare who you want to become, track habits with streaks, enjoy focus sessions with ambient soundscapes, and experience premium polish with 60fps animations and haptic feedback.",
+      image: "/assets/atomic-streaks-logo.png",
+      imageFit: "contain",
+      tags: ["React Native", "TypeScript", "Expo", "Mobile"],
+      links: [
+        {
+          type: "website",
+          label: "Website",
+          url: "https://atomicstreaks.co",
+        },
+      ],
+      featured: true,
+      status: "live",
+    },
+    {
       title: "Shuffle Rewards",
       description:
         "Cashback rewards app for eating out — members connect their bank account, visit partner venues, and earn cashback when qualifying purchases are detected and approved.",
