@@ -43,7 +43,7 @@ const config: PortfolioConfig = {
     bio: `Senior Software Engineer with strong experience designing, building, and scaling backend and full-stack systems in high-growth startup environments. Specialised in fintech and open banking, with a proven track record delivering secure, high-performance APIs, event-driven architectures, and third-party integrations at scale.
 
 I focus on building resilient, cloud-native systems on AWS, designing data pipelines for deduplication, enrichment, and orchestration, while balancing technical excellence with product and business impact. I own systems from concept to production.`,
-    resumeUrl: "/cv.pdf",
+    resumeUrl: "https://drive.google.com/uc?export=download&id=14wpZXja-Cc09haxdR4YNmtQsR6TXujJ9",
     bookingUrl: "https://calendly.com/ahmad-al-mezaal/30min",
     socialLinks: [
       { platform: "github", url: "https://github.com/ahmadAlMezaal" },
@@ -240,6 +240,11 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
           type: "website",
           label: "Website",
           url: "https://atomicstreaks.co",
+        },
+        {
+          type: "appstore",
+          label: "App Store",
+          url: "https://apps.apple.com/gb/app/atomic-streaks/id6756895497",
         },
       ],
       featured: true,
