@@ -241,6 +241,11 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
           label: "Website",
           url: "https://atomicstreaks.co",
         },
+        {
+          type: "appstore",
+          label: "App Store",
+          url: "https://apps.apple.com/gb/app/atomic-streaks/id6756895497",
+        },
       ],
       featured: true,
       status: "live",
