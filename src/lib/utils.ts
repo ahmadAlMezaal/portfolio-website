@@ -16,8 +16,10 @@ export function getBasePath(): string {
  * @returns The full path including base path
  */
 export function assetPath(path: string): string {
+  if (/^https?:\/\//i.test(path)) {
+    return path;
+  }
   const basePath = getBasePath();
-  // Ensure path starts with /
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   return `${basePath}${normalizedPath}`;
 }
