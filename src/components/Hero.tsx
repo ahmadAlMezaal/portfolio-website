@@ -3,22 +3,14 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowDown, Download, Mail } from "lucide-react";
-import dynamic from "next/dynamic";
 import { personalInfo, roles } from "@/lib/data";
 import { assetPath, isCvAvailable } from "@/lib/utils";
-import { useShouldReduceMotion } from "@/lib/hooks";
-
-// Dynamically import Three.js component (no SSR - WebGL doesn't work server-side)
-const HeroBackground3D = dynamic(() => import("./HeroBackground3D"), {
-  ssr: false,
-  loading: () => null, // No loading state, fallback handles it
-});
+import HeroBackground from "./HeroBackground";
 
 export default function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
-  const shouldReduceMotion = useShouldReduceMotion();
 
   useEffect(() => {
     const currentRole = roles[roleIndex];
@@ -49,18 +41,9 @@ export default function Hero() {
       {/* Background gradient base layer */}
       <div className="absolute inset-0 -z-20 bg-gradient-to-br from-purple-50 via-white to-blue-50 dark:from-[#0d1b2a] dark:via-[#132238] dark:to-[#1b263b]" />
 
-      {/* 3D Background for desktop, gradient orbs for mobile */}
-      {shouldReduceMotion ? (
-        // Mobile fallback: static gradient orbs
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/30 dark:bg-sky-500/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-500/30 dark:bg-cyan-500/20 rounded-full blur-3xl" />
-          <div className="absolute top-1/2 left-1/2 w-72 h-72 bg-blue-500/20 dark:bg-indigo-500/15 rounded-full blur-3xl" />
-        </div>
-      ) : (
-        // Desktop: 3D animated background
-        <HeroBackground3D />
-      )}
+      {/* Animated CSS background (drifting gradient orbs + dot grid).
+          Motion is disabled automatically under prefers-reduced-motion. */}
+      <HeroBackground />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center">

@@ -19,16 +19,10 @@ import {
   Codepen,
   type LucideIcon,
 } from "lucide-react";
-import dynamic from "next/dynamic";
 import { personalInfo, education, certifications } from "@/lib/data";
 import type { SocialPlatform } from "@/lib/data.types";
 import { useShouldReduceMotion } from "@/lib/hooks";
-
-// Dynamically import 3D background (no SSR)
-const Section3DBackground = dynamic(() => import("./Section3DBackground"), {
-  ssr: false,
-  loading: () => null,
-});
+import SectionBackground from "./SectionBackground";
 
 // Custom icons for platforms not in Lucide
 const MediumIcon = ({ className }: { className?: string }) => (
@@ -132,8 +126,8 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative py-20 bg-gray-50 dark:bg-[#132238]/50 overflow-hidden">
-      {/* 3D Background - only on desktop */}
-      {!shouldReduceMotion && <Section3DBackground type="wave" />}
+      {/* Animated CSS background - skipped on mobile / reduced-motion */}
+      {!shouldReduceMotion && <SectionBackground type="wave" />}
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
