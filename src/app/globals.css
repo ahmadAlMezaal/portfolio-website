@@ -178,14 +178,18 @@ h1, h2, h3, h4, h5, h6 {
   50%      { transform: translate(-50px, 30px) scale(1.1); }
 }
 
+/* Pan by exactly one 32px tile so the dot lattice lands on itself (seamless),
+   using transform so the work stays on the compositor thread. */
 @keyframes grid-pan {
-  from { background-position: 0 0; }
-  to   { background-position: 32px 32px; }
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-32px, -32px, 0); }
 }
 
+/* 5 × the 40px stripe period along the 115deg gradient axis
+   (40·(sin115°, -cos115°) = (36.25, 16.9)), so the pattern repeats exactly. */
 @keyframes wave-pan {
-  from { background-position: 0 0; }
-  to   { background-position: 200% 200%; }
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-181.27px, -84.52px, 0); }
 }
 
 /* --- Hero --- */
@@ -222,16 +226,24 @@ h1, h2, h3, h4, h5, h6 {
 .dark .hero-orb-3 { background: radial-gradient(circle, rgba(99, 102, 241, 0.30), transparent 70%); }
 .dark .hero-orb-4 { background: radial-gradient(circle, rgba(125, 211, 252, 0.24), transparent 70%); }
 
+/* Mask stays fixed on the element; the animated dot layer lives on an
+   oversized ::before that translates underneath it. */
 .hero-grid {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(124, 58, 237, 0.12) 1px, transparent 1px);
-  background-size: 32px 32px;
   -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 75%);
   mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 75%);
-  animation: grid-pan 40s linear infinite;
 }
-.dark .hero-grid {
+.hero-grid::before {
+  content: "";
+  position: absolute;
+  inset: -32px; /* one tile of bleed so the translate never reveals an edge */
+  background-image: radial-gradient(rgba(124, 58, 237, 0.12) 1px, transparent 1px);
+  background-size: 32px 32px;
+  animation: grid-pan 40s linear infinite;
+  will-change: transform;
+}
+.dark .hero-grid::before {
   background-image: radial-gradient(rgba(125, 211, 252, 0.10) 1px, transparent 1px);
 }
 
@@ -259,43 +271,54 @@ h1, h2, h3, h4, h5, h6 {
 .section-grid {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(124, 58, 237, 0.10) 1px, transparent 1px);
-  background-size: 28px 28px;
   -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 20%, transparent 80%);
   mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 20%, transparent 80%);
-  animation: grid-pan 50s linear infinite;
 }
-.dark .section-grid {
+.section-grid::before {
+  content: "";
+  position: absolute;
+  inset: -32px;
+  background-image: radial-gradient(rgba(124, 58, 237, 0.10) 1px, transparent 1px);
+  background-size: 32px 32px; /* matches grid-pan's 32px step */
+  animation: grid-pan 50s linear infinite;
+  will-change: transform;
+}
+.dark .section-grid::before {
   background-image: radial-gradient(rgba(125, 211, 252, 0.08) 1px, transparent 1px);
 }
 
 .section-wave {
   position: absolute;
   inset: 0;
+  overflow: hidden;
+}
+.section-wave::before {
+  content: "";
+  position: absolute;
+  inset: -200px; /* covers the translate distance (~181px) on every edge */
   background: repeating-linear-gradient(
     115deg,
     transparent 0 38px,
     rgba(124, 58, 237, 0.05) 38px 40px
   );
-  background-size: 200% 200%;
   animation: wave-pan 16s linear infinite;
+  will-change: transform;
 }
-.dark .section-wave {
+.dark .section-wave::before {
   background: repeating-linear-gradient(
     115deg,
     transparent 0 38px,
     rgba(125, 211, 252, 0.05) 38px 40px
   );
-  background-size: 200% 200%;
 }
 
 /* Respect reduced-motion: keep the visuals, drop the animation */
 @media (prefers-reduced-motion: reduce) {
   .hero-orb,
-  .hero-grid,
+  .hero-grid::before,
   .section-orb,
-  .section-grid,
-  .section-wave {
+  .section-grid::before,
+  .section-wave::before {
     animation: none !important;
   }
 }
