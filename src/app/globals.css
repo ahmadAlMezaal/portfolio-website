@@ -161,3 +161,164 @@ h1, h2, h3, h4, h5, h6 {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
+
+/* ============================================================================
+   Animated backgrounds (pure-CSS replacement for the former WebGL scenes)
+   GPU-friendly transform/opacity only. See HeroBackground / SectionBackground.
+   ============================================================================ */
+
+@keyframes orb-drift-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(40px, -30px) scale(1.08); }
+  66%      { transform: translate(-30px, 20px) scale(0.96); }
+}
+
+@keyframes orb-drift-b {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(-50px, 30px) scale(1.1); }
+}
+
+/* Pan by exactly one 32px tile so the dot lattice lands on itself (seamless),
+   using transform so the work stays on the compositor thread. */
+@keyframes grid-pan {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-32px, -32px, 0); }
+}
+
+/* 5 × the 40px stripe period along the 115deg gradient axis
+   (40·(sin115°, -cos115°) = (36.25, 16.9)), so the pattern repeats exactly. */
+@keyframes wave-pan {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-181.27px, -84.52px, 0); }
+}
+
+/* --- Hero --- */
+.hero-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(64px);
+  opacity: 0.55;
+  will-change: transform;
+}
+.hero-orb-1 {
+  width: 28rem; height: 28rem; top: 8%; left: 6%;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.45), transparent 70%);
+  animation: orb-drift-a 18s ease-in-out infinite;
+}
+.hero-orb-2 {
+  width: 24rem; height: 24rem; top: 28%; right: 8%;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.40), transparent 70%);
+  animation: orb-drift-b 22s ease-in-out infinite;
+}
+.hero-orb-3 {
+  width: 22rem; height: 22rem; bottom: 6%; left: 24%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.40), transparent 70%);
+  animation: orb-drift-a 26s ease-in-out infinite reverse;
+}
+.hero-orb-4 {
+  width: 18rem; height: 18rem; top: 12%; right: 30%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.35), transparent 70%);
+  animation: orb-drift-b 30s ease-in-out infinite;
+}
+.dark .hero-orb { opacity: 0.4; }
+.dark .hero-orb-1 { background: radial-gradient(circle, rgba(56, 189, 248, 0.30), transparent 70%); }
+.dark .hero-orb-2 { background: radial-gradient(circle, rgba(45, 212, 191, 0.26), transparent 70%); }
+.dark .hero-orb-3 { background: radial-gradient(circle, rgba(99, 102, 241, 0.30), transparent 70%); }
+.dark .hero-orb-4 { background: radial-gradient(circle, rgba(125, 211, 252, 0.24), transparent 70%); }
+
+/* Mask stays fixed on the element; the animated dot layer lives on an
+   oversized ::before that translates underneath it. */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 75%);
+}
+.hero-grid::before {
+  content: "";
+  position: absolute;
+  inset: -32px; /* one tile of bleed so the translate never reveals an edge */
+  background-image: radial-gradient(rgba(124, 58, 237, 0.12) 1px, transparent 1px);
+  background-size: 32px 32px;
+  animation: grid-pan 40s linear infinite;
+  will-change: transform;
+}
+.dark .hero-grid::before {
+  background-image: radial-gradient(rgba(125, 211, 252, 0.10) 1px, transparent 1px);
+}
+
+/* --- Sections --- */
+.section-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(72px);
+  opacity: 0.35;
+  will-change: transform;
+}
+.section-orb-1 {
+  width: 22rem; height: 22rem; top: -4rem; left: -4rem;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.40), transparent 70%);
+  animation: orb-drift-a 24s ease-in-out infinite;
+}
+.section-orb-2 {
+  width: 20rem; height: 20rem; bottom: -4rem; right: -3rem;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.35), transparent 70%);
+  animation: orb-drift-b 28s ease-in-out infinite;
+}
+.dark .section-orb-1 { background: radial-gradient(circle, rgba(96, 165, 250, 0.28), transparent 70%); }
+.dark .section-orb-2 { background: radial-gradient(circle, rgba(6, 182, 212, 0.24), transparent 70%); }
+
+.section-grid {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 20%, transparent 80%);
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 20%, transparent 80%);
+}
+.section-grid::before {
+  content: "";
+  position: absolute;
+  inset: -32px;
+  background-image: radial-gradient(rgba(124, 58, 237, 0.10) 1px, transparent 1px);
+  background-size: 32px 32px; /* matches grid-pan's 32px step */
+  animation: grid-pan 50s linear infinite;
+  will-change: transform;
+}
+.dark .section-grid::before {
+  background-image: radial-gradient(rgba(125, 211, 252, 0.08) 1px, transparent 1px);
+}
+
+.section-wave {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.section-wave::before {
+  content: "";
+  position: absolute;
+  inset: -200px; /* covers the translate distance (~181px) on every edge */
+  background: repeating-linear-gradient(
+    115deg,
+    transparent 0 38px,
+    rgba(124, 58, 237, 0.05) 38px 40px
+  );
+  animation: wave-pan 16s linear infinite;
+  will-change: transform;
+}
+.dark .section-wave::before {
+  background: repeating-linear-gradient(
+    115deg,
+    transparent 0 38px,
+    rgba(125, 211, 252, 0.05) 38px 40px
+  );
+}
+
+/* Respect reduced-motion: keep the visuals, drop the animation */
+@media (prefers-reduced-motion: reduce) {
+  .hero-orb,
+  .hero-grid::before,
+  .section-orb,
+  .section-grid::before,
+  .section-wave::before {
+    animation: none !important;
+  }
+}

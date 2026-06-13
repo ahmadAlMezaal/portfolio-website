@@ -4,15 +4,9 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
 import { Code2, Server, Wrench } from "lucide-react";
-import dynamic from "next/dynamic";
 import { skills } from "@/lib/data";
 import { useShouldReduceMotion } from "@/lib/hooks";
-
-// Dynamically import 3D background (no SSR)
-const Section3DBackground = dynamic(() => import("./Section3DBackground"), {
-  ssr: false,
-  loading: () => null,
-});
+import SectionBackground from "./SectionBackground";
 
 const categoryIcons: Record<string, React.ReactNode> = {
   Frontend: <Code2 className="w-6 h-6" />,
@@ -45,8 +39,8 @@ export default function Skills() {
 
   return (
     <section id="skills" className="relative py-20 overflow-hidden">
-      {/* 3D Background - only on desktop */}
-      {!shouldReduceMotion && <Section3DBackground type="nodes" />}
+      {/* Animated CSS background - skipped on mobile / reduced-motion */}
+      {!shouldReduceMotion && <SectionBackground type="nodes" />}
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
