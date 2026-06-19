@@ -76,7 +76,7 @@ export default function Skills() {
                 <div className="relative bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl border border-gray-200 dark:border-gray-700 h-full">
                   {/* Category Header */}
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="p-3 rounded-xl bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-white">
+                    <div className="p-3 rounded-xl bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900">
                       {categoryIcons[category.category]}
                     </div>
                     <h3 className="text-xl font-bold text-gray-800 dark:text-white">
@@ -94,7 +94,7 @@ export default function Skills() {
                         transition={{
                           delay: 0.3 + categoryIndex * 0.1 + skillIndex * 0.05,
                         }}
-                        className="px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gradient-to-r hover:from-purple-600 hover:via-pink-500 hover:to-blue-500 hover:text-white transition-all duration-300"
+                        className="px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gradient-to-r hover:from-purple-600 hover:via-pink-500 hover:to-blue-500 hover:text-gray-900 transition-all duration-300"
                       >
                         {skill.name}
                       </motion.span>

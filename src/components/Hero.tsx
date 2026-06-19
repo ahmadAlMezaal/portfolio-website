@@ -38,8 +38,8 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background gradient base layer */}
-      <div className="absolute inset-0 -z-20 bg-gradient-to-br from-purple-50 via-white to-blue-50 dark:from-[#0d1b2a] dark:via-[#132238] dark:to-[#1b263b]" />
+      {/* Dark vignette so the headline stays legible over the code-rain */}
+      <div className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_60%_55%_at_50%_45%,rgba(5,8,6,0.6),transparent_78%)]" />
 
       {/* Animated CSS background (drifting gradient orbs + dot grid).
           Motion is disabled automatically under prefers-reduced-motion. */}
@@ -103,7 +103,7 @@ export default function Hero() {
           >
             <motion.a
               href="#contact"
-              className="group relative px-8 py-4 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-white font-semibold rounded-full overflow-hidden shadow-lg shadow-purple-500/25"
+              className="group relative px-8 py-4 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900 font-bold rounded-full overflow-hidden shadow-lg shadow-purple-500/25"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >

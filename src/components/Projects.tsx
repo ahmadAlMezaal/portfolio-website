@@ -148,7 +148,7 @@ const FilterPill = ({
       px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
       ${
         isActive
-          ? "bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-white shadow-lg shadow-purple-500/25"
+          ? "bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900 shadow-lg shadow-purple-500/25"
           : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
       }
     `}
@@ -320,7 +320,7 @@ export default function Projects() {
                       <div className="absolute top-3 right-3 flex flex-col items-end gap-2 z-10">
                         {/* Featured badge */}
                         {project.featured && (
-                          <div className="flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-purple-600 to-pink-500 text-white text-xs font-semibold rounded-full shadow-lg">
+                          <div className="flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-purple-600 to-pink-500 text-gray-900 text-xs font-bold rounded-full shadow-lg">
                             <Star className="w-3 h-3" />
                             Featured
                           </div>
@@ -411,7 +411,7 @@ export default function Projects() {
                                 href={link.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-white text-xs font-medium rounded-full shadow-md active:scale-95 transition-transform"
+                                className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900 text-xs font-bold rounded-full shadow-md active:scale-95 transition-transform"
                               >
                                 <IconComponent className="w-3.5 h-3.5" />
                                 {link.label}
@@ -440,7 +440,7 @@ export default function Projects() {
             <motion.div variants={itemVariants} className="text-center mt-12">
               <motion.button
                 onClick={handleToggleShowAll}
-                className="px-8 py-3 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-white font-semibold rounded-full shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transition-shadow"
+                className="px-8 py-3 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900 font-bold rounded-full shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transition-shadow"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
