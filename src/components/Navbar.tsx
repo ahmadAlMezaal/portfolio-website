@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { navLinks, personalInfo } from "@/lib/data";
 import { useScrollPosition, useIsMobile } from "@/lib/hooks";
+import ThemeSwitcher from "./ThemeSwitcher";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -75,6 +76,9 @@ export default function Navbar() {
                 {personalInfo.status}
               </span>
             </motion.div>
+
+            {/* Theme Switcher */}
+            <ThemeSwitcher />
 
             {/* Mobile Menu Button */}
             <motion.button

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import SmoothScroll from "@/components/SmoothScroll";
 import MatrixRain from "@/components/MatrixRain";
 import ScrollToTopRocket from "@/components/ScrollToTopRocket";
@@ -86,14 +87,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`dark ${jetBrainsMono.variable}`}>
+      <head>
+        {/* Apply the saved theme before paint to avoid a flash of the default. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className="font-mono antialiased">
-        <SmoothScroll>
-          {/* Global terminal code-rain backdrop, fixed behind all content */}
-          <MatrixRain />
-          <JsonLd url={siteUrl} />
-          {children}
-          <ScrollToTopRocket />
-        </SmoothScroll>
+        <ThemeProvider>
+          <SmoothScroll>
+            {/* Global terminal code-rain backdrop, fixed behind all content */}
+            <MatrixRain />
+            <JsonLd url={siteUrl} />
+            {children}
+            <ScrollToTopRocket />
+          </SmoothScroll>
+        </ThemeProvider>
       </body>
     </html>
   );
