@@ -52,7 +52,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="max-w-2xl mx-auto mb-10 text-left rounded-xl border border-gray-700 bg-gray-900/80 backdrop-blur-sm shadow-2xl shadow-purple-500/10 overflow-hidden"
+            className="terminal-window max-w-2xl mx-auto mb-10 text-left rounded-xl border border-gray-700 bg-gray-900/80 backdrop-blur-sm shadow-2xl shadow-purple-500/10 overflow-hidden"
           >
             {/* Title bar */}
             <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-700 bg-gray-800/60">
@@ -69,7 +69,7 @@ export default function Hero() {
                 <span className="text-purple-400">whoami</span>
               </p>
               <p className="text-3xl sm:text-5xl font-bold font-display tracking-tight pb-2">
-                <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
+                <span className="theme-headline inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
                   {personalInfo.name}
                 </span>
               </p>

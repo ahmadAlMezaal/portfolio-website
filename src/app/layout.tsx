@@ -3,7 +3,7 @@ import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import SmoothScroll from "@/components/SmoothScroll";
-import MatrixRain from "@/components/MatrixRain";
+import ThemeBackground from "@/components/ThemeBackground";
 import ScrollToTopRocket from "@/components/ScrollToTopRocket";
 import JsonLd from "@/components/JsonLd";
 import { siteMetadata, personalInfo } from "@/lib/data";
@@ -98,8 +98,8 @@ export default function RootLayout({
       <body className="font-mono antialiased">
         <ThemeProvider>
           <SmoothScroll>
-            {/* Global terminal code-rain backdrop, fixed behind all content */}
-            <MatrixRain />
+            {/* Per-theme animated backdrop (code-rain / synthwave / CRT) */}
+            <ThemeBackground />
             <JsonLd url={siteUrl} />
             {children}
             <ScrollToTopRocket />
