@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/ThemeProvider";
+import SmoothScroll from "@/components/SmoothScroll";
+import MatrixRain from "@/components/MatrixRain";
 import ScrollToTopRocket from "@/components/ScrollToTopRocket";
 import JsonLd from "@/components/JsonLd";
 import { siteMetadata, personalInfo } from "@/lib/data";
@@ -9,17 +10,12 @@ import { getBasePath } from "@/lib/utils";
 
 const siteUrl = "https://theaam.dev";
 
-const inter = Inter({
-  variable: "--font-inter",
+// Single typeface for the whole site — a developer/terminal monospace.
+const jetBrainsMono = JetBrains_Mono({
+  variable: "--font-mono-next",
   subsets: ["latin"],
   display: "swap",
-});
-
-const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 const basePath = getBasePath();
@@ -89,17 +85,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${inter.variable} ${plusJakartaSans.variable}`}
-    >
-      <body className="font-sans antialiased">
-        <ThemeProvider>
+    <html lang="en" className={`dark ${jetBrainsMono.variable}`}>
+      <body className="font-mono antialiased">
+        <SmoothScroll>
+          {/* Global terminal code-rain backdrop, fixed behind all content */}
+          <MatrixRain />
           <JsonLd url={siteUrl} />
           {children}
           <ScrollToTopRocket />
-        </ThemeProvider>
+        </SmoothScroll>
       </body>
     </html>
   );

@@ -1,21 +1,14 @@
-// Pure-CSS animated section background.
-//
-// Replaces the former three.js / WebGL section scenes (Section3DBackground).
-// Each `type` maps to a lightweight CSS motif:
-//   - "particles" / "nodes" -> drifting blurred orbs + a soft dot grid
-//   - "wave"                 -> drifting diagonal wave stripes
-// All animation is transform/opacity only and is disabled under
-// `prefers-reduced-motion` via globals.css. Ships zero client JS of its own.
-
+// Section background accents layered over the global <MatrixRain> canvas:
+// a soft green glow plus very faint CRT scanlines. The `type` prop is kept
+// for call-site compatibility but the terminal motif is uniform site-wide.
 type SceneType = "particles" | "nodes" | "wave";
 
 interface SectionBackgroundProps {
-  type: SceneType;
+  type?: SceneType;
   className?: string;
 }
 
 export default function SectionBackground({
-  type,
   className = "",
 }: SectionBackgroundProps) {
   return (
@@ -23,13 +16,8 @@ export default function SectionBackground({
       className={`absolute inset-0 -z-10 overflow-hidden pointer-events-none ${className}`}
       aria-hidden="true"
     >
-      <span className="section-orb section-orb-1" />
-      <span className="section-orb section-orb-2" />
-      {type === "wave" ? (
-        <div className="section-wave" />
-      ) : (
-        <div className="section-grid" />
-      )}
+      <div className="section-glow" />
+      <div className="scanlines scanlines-faint" />
     </div>
   );
 }

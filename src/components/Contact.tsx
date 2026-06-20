@@ -19,7 +19,7 @@ import {
   Codepen,
   type LucideIcon,
 } from "lucide-react";
-import { personalInfo, education, certifications } from "@/lib/data";
+import { personalInfo } from "@/lib/data";
 import type { SocialPlatform } from "@/lib/data.types";
 import { useShouldReduceMotion } from "@/lib/hooks";
 import SectionBackground from "./SectionBackground";
@@ -125,7 +125,7 @@ export default function Contact() {
   }));
 
   return (
-    <section id="contact" className="relative py-20 bg-gray-50 dark:bg-[#132238]/50 overflow-hidden">
+    <section id="contact" className="relative py-20 bg-gray-50 dark:bg-[#070d0a]/50 overflow-hidden">
       {/* Animated CSS background - skipped on mobile / reduced-motion */}
       {!shouldReduceMotion && <SectionBackground type="wave" />}
 
@@ -151,24 +151,8 @@ export default function Contact() {
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Info */}
             <motion.div variants={itemVariants} className="space-y-8">
-              {/* Quick Info Cards */}
-              <div className="grid sm:grid-cols-2 gap-4">
-                <motion.a
-                  href={`mailto:${personalInfo.email}`}
-                  className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 group hover:border-purple-500 transition-colors overflow-hidden"
-                  whileHover={{ y: -5 }}
-                >
-                  <div className="p-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 text-white flex-shrink-0">
-                    <Mail className="w-6 h-6" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Email</p>
-                    <p className="text-gray-800 dark:text-white font-medium group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors truncate">
-                      {personalInfo.email}
-                    </p>
-                  </div>
-                </motion.a>
-
+              {/* Quick Info Card */}
+              <div>
                 <motion.div
                   className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700"
                   whileHover={{ y: -5 }}
@@ -207,43 +191,6 @@ export default function Contact() {
                   ))}
                 </div>
               </div>
-
-              {/* Education & Certifications */}
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
-                    Education
-                  </h3>
-                  {education.map((edu, index) => (
-                    <div
-                      key={index}
-                      className="p-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700"
-                    >
-                      <h4 className="font-semibold text-gray-800 dark:text-white">
-                        {edu.degree}
-                      </h4>
-                      <p className="text-purple-600 dark:text-purple-400">{edu.school}</p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">{edu.period}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
-                    Certifications
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {certifications.map((cert) => (
-                      <span
-                        key={cert}
-                        className="px-4 py-2 bg-gradient-to-r from-purple-600/10 via-pink-500/10 to-blue-500/10 text-purple-600 dark:text-purple-400 rounded-full text-sm font-medium border border-purple-500/20"
-                      >
-                        {cert}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
             </motion.div>
 
             {/* Contact Form */}
@@ -253,7 +200,7 @@ export default function Contact() {
                 className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl border border-gray-200 dark:border-gray-700"
               >
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="p-3 rounded-xl bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-white">
+                  <div className="p-3 rounded-xl bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900">
                     <MessageSquare className="w-6 h-6" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-800 dark:text-white">
@@ -328,7 +275,7 @@ export default function Contact() {
                   <div className="space-y-3">
                     <motion.button
                       type="submit"
-                      className="w-full py-4 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-white font-semibold rounded-xl shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transition-all flex items-center justify-center gap-2"
+                      className="w-full py-4 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900 font-bold rounded-xl shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transition-all flex items-center justify-center gap-2"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >

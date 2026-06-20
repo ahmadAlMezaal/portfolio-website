@@ -4,10 +4,11 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* Typography - Modern font pairing
-     These reference the CSS variables set by next/font on <html> */
-  --font-sans: var(--font-inter), "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-display: var(--font-plus-jakarta), "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  /* Typography - single terminal monospace for the whole site.
+     References the CSS variable set by next/font on <html>. */
+  --font-mono: var(--font-mono-next), ui-monospace, "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --font-sans: var(--font-mono);
+  --font-display: var(--font-mono);
 }
 
 /* Base styles */
@@ -17,30 +18,60 @@ html {
   font-family: var(--font-sans);
 }
 
-/* Light theme (default) - warm, professional palette */
-:root {
-  --background: #faf8f5;
-  --foreground: #2d3748;
-  --card-bg: #ffffff;
-  --card-border: #e8e4df;
-  --muted: #6b7280;
-  --muted-bg: #f3f1ed;
-  --accent-purple: #7c3aed;
-  --accent-pink: #db2777;
-  --accent-blue: #2563eb;
+/* Lenis smooth scroll — Lenis owns easing when active, so disable the
+   native CSS smooth-scroll only while its classes are present. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }
 
-/* Dark theme - Winter is Coming inspired (deep midnight blues) */
-.dark {
-  --background: #0d1b2a;
-  --foreground: #e2e8f0;
-  --card-bg: #1b263b;
-  --card-border: #334155;
-  --muted: #94a3b8;
-  --muted-bg: #162033;
-  --accent-purple: #a78bfa;
-  --accent-pink: #f9a8d4;
-  --accent-blue: #7dd3fc;
+/* ===========================================================================
+   Single "hacker terminal" theme — phosphor green on near-black.
+   The whole site renders in one theme (no light/dark toggle).
+   =========================================================================== */
+:root {
+  --background: #050806;
+  --foreground: #c8ffd4;
+  --card-bg: #0a1612;
+  --card-border: #1d4730;
+  --muted: #5fa37c;
+  --muted-bg: #0a1410;
+  --accent-purple: #00ff9c;
+  --accent-pink: #39ff14;
+  --accent-blue: #00b86b;
+
+  /* Remap the brand color tokens to a green ramp. Every gradient,
+     text-*, border-*, ring-*, shadow-* utility that referenced
+     purple/pink/blue now resolves to terminal green automatically. */
+  --color-purple-50: #07140d;
+  --color-purple-100: #0c2418;
+  --color-purple-300: #6affc0;
+  --color-purple-400: #2dffa6;
+  --color-purple-500: #00ff9c;
+  --color-purple-600: #00e389;
+  --color-purple-700: #00b56f;
+  --color-purple-900: #04150d;
+
+  --color-pink-400: #7dff5e;
+  --color-pink-500: #39ff14;
+
+  --color-blue-50: #07140d;
+  --color-blue-400: #10d98a;
+  --color-blue-500: #00b86b;
+
+  --color-cyan-500: #00d9a0;
 }
 
 body {
@@ -62,47 +93,47 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.025em;
 }
 
-/* Override Tailwind gray colors in dark mode to use midnight blue palette */
+/* Remap Tailwind gray tokens to a green-tinted near-black ramp.
+   Lighter steps read as text, darker steps as surfaces/borders. */
 .dark {
-  /* Background overrides */
-  --color-gray-50: #e2e8f0;
-  --color-gray-100: #cbd5e1;
-  --color-gray-200: #94a3b8;
-  --color-gray-300: #94a3b8;
-  --color-gray-400: #64748b;
-  --color-gray-500: #475569;
-  --color-gray-600: #334155;
-  --color-gray-700: #1e3a5f;
-  --color-gray-800: #1b263b;
-  --color-gray-900: #0d1b2a;
-  --color-gray-950: #071220;
+  --color-gray-50: #d8ffe6;
+  --color-gray-100: #b9f7cf;
+  --color-gray-200: #8fd9ab;
+  --color-gray-300: #a7e8c4;
+  --color-gray-400: #5fa37c;
+  --color-gray-500: #3f7256;
+  --color-gray-600: #2a5540;
+  --color-gray-700: #14301f;
+  --color-gray-800: #0a1612;
+  --color-gray-900: #060d09;
+  --color-gray-950: #040805;
 }
 
-/* Explicit dark mode style overrides for midnight blue palette */
-.dark .bg-gray-50 { background-color: #162033; }
-.dark .bg-gray-100 { background-color: #1b263b; }
-.dark .bg-gray-200 { background-color: #243447; }
-.dark .bg-gray-700 { background-color: #1e3a5f; }
-.dark .bg-gray-800 { background-color: #1b263b; }
-.dark .bg-gray-900 { background-color: #0d1b2a; }
-.dark .bg-gray-800\/50 { background-color: rgba(27, 38, 59, 0.5); }
-.dark .bg-gray-900\/80 { background-color: rgba(13, 27, 42, 0.8); }
+/* Explicit surface/border/text overrides for the terminal palette */
+.dark .bg-gray-50 { background-color: #081109; }
+.dark .bg-gray-100 { background-color: #0a1612; }
+.dark .bg-gray-200 { background-color: #122418; }
+.dark .bg-gray-700 { background-color: #14301f; }
+.dark .bg-gray-800 { background-color: #0a1612; }
+.dark .bg-gray-900 { background-color: #060d09; }
+.dark .bg-gray-800\/50 { background-color: rgba(10, 22, 18, 0.5); }
+.dark .bg-gray-900\/80 { background-color: rgba(6, 13, 9, 0.85); }
 
-.dark .border-gray-200 { border-color: #334155; }
-.dark .border-gray-700 { border-color: #334155; }
+.dark .border-gray-200 { border-color: #1d4730; }
+.dark .border-gray-700 { border-color: #1d4730; }
 
-.dark .text-gray-300 { color: #cbd5e1; }
-.dark .text-gray-400 { color: #94a3b8; }
+.dark .text-gray-300 { color: #a7e8c4; }
+.dark .text-gray-400 { color: #5fa37c; }
 
-.dark .hover\:bg-gray-700:hover { background-color: #243447; }
-.dark .hover\:bg-gray-800:hover { background-color: #1e3a5f; }
+.dark .hover\:bg-gray-700:hover { background-color: #1a3d27; }
+.dark .hover\:bg-gray-800:hover { background-color: #14301f; }
 
-/* Form inputs in dark mode - these provide defaults, Tailwind classes can override */
+/* Form inputs - terminal-style placeholders */
 .dark input::placeholder, .dark textarea::placeholder {
-  color: #64748b;
+  color: #3f7256;
 }
 
-/* Custom scrollbar - light mode */
+/* Custom scrollbar - phosphor green */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -112,32 +143,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #9333ea, #ec4899, #3b82f6);
+  background: linear-gradient(to bottom, #00ff9c, #39ff14, #00b86b);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #7c3aed, #db2777, #2563eb);
+  background: linear-gradient(to bottom, #6affc0, #00ff9c, #00d9a0);
 }
 
-/* Custom scrollbar - dark mode (icy blue gradient) */
-.dark ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #7dd3fc, #38bdf8, #0ea5e9);
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #bae6fd, #7dd3fc, #38bdf8);
-}
-
-/* Selection - light mode */
+/* Text selection - green highlight */
 ::selection {
-  background: rgba(147, 51, 234, 0.3);
-  color: inherit;
-}
-
-/* Selection - dark mode (icy blue) */
-.dark ::selection {
-  background: rgba(125, 211, 252, 0.3);
+  background: rgba(0, 255, 156, 0.3);
+  color: #d6ffe0;
 }
 
 /* Gradient text animation */
@@ -163,162 +180,77 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ============================================================================
-   Animated backgrounds (pure-CSS replacement for the former WebGL scenes)
-   GPU-friendly transform/opacity only. See HeroBackground / SectionBackground.
+   Terminal background accents that layer over the global <MatrixRain> canvas.
+   Pure-CSS, GPU-friendly. See HeroBackground / SectionBackground.
    ============================================================================ */
 
-@keyframes orb-drift-a {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33%      { transform: translate(40px, -30px) scale(1.08); }
-  66%      { transform: translate(-30px, 20px) scale(0.96); }
+/* Soft green glow pools that breathe behind the hero content */
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50%      { opacity: 0.75; transform: scale(1.08); }
 }
 
-@keyframes orb-drift-b {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50%      { transform: translate(-50px, 30px) scale(1.1); }
-}
-
-/* Pan by exactly one 32px tile so the dot lattice lands on itself (seamless),
-   using transform so the work stays on the compositor thread. */
-@keyframes grid-pan {
-  from { transform: translate3d(0, 0, 0); }
-  to   { transform: translate3d(-32px, -32px, 0); }
-}
-
-/* 5 × the 40px stripe period along the 115deg gradient axis
-   (40·(sin115°, -cos115°) = (36.25, 16.9)), so the pattern repeats exactly. */
-@keyframes wave-pan {
-  from { transform: translate3d(0, 0, 0); }
-  to   { transform: translate3d(-181.27px, -84.52px, 0); }
+/* CRT scanlines drift slowly downward for a live-terminal shimmer */
+@keyframes scanline-drift {
+  from { background-position-y: 0; }
+  to   { background-position-y: 6px; }
 }
 
 /* --- Hero --- */
-.hero-orb {
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(64px);
-  opacity: 0.55;
-  will-change: transform;
-}
-.hero-orb-1 {
-  width: 28rem; height: 28rem; top: 8%; left: 6%;
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.45), transparent 70%);
-  animation: orb-drift-a 18s ease-in-out infinite;
-}
-.hero-orb-2 {
-  width: 24rem; height: 24rem; top: 28%; right: 8%;
-  background: radial-gradient(circle, rgba(236, 72, 153, 0.40), transparent 70%);
-  animation: orb-drift-b 22s ease-in-out infinite;
-}
-.hero-orb-3 {
-  width: 22rem; height: 22rem; bottom: 6%; left: 24%;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.40), transparent 70%);
-  animation: orb-drift-a 26s ease-in-out infinite reverse;
-}
-.hero-orb-4 {
-  width: 18rem; height: 18rem; top: 12%; right: 30%;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.35), transparent 70%);
-  animation: orb-drift-b 30s ease-in-out infinite;
-}
-.dark .hero-orb { opacity: 0.4; }
-.dark .hero-orb-1 { background: radial-gradient(circle, rgba(56, 189, 248, 0.30), transparent 70%); }
-.dark .hero-orb-2 { background: radial-gradient(circle, rgba(45, 212, 191, 0.26), transparent 70%); }
-.dark .hero-orb-3 { background: radial-gradient(circle, rgba(99, 102, 241, 0.30), transparent 70%); }
-.dark .hero-orb-4 { background: radial-gradient(circle, rgba(125, 211, 252, 0.24), transparent 70%); }
-
-/* Mask stays fixed on the element; the animated dot layer lives on an
-   oversized ::before that translates underneath it. */
-.hero-grid {
+.hero-glow {
   position: absolute;
   inset: 0;
-  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 75%);
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 75%);
+  background:
+    radial-gradient(40% 45% at 50% 18%, rgba(0, 255, 156, 0.18), transparent 70%),
+    radial-gradient(35% 40% at 18% 60%, rgba(57, 255, 20, 0.10), transparent 70%),
+    radial-gradient(35% 40% at 82% 65%, rgba(0, 184, 107, 0.12), transparent 70%);
+  filter: blur(30px);
+  animation: glow-pulse 9s ease-in-out infinite;
+  will-change: opacity, transform;
 }
-.hero-grid::before {
-  content: "";
+
+/* Shared scanline overlay (used by hero + sections) */
+.scanlines {
   position: absolute;
-  inset: -32px; /* one tile of bleed so the translate never reveals an edge */
-  background-image: radial-gradient(rgba(124, 58, 237, 0.12) 1px, transparent 1px);
-  background-size: 32px 32px;
-  animation: grid-pan 40s linear infinite;
-  will-change: transform;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 255, 156, 0.05) 0px,
+    rgba(0, 255, 156, 0.05) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  background-size: 100% 4px;
+  animation: scanline-drift 1.2s linear infinite;
+  will-change: background-position;
 }
-.dark .hero-grid::before {
-  background-image: radial-gradient(rgba(125, 211, 252, 0.10) 1px, transparent 1px);
+.scanlines.scanlines-faint {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 255, 156, 0.035) 0px,
+    rgba(0, 255, 156, 0.035) 1px,
+    transparent 1px,
+    transparent 5px
+  );
 }
 
 /* --- Sections --- */
-.section-orb {
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(72px);
-  opacity: 0.35;
-  will-change: transform;
-}
-.section-orb-1 {
-  width: 22rem; height: 22rem; top: -4rem; left: -4rem;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.40), transparent 70%);
-  animation: orb-drift-a 24s ease-in-out infinite;
-}
-.section-orb-2 {
-  width: 20rem; height: 20rem; bottom: -4rem; right: -3rem;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.35), transparent 70%);
-  animation: orb-drift-b 28s ease-in-out infinite;
-}
-.dark .section-orb-1 { background: radial-gradient(circle, rgba(96, 165, 250, 0.28), transparent 70%); }
-.dark .section-orb-2 { background: radial-gradient(circle, rgba(6, 182, 212, 0.24), transparent 70%); }
-
-.section-grid {
+.section-glow {
   position: absolute;
   inset: 0;
-  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 20%, transparent 80%);
-  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 20%, transparent 80%);
-}
-.section-grid::before {
-  content: "";
-  position: absolute;
-  inset: -32px;
-  background-image: radial-gradient(rgba(124, 58, 237, 0.10) 1px, transparent 1px);
-  background-size: 32px 32px; /* matches grid-pan's 32px step */
-  animation: grid-pan 50s linear infinite;
-  will-change: transform;
-}
-.dark .section-grid::before {
-  background-image: radial-gradient(rgba(125, 211, 252, 0.08) 1px, transparent 1px);
-}
-
-.section-wave {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-.section-wave::before {
-  content: "";
-  position: absolute;
-  inset: -200px; /* covers the translate distance (~181px) on every edge */
-  background: repeating-linear-gradient(
-    115deg,
-    transparent 0 38px,
-    rgba(124, 58, 237, 0.05) 38px 40px
-  );
-  animation: wave-pan 16s linear infinite;
-  will-change: transform;
-}
-.dark .section-wave::before {
-  background: repeating-linear-gradient(
-    115deg,
-    transparent 0 38px,
-    rgba(125, 211, 252, 0.05) 38px 40px
-  );
+  background:
+    radial-gradient(45% 60% at 12% 10%, rgba(0, 255, 156, 0.08), transparent 70%),
+    radial-gradient(45% 60% at 88% 90%, rgba(0, 184, 107, 0.07), transparent 70%);
+  filter: blur(36px);
+  animation: glow-pulse 14s ease-in-out infinite;
+  will-change: opacity, transform;
 }
 
 /* Respect reduced-motion: keep the visuals, drop the animation */
 @media (prefers-reduced-motion: reduce) {
-  .hero-orb,
-  .hero-grid::before,
-  .section-orb,
-  .section-grid::before,
-  .section-wave::before {
+  .hero-glow,
+  .section-glow,
+  .scanlines {
     animation: none !important;
   }
 }

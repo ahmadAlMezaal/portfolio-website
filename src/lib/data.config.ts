@@ -36,7 +36,7 @@ const config: PortfolioConfig = {
   personalInfo: {
     name: "Ahmad Al Mezaal",
     title: "Senior Software Engineer",
-    tagline: "Building resilient, cloud-native systems at scale",
+    tagline: "Shipping products that turn complex problems into simple, AI-powered experiences",
     status: "Open to Freelance",
     email: "ahmad.hmazaal@gmail.com",
     location: "London, United Kingdom",
