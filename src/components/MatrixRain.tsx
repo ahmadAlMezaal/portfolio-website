@@ -1,14 +1,12 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useTheme } from "./ThemeProvider";
 
-// Global "matrix" code-rain backdrop rendered on a single fixed canvas.
-// Sits behind all page content (-z-10) at low opacity so headings stay crisp.
-// Colors follow the active theme via CSS vars; honors prefers-reduced-motion.
+// Matrix-only code-rain backdrop (rendered solely for the matrix theme by
+// ThemeBackground). Fixed canvas behind content at low opacity; reads the
+// matrix rain colors from CSS vars. Honors prefers-reduced-motion.
 export default function MatrixRain() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { theme } = useTheme();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -119,7 +117,7 @@ export default function MatrixRain() {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
     };
-  }, [theme]);
+  }, []);
 
   return (
     <canvas

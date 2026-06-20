@@ -1,90 +1,56 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Palette, Check } from "lucide-react";
-import { THEMES, useTheme, type Theme } from "./ThemeProvider";
+import { motion } from "framer-motion";
+import { THEMES, useTheme } from "./ThemeProvider";
 
+// Always-visible segmented swatch control — pick a skin in one click.
+// The active swatch glows and a shared pill slides under it (layoutId).
 export default function ThemeSwitcher() {
   const { theme, setTheme } = useTheme();
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  // Close on outside click / Escape
-  useEffect(() => {
-    if (!open) return;
-    const onClick = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    };
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    document.addEventListener("mousedown", onClick);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onClick);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [open]);
-
-  const active = THEMES.find((t) => t.id === theme) ?? THEMES[0];
-
-  const choose = (id: Theme) => {
-    setTheme(id);
-    setOpen(false);
-  };
 
   return (
-    <div className="relative" ref={ref}>
-      <motion.button
-        onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 p-2 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        aria-label="Change theme"
-        aria-haspopup="menu"
-        aria-expanded={open}
-      >
-        <Palette className="w-5 h-5 text-purple-400" />
-        <span
-          className="w-2.5 h-2.5 rounded-full"
-          style={{ backgroundColor: active.swatch, boxShadow: `0 0 8px ${active.swatch}` }}
-        />
-      </motion.button>
-
-      <AnimatePresence>
-        {open && (
-          <motion.ul
-            initial={{ opacity: 0, y: -8, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -8, scale: 0.96 }}
-            transition={{ duration: 0.15 }}
-            role="menu"
-            className="absolute right-0 mt-2 w-44 p-1.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-xl z-50"
+    <div
+      role="radiogroup"
+      aria-label="Color theme"
+      className="flex items-center gap-0.5 p-1 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
+    >
+      {THEMES.map((t) => {
+        const isActive = t.id === theme;
+        return (
+          <button
+            key={t.id}
+            role="radio"
+            aria-checked={isActive}
+            aria-label={t.label}
+            title={t.label}
+            onClick={() => setTheme(t.id)}
+            className="relative flex items-center justify-center w-7 h-7 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-offset-transparent"
+            style={{ ["--tw-ring-color" as string]: t.swatch }}
           >
-            {THEMES.map((t) => {
-              const isActive = t.id === theme;
-              return (
-                <li key={t.id}>
-                  <button
-                    role="menuitemradio"
-                    aria-checked={isActive}
-                    onClick={() => choose(t.id)}
-                    className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                  >
-                    <span
-                      className="w-3 h-3 rounded-full flex-shrink-0"
-                      style={{ backgroundColor: t.swatch, boxShadow: `0 0 8px ${t.swatch}` }}
-                    />
-                    <span className="flex-1">{t.label}</span>
-                    {isActive && <Check className="w-4 h-4 text-purple-400" />}
-                  </button>
-                </li>
-              );
-            })}
-          </motion.ul>
-        )}
-      </AnimatePresence>
+            {isActive && (
+              <motion.span
+                layoutId="theme-active-pill"
+                className="absolute inset-0 rounded-full"
+                style={{
+                  border: `1.5px solid ${t.swatch}`,
+                  boxShadow: `0 0 10px ${t.swatch}66, inset 0 0 8px ${t.swatch}33`,
+                }}
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              />
+            )}
+            <span
+              className="rounded-full transition-all"
+              style={{
+                width: isActive ? 11 : 9,
+                height: isActive ? 11 : 9,
+                backgroundColor: t.swatch,
+                opacity: isActive ? 1 : 0.55,
+                boxShadow: isActive ? `0 0 10px ${t.swatch}` : "none",
+              }}
+            />
+          </button>
+        );
+      })}
     </div>
   );
 }

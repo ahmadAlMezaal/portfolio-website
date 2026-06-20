@@ -448,26 +448,12 @@ h1, h2, h3, h4, h5, h6 {
     );
   animation: none;
 }
-.crt-overlay::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 140px;
-  background: linear-gradient(rgba(255, 255, 255, 0.035), transparent);
-  animation: crt-roll 7s linear infinite;
-}
 @keyframes crt-flicker {
-  0%, 100% { opacity: 0.92; }
-  48% { opacity: 0.92; }
+  0%, 100% { opacity: 0.94; }
+  48% { opacity: 0.94; }
   50% { opacity: 1; }
-  52% { opacity: 0.88; }
-  80% { opacity: 0.96; }
-}
-@keyframes crt-roll {
-  from { transform: translateY(-140px); }
-  to   { transform: translateY(100vh); }
+  52% { opacity: 0.9; }
+  80% { opacity: 0.97; }
 }
 
 /* --- Headline effects (applied to the hero name via .theme-headline) --- */
@@ -523,7 +509,6 @@ h1, h2, h3, h4, h5, h6 {
 @media (prefers-reduced-motion: reduce) {
   .synthwave-grid::before,
   .crt-overlay,
-  .crt-overlay::after,
   [data-theme="cyberpunk"] .theme-headline,
   [data-theme="amber"] .theme-headline {
     animation: none !important;
