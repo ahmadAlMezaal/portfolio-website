@@ -251,6 +251,27 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
       status: "live",
     },
     {
+      title: "Noctra",
+      description:
+        "Your repo's night watch — an autonomous agent that turns Linear tickets into pull requests. Move a ticket to Next, go to sleep, wake up to PRs. Continuously sweeps your board, routing each ticket to the right repo and running them concurrently across projects.",
+      image: "/assets/noctra-og.png",
+      tags: ["Go", "AI Agents", "Linear", "GitHub", "Automation"],
+      links: [
+        {
+          type: "website",
+          label: "Website",
+          url: "https://getnoctra.dev",
+        },
+        {
+          type: "github",
+          label: "GitHub",
+          url: "https://github.com/ahmadAlMezaal/noctra",
+        },
+      ],
+      featured: true,
+      status: "live",
+    },
+    {
       title: "Shuffle Rewards",
       description:
         "Cashback rewards app for eating out — members connect their bank account, visit partner venues, and earn cashback when qualifying purchases are detected and approved.",
@@ -272,6 +293,22 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
           type: "playstore",
           label: "Play Store",
           url: "https://play.google.com/store/apps/details?id=com.shuffle.finance&pcampaignid=web_share",
+        },
+      ],
+      featured: true,
+      status: "live",
+    },
+    {
+      title: "OneNote MCP",
+      description:
+        "An MCP server that brings Microsoft OneNote into Claude, Cursor, and any MCP-compatible client — list notebooks and sections, full-text search across pages, read pages as Markdown, and create or delete pages from natural language.",
+      image: null,
+      tags: ["TypeScript", "MCP", "Microsoft Graph", "AI Tools"],
+      links: [
+        {
+          type: "github",
+          label: "GitHub",
+          url: "https://github.com/ahmadAlMezaal/onenote-mcp",
         },
       ],
       featured: true,
@@ -335,7 +372,7 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
           url: "https://github.com/ahmadAlMezaal/the-alfred-brief",
         },
       ],
-      featured: true,
+      featured: false,
       status: "in_progress",
     },
     {
@@ -351,7 +388,7 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
           url: "https://github.com/ahmadAlMezaal/friday",
         },
       ],
-      featured: true,
+      featured: false,
       status: "live",
     },
     {
@@ -372,7 +409,7 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
           url: "https://github.com/ahmadAlMezaal/decidr",
         },
       ],
-      featured: true,
+      featured: false,
       status: "live",
     },
     {

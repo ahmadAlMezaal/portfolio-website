@@ -165,9 +165,9 @@ export default function Projects() {
   const [activeFilter, setActiveFilter] = useState<FilterOption>("all");
   const isMobile = useIsMobile();
 
-  // Featured projects for home page (max 3)
+  // Featured projects for home page (curated via the `featured` flag in config)
   const featuredProjects = useMemo(
-    () => projects.filter((p) => p.featured).slice(0, 3),
+    () => projects.filter((p) => p.featured),
     []
   );
 
