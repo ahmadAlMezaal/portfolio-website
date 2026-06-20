@@ -6,6 +6,7 @@ import { ArrowDown, Download, Mail } from "lucide-react";
 import { personalInfo, roles } from "@/lib/data";
 import { assetPath, isCvAvailable } from "@/lib/utils";
 import HeroBackground from "./HeroBackground";
+import HeroIntro from "./HeroIntro";
 
 export default function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
@@ -47,57 +48,8 @@ export default function Hero() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center">
-          {/* Terminal window introducing me (replaces the giant repeated name) */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="terminal-window max-w-2xl mx-auto mb-10 text-left rounded-xl border border-gray-700 bg-gray-900/80 backdrop-blur-sm shadow-2xl shadow-purple-500/10 overflow-hidden"
-          >
-            {/* Title bar */}
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-700 bg-gray-800/60">
-              <span className="w-3 h-3 rounded-full bg-red-500/80" />
-              <span className="w-3 h-3 rounded-full bg-amber-500/80" />
-              <span className="w-3 h-3 rounded-full bg-green-500/80" />
-              <span className="ml-2 text-xs text-gray-400">ahmad@portfolio: ~</span>
-            </div>
-
-            {/* Body */}
-            <div className="p-5 sm:p-7 space-y-1.5">
-              <p className="text-sm sm:text-base">
-                <span className="text-gray-500">$</span>{" "}
-                <span className="text-purple-400">whoami</span>
-              </p>
-              <p className="text-3xl sm:text-5xl font-bold font-display tracking-tight pb-2">
-                <span className="theme-headline inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
-                  {personalInfo.name}
-                </span>
-              </p>
-
-              <p className="text-sm sm:text-base pt-2">
-                <span className="text-gray-500">$</span>{" "}
-                <span className="text-purple-400">cat</span>{" "}
-                <span className="text-gray-400">role.txt</span>
-              </p>
-              <p className="text-lg sm:text-2xl font-semibold text-gray-200 h-8 sm:h-9">
-                <span>{displayText}</span>
-                <motion.span
-                  animate={{ opacity: [1, 0] }}
-                  transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
-                  className="inline-block w-[0.55ch] h-5 sm:h-6 ml-0.5 -mb-0.5 bg-purple-400 align-middle"
-                />
-              </p>
-
-              <p className="text-sm sm:text-base pt-2">
-                <span className="text-gray-500">$</span>{" "}
-                <span className="text-purple-400">echo</span>{" "}
-                <span className="text-gray-400">$MISSION</span>
-              </p>
-              <p className="text-sm sm:text-base text-gray-400">
-                {personalInfo.tagline}
-              </p>
-            </div>
-          </motion.div>
+          {/* Per-theme hero intro: terminal (matrix) / HUD (cyberpunk) / CRT boot (amber) */}
+          <HeroIntro roleText={displayText} />
 
           {/* CTA Buttons */}
           <motion.div

@@ -126,6 +126,11 @@ export default function Navbar() {
                     </span>
                   </div>
                 </div>
+                {/* Theme switcher with full labels for mobile */}
+                <div className="px-4 py-2">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">Theme</p>
+                  <ThemeSwitcher labels="always" />
+                </div>
               </div>
             </motion.div>
           )}

@@ -506,9 +506,99 @@ h1, h2, h3, h4, h5, h6 {
     0 10px 40px rgba(0, 0, 0, 0.55);
 }
 
+/* Blinking caret shared by all hero intros */
+@keyframes caret-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.blink-caret {
+  animation: caret-blink 1s steps(1) infinite;
+}
+
+/* --- Cyberpunk hero: neon HUD nameplate --- */
+.hud-panel {
+  position: relative;
+  padding: 1.75rem 2rem;
+  border: 1px solid rgb(var(--accent-rgb) / 0.5);
+  background: rgb(var(--accent3-rgb) / 0.06);
+  backdrop-filter: blur(6px);
+  clip-path: polygon(
+    0 16px, 16px 0, 100% 0,
+    100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%
+  );
+  box-shadow:
+    0 0 34px rgb(var(--accent-rgb) / 0.16),
+    inset 0 0 40px rgb(var(--accent-rgb) / 0.05);
+}
+.hud-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgb(var(--accent-rgb));
+  margin-bottom: 1rem;
+}
+.hud-status::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: rgb(var(--accent-rgb));
+  box-shadow: 0 0 8px rgb(var(--accent-rgb));
+  animation: hud-pulse 1.4s ease-in-out infinite;
+}
+@keyframes hud-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+.hud-name {
+  display: inline-block;
+  font-size: clamp(2rem, 6vw, 3.75rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.hud-role {
+  margin-top: 1rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+.hud-mission {
+  margin-top: 0.85rem;
+  color: rgb(var(--accent3-rgb));
+  opacity: 0.85;
+}
+
+/* --- Amber hero: retro CRT boot screen --- */
+.crt-boot {
+  padding: 1.5rem 1.75rem;
+  border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  background: rgb(var(--accent-rgb) / 0.03);
+  color: rgb(var(--accent-rgb));
+  line-height: 1.55;
+  text-shadow: 0 0 6px rgb(var(--accent-rgb) / 0.45);
+}
+.crt-dim { color: rgb(var(--accent-rgb) / 0.6); }
+.crt-prompt { color: rgb(var(--accent-rgb) / 0.55); }
+.crt-name {
+  display: inline-block;
+  font-size: clamp(1.6rem, 5.5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: rgb(var(--accent-rgb));
+  padding: 0.15rem 0;
+}
+.crt-out { color: var(--foreground); }
+
 @media (prefers-reduced-motion: reduce) {
   .synthwave-grid::before,
   .crt-overlay,
+  .blink-caret,
+  .hud-status::before,
   [data-theme="cyberpunk"] .theme-headline,
   [data-theme="amber"] .theme-headline {
     animation: none !important;
