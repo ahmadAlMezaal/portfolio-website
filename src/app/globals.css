@@ -18,6 +18,25 @@ html {
   font-family: var(--font-sans);
 }
 
+/* Lenis smooth scroll — Lenis owns easing when active, so disable the
+   native CSS smooth-scroll only while its classes are present. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
 /* ===========================================================================
    Single "hacker terminal" theme — phosphor green on near-black.
    The whole site renders in one theme (no light/dark toggle).

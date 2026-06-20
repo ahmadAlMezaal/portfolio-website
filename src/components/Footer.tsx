@@ -95,10 +95,13 @@ export default function Footer() {
           <div className="space-y-4">
             <motion.a
               href="#"
-              className="inline-block text-2xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent"
+              className="inline-block text-2xl font-bold"
               whileHover={{ scale: 1.05 }}
             >
-              {personalInfo.name.split(" ")[0]}
+              <span className="text-purple-400">~/</span>
+              <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
+                {personalInfo.name.split(" ")[0].toLowerCase()}
+              </span>
             </motion.a>
             <p className="text-gray-400 max-w-xs">
               {personalInfo.tagline}

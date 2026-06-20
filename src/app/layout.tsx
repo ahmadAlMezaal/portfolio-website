@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import SmoothScroll from "@/components/SmoothScroll";
 import MatrixRain from "@/components/MatrixRain";
 import ScrollToTopRocket from "@/components/ScrollToTopRocket";
 import JsonLd from "@/components/JsonLd";
@@ -86,11 +87,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`dark ${jetBrainsMono.variable}`}>
       <body className="font-mono antialiased">
-        {/* Global terminal code-rain backdrop, fixed behind all content */}
-        <MatrixRain />
-        <JsonLd url={siteUrl} />
-        {children}
-        <ScrollToTopRocket />
+        <SmoothScroll>
+          {/* Global terminal code-rain backdrop, fixed behind all content */}
+          <MatrixRain />
+          <JsonLd url={siteUrl} />
+          {children}
+          <ScrollToTopRocket />
+        </SmoothScroll>
       </body>
     </html>
   );

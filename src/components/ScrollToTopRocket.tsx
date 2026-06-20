@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { useLenis } from "lenis/react";
 import { Rocket } from "lucide-react";
 import { useThrottledScroll, useIsMobile } from "@/lib/hooks";
 
@@ -107,6 +108,8 @@ export default function ScrollToTopRocket() {
   const prefersReducedMotion = useReducedMotion();
   const isLaunchingRef = useRef(false);
   const isMobile = useIsMobile();
+  // undefined when smooth scroll is disabled (reduced motion) — we fall back.
+  const lenis = useLenis();
 
   // Track scroll position with throttling for better performance
   useThrottledScroll((scrollY) => {
@@ -135,12 +138,17 @@ export default function ScrollToTopRocket() {
       playRocketSound();
     }
 
-    // Perform scroll
+    // Perform scroll — route through Lenis when active so it doesn't fight
+    // the smooth-scroll rAF loop; otherwise fall back to the native API.
     const scrollToTop = () => {
-      window.scrollTo({
-        top: 0,
-        behavior: prefersReducedMotion ? "auto" : "smooth",
-      });
+      if (lenis && !prefersReducedMotion) {
+        lenis.scrollTo(0, { duration: 1.1 });
+      } else {
+        window.scrollTo({
+          top: 0,
+          behavior: prefersReducedMotion ? "auto" : "smooth",
+        });
+      }
     };
 
     if (prefersReducedMotion) {
@@ -161,7 +169,7 @@ export default function ScrollToTopRocket() {
       setIsVisible(false);
       isLaunchingRef.current = false;
     }, ANIMATION_DURATION + 100);
-  }, [rocketState, prefersReducedMotion]);
+  }, [rocketState, prefersReducedMotion, lenis]);
 
   // Animation variants for the container
   const containerVariants = {
