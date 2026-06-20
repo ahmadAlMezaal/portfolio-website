@@ -2,9 +2,9 @@
 
 import { useEffect, useRef } from "react";
 
-// Global "matrix" code-rain backdrop rendered on a single fixed canvas.
-// Sits behind all page content (-z-10) at low opacity so headings stay crisp.
-// Honors prefers-reduced-motion by painting one static dim glyph field.
+// Matrix-only code-rain backdrop (rendered solely for the matrix theme by
+// ThemeBackground). Fixed canvas behind content at low opacity; reads the
+// matrix rain colors from CSS vars. Honors prefers-reduced-motion.
 export default function MatrixRain() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -13,6 +13,12 @@ export default function MatrixRain() {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+
+    // Pull the active theme's rain colors from CSS custom properties.
+    const root = getComputedStyle(document.documentElement);
+    const rainColor = root.getPropertyValue("--rain").trim() || "#00ff9c";
+    const leadColor = root.getPropertyValue("--rain-lead").trim() || "#d6ffe0";
+    const washColor = root.getPropertyValue("--rain-bg").trim() || "rgba(5, 8, 6, 0.12)";
 
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -30,7 +36,8 @@ export default function MatrixRain() {
     // Defined before resize() so resize can repaint it under reduced motion.
     const drawStatic = () => {
       ctx.clearRect(0, 0, cssWidth, cssHeight);
-      ctx.fillStyle = "rgba(0, 255, 156, 0.12)";
+      ctx.globalAlpha = 0.12;
+      ctx.fillStyle = rainColor;
       for (let i = 0; i < columns; i++) {
         const runs = 2 + ((Math.random() * 3) | 0);
         for (let r = 0; r < runs; r++) {
@@ -39,6 +46,7 @@ export default function MatrixRain() {
           ctx.fillText(char, i * fontSize, y);
         }
       }
+      ctx.globalAlpha = 1;
     };
 
     const resize = () => {
@@ -79,7 +87,7 @@ export default function MatrixRain() {
       last = time;
 
       // Translucent wash creates the trailing fade.
-      ctx.fillStyle = "rgba(5, 8, 6, 0.12)";
+      ctx.fillStyle = washColor;
       ctx.fillRect(0, 0, cssWidth, cssHeight);
 
       for (let i = 0; i < columns; i++) {
@@ -89,8 +97,8 @@ export default function MatrixRain() {
         // Only draw glyphs that are actually on-screen to save CPU.
         if (y >= 0 && y <= cssHeight) {
           const char = glyphs[(Math.random() * glyphs.length) | 0];
-          // Occasional bright "lead" glyph, otherwise phosphor green.
-          ctx.fillStyle = Math.random() > 0.97 ? "#d6ffe0" : "#00ff9c";
+          // Occasional bright "lead" glyph, otherwise the theme rain color.
+          ctx.fillStyle = Math.random() > 0.97 ? leadColor : rainColor;
           ctx.fillText(char, x, y);
         }
 
