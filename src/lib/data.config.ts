@@ -299,6 +299,22 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
       status: "live",
     },
     {
+      title: "OneNote MCP",
+      description:
+        "An MCP server that brings Microsoft OneNote into Claude, Cursor, and any MCP-compatible client — list notebooks and sections, full-text search across pages, read pages as Markdown, and create or delete pages from natural language.",
+      image: null,
+      tags: ["TypeScript", "MCP", "Microsoft Graph", "AI Tools"],
+      links: [
+        {
+          type: "github",
+          label: "GitHub",
+          url: "https://github.com/ahmadAlMezaal/onenote-mcp",
+        },
+      ],
+      featured: true,
+      status: "live",
+    },
+    {
       title: "ZIM: eSIM Calls & Data Plans",
       description:
         "UK eSIM marketplace offering flexible mobile plans and travel eSIMs — get set up quickly, stay connected in 200+ destinations, and manage your plan directly from the app.",
