@@ -155,12 +155,6 @@ export default function Footer() {
                 </motion.a>
               ))}
             </div>
-            <a
-              href={`mailto:${personalInfo.email}`}
-              className="text-gray-400 hover:text-purple-400 transition-colors"
-            >
-              {personalInfo.email}
-            </a>
           </div>
         </div>
 

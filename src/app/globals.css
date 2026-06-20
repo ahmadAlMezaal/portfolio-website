@@ -6,7 +6,7 @@
 @theme {
   /* Typography - single terminal monospace for the whole site.
      References the CSS variable set by next/font on <html>. */
-  --font-mono: var(--font-mono), ui-monospace, "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --font-mono: var(--font-mono-next), ui-monospace, "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
   --font-sans: var(--font-mono);
   --font-display: var(--font-mono);
 }

@@ -12,7 +12,7 @@ const siteUrl = "https://theaam.dev";
 
 // Single typeface for the whole site — a developer/terminal monospace.
 const jetBrainsMono = JetBrains_Mono({
-  variable: "--font-mono",
+  variable: "--font-mono-next",
   subsets: ["latin"],
   display: "swap",
   weight: ["400", "500", "600", "700", "800"],
