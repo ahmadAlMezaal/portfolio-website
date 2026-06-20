@@ -251,6 +251,27 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
       status: "live",
     },
     {
+      title: "Noctra",
+      description:
+        "Your repo's night watch — an autonomous agent that turns Linear tickets into pull requests. Move a ticket to Next, go to sleep, wake up to PRs. Continuously sweeps your board, routing each ticket to the right repo and running them concurrently across projects.",
+      image: "/assets/noctra-og.png",
+      tags: ["Go", "AI Agents", "Linear", "GitHub", "Automation"],
+      links: [
+        {
+          type: "website",
+          label: "Website",
+          url: "https://getnoctra.dev",
+        },
+        {
+          type: "github",
+          label: "GitHub",
+          url: "https://github.com/ahmadAlMezaal/noctra",
+        },
+      ],
+      featured: true,
+      status: "live",
+    },
+    {
       title: "Shuffle Rewards",
       description:
         "Cashback rewards app for eating out — members connect their bank account, visit partner venues, and earn cashback when qualifying purchases are detected and approved.",
@@ -335,7 +356,7 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
           url: "https://github.com/ahmadAlMezaal/the-alfred-brief",
         },
       ],
-      featured: true,
+      featured: false,
       status: "in_progress",
     },
     {
@@ -351,7 +372,7 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
           url: "https://github.com/ahmadAlMezaal/friday",
         },
       ],
-      featured: true,
+      featured: false,
       status: "live",
     },
     {
@@ -372,7 +393,7 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
           url: "https://github.com/ahmadAlMezaal/decidr",
         },
       ],
-      featured: true,
+      featured: false,
       status: "live",
     },
     {
