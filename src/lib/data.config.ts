@@ -236,7 +236,7 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
       description:
         "AI-powered relocation assistant for people moving to London — Munin learns what matters to you, then matches you to the right neighbourhoods with personalised, data-backed recommendations that make settling in a new city far less daunting.",
       image: "/assets/munin-og.png",
-      tags: ["AI", "Next.js", "TypeScript", "Product"],
+      tags: ["AI", "Next.js", "TypeScript", "LLM"],
       links: [
         {
           type: "website",
