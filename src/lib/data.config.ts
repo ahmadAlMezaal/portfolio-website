@@ -15,16 +15,19 @@ const config: PortfolioConfig = {
   siteMetadata: {
     title: "Ahmad Al Mezaal | Senior Software Engineer",
     description:
-      "Senior Software Engineer specialising in fintech, open banking, and building resilient cloud-native systems at scale.",
+      "Senior Software Engineer building products end to end — from AI agents to scalable APIs and resilient cloud-native systems — with deep experience across fintech, open banking, and high-growth startups.",
     keywords: [
       "Senior Software Engineer",
-      "Backend Engineer",
+      "AI Engineer",
+      "AI Agents",
+      "LLM Applications",
+      "MCP",
+      "Product Engineer",
       "Fintech",
       "Open Banking",
-      "Node.js",
       "TypeScript",
+      "Node.js",
       "AWS",
-      "Cloud-Native",
       "London",
     ],
     locale: "en_GB",
@@ -228,6 +231,22 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
   // PROJECTS
   // ---------------------------------------------------------------------------
   projects: [
+    {
+      title: "Munin",
+      description:
+        "AI-powered relocation assistant for people moving to London — Munin learns what matters to you, then matches you to the right neighbourhoods with personalised, data-backed recommendations that make settling in a new city far less daunting.",
+      image: "/assets/munin-og.png",
+      tags: ["AI", "Next.js", "TypeScript", "Product"],
+      links: [
+        {
+          type: "website",
+          label: "Website",
+          url: "https://www.usemunin.com",
+        },
+      ],
+      featured: true,
+      status: "live",
+    },
     {
       title: "Atomic Streaks",
       description:

@@ -22,16 +22,19 @@ export default function JsonLd({ url }: JsonLdProps) {
     },
     sameAs: personalInfo.socialLinks.map((link) => link.url),
     knowsAbout: [
+      "Artificial Intelligence",
+      "AI Agents",
+      "Large Language Models",
+      "Model Context Protocol (MCP)",
+      "Product Engineering",
       "Software Engineering",
       "Backend Development",
       "Fintech",
       "Open Banking",
-      "Node.js",
       "TypeScript",
+      "Node.js",
       "AWS",
       "Cloud-Native Systems",
-      "React",
-      "React Native",
     ],
   };
 
