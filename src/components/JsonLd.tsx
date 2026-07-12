@@ -13,7 +13,8 @@ export default function JsonLd({ url }: JsonLdProps) {
     name: personalInfo.name,
     jobTitle: personalInfo.title,
     description: siteMetadata.description,
-    email: `mailto:${personalInfo.email}`,
+    // Email intentionally omitted — it would otherwise be scraped from the
+    // structured data. Visitors copy it from the Contact section instead.
     url: url,
     address: {
       "@type": "PostalAddress",

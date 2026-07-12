@@ -134,7 +134,7 @@ export default function CommandPalette() {
         label: "Copy email address",
         group: "Actions",
         icon: <Copy size={16} />,
-        keywords: `mail ${personalInfo.email}`,
+        keywords: "mail contact clipboard",
         perform: () => copy(personalInfo.email),
         feedback: "$ copied to clipboard ✓",
       },
