@@ -5,6 +5,8 @@ import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import {
   Mail,
+  Copy,
+  Check,
   Send,
   Github,
   Linkedin,
@@ -21,7 +23,7 @@ import {
 } from "lucide-react";
 import { personalInfo } from "@/lib/data";
 import type { SocialPlatform } from "@/lib/data.types";
-import { useShouldReduceMotion } from "@/lib/hooks";
+import { useShouldReduceMotion, useClipboard } from "@/lib/hooks";
 import SectionBackground from "./SectionBackground";
 
 // Custom icons for platforms not in Lucide
@@ -86,6 +88,7 @@ export default function Contact() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const shouldReduceMotion = useShouldReduceMotion();
+  const { copied, copy } = useClipboard();
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -151,8 +154,8 @@ export default function Contact() {
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Info */}
             <motion.div variants={itemVariants} className="space-y-8">
-              {/* Quick Info Card */}
-              <div>
+              {/* Quick Info Cards */}
+              <div className="space-y-4">
                 <motion.div
                   className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700"
                   whileHover={{ y: -5 }}
@@ -167,6 +170,32 @@ export default function Contact() {
                     </p>
                   </div>
                 </motion.div>
+
+                {/* Click the email to copy it — shows a terminal-style confirmation */}
+                <motion.button
+                  type="button"
+                  onClick={() => copy(personalInfo.email)}
+                  className="w-full flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 text-left transition-colors hover:border-purple-500 dark:hover:border-purple-500 outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+                  whileHover={{ y: -5 }}
+                  whileTap={{ scale: 0.98 }}
+                  aria-label={copied ? "Email copied to clipboard" : `Copy email ${personalInfo.email}`}
+                >
+                  <div className="p-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 text-white">
+                    {copied ? <Check className="w-6 h-6" /> : <Copy className="w-6 h-6" />}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Email</p>
+                    <p
+                      className={`font-mono truncate transition-colors ${
+                        copied
+                          ? "text-green-600 dark:text-green-400"
+                          : "text-gray-800 dark:text-white"
+                      }`}
+                    >
+                      {copied ? "$ copied to clipboard ✓" : personalInfo.email}
+                    </p>
+                  </div>
+                </motion.button>
               </div>
 
               {/* Social Links */}
