@@ -118,6 +118,59 @@ export function useScrollPosition(threshold: number = 0): boolean {
 }
 
 /**
+ * Hook for copying text to the clipboard with transient "copied" feedback.
+ * Falls back to a hidden textarea + execCommand on insecure contexts / old browsers.
+ * @param resetMs - How long the `copied` flag stays true (default: 2000ms)
+ */
+export function useClipboard(resetMs: number = 2000): {
+  copied: boolean;
+  copy: (text: string) => Promise<boolean>;
+} {
+  const [copied, setCopied] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const copy = useCallback(
+    async (text: string): Promise<boolean> => {
+      let ok = false;
+      try {
+        await navigator.clipboard.writeText(text);
+        ok = true;
+      } catch {
+        try {
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          ok = document.execCommand("copy");
+          document.body.removeChild(ta);
+        } catch {
+          ok = false;
+        }
+      }
+
+      if (ok) {
+        setCopied(true);
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        timeoutRef.current = setTimeout(() => setCopied(false), resetMs);
+      }
+      return ok;
+    },
+    [resetMs]
+  );
+
+  useEffect(
+    () => () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    },
+    []
+  );
+
+  return { copied, copy };
+}
+
+/**
  * Hook for throttled scroll tracking with callback.
  * Useful when you need more control over scroll handling.
  * @param callback - Function to call with scroll position

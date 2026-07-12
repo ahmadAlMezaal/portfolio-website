@@ -5,6 +5,9 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import SmoothScroll from "@/components/SmoothScroll";
 import ThemeBackground from "@/components/ThemeBackground";
 import ScrollToTopRocket from "@/components/ScrollToTopRocket";
+import CommandPalette from "@/components/CommandPalette";
+import ShortcutsOverlay from "@/components/ShortcutsOverlay";
+import KonamiEasterEgg from "@/components/KonamiEasterEgg";
 import JsonLd from "@/components/JsonLd";
 import { siteMetadata, personalInfo } from "@/lib/data";
 import { getBasePath } from "@/lib/utils";
@@ -103,6 +106,9 @@ export default function RootLayout({
             <JsonLd url={siteUrl} />
             {children}
             <ScrollToTopRocket />
+            <CommandPalette />
+            <ShortcutsOverlay />
+            <KonamiEasterEgg />
           </SmoothScroll>
         </ThemeProvider>
       </body>

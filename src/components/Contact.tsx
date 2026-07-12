@@ -5,6 +5,9 @@ import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import {
   Mail,
+  Copy,
+  Check,
+  Eye,
   Send,
   Github,
   Linkedin,
@@ -21,7 +24,7 @@ import {
 } from "lucide-react";
 import { personalInfo } from "@/lib/data";
 import type { SocialPlatform } from "@/lib/data.types";
-import { useShouldReduceMotion } from "@/lib/hooks";
+import { useShouldReduceMotion, useClipboard } from "@/lib/hooks";
 import SectionBackground from "./SectionBackground";
 
 // Custom icons for platforms not in Lucide
@@ -66,6 +69,18 @@ const socialIconMap: Record<SocialPlatform, LucideIcon | React.FC<{ className?: 
   dev: DevToIcon,
 };
 
+// Obfuscate the address so scrapers only ever see the mask in the rendered HTML.
+// The real value stays out of the DOM until a human clicks to reveal it.
+function maskEmail(email: string): string {
+  const [local, domain] = email.split("@");
+  if (!domain) return "•••••••";
+  const maskedLocal = (local[0] ?? "") + "•".repeat(Math.max(4, local.length - 1));
+  const dot = domain.lastIndexOf(".");
+  const tld = dot >= 0 ? domain.slice(dot) : "";
+  const maskedDomain = "•".repeat(Math.max(4, dot >= 0 ? dot : domain.length)) + tld;
+  return `${maskedLocal}@${maskedDomain}`;
+}
+
 // Map platform names to display labels
 const socialLabelMap: Record<SocialPlatform, string> = {
   github: "GitHub",
@@ -86,6 +101,8 @@ export default function Contact() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const shouldReduceMotion = useShouldReduceMotion();
+  const { copied, copy } = useClipboard();
+  const [revealed, setRevealed] = useState(false);
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -151,8 +168,8 @@ export default function Contact() {
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Info */}
             <motion.div variants={itemVariants} className="space-y-8">
-              {/* Quick Info Card */}
-              <div>
+              {/* Quick Info Cards */}
+              <div className="space-y-4">
                 <motion.div
                   className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700"
                   whileHover={{ y: -5 }}
@@ -167,6 +184,55 @@ export default function Contact() {
                     </p>
                   </div>
                 </motion.div>
+
+                {/* Email is masked until clicked — bots only ever see the mask
+                    in the HTML. First click reveals, second click copies. */}
+                <motion.button
+                  type="button"
+                  onClick={() => (revealed ? copy(personalInfo.email) : setRevealed(true))}
+                  className="w-full flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 text-left transition-colors hover:border-purple-500 dark:hover:border-purple-500 outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+                  whileHover={{ y: -5 }}
+                  whileTap={{ scale: 0.98 }}
+                  aria-label={
+                    copied
+                      ? "Email copied to clipboard"
+                      : revealed
+                        ? "Copy email address"
+                        : "Reveal email address"
+                  }
+                >
+                  <div className="p-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 text-white">
+                    {copied ? (
+                      <Check className="w-6 h-6" />
+                    ) : revealed ? (
+                      <Copy className="w-6 h-6" />
+                    ) : (
+                      <Eye className="w-6 h-6" />
+                    )}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      {copied
+                        ? "Email"
+                        : revealed
+                          ? "Email · click to copy"
+                          : "Email · click to reveal"}
+                    </p>
+                    <p
+                      className={`font-mono truncate transition-colors ${
+                        copied
+                          ? "text-green-600 dark:text-green-400"
+                          : "text-gray-800 dark:text-white"
+                      }`}
+                    >
+                      {copied
+                        ? "$ copied to clipboard ✓"
+                        : revealed
+                          ? personalInfo.email
+                          : maskEmail(personalInfo.email)}
+                    </p>
+                  </div>
+                </motion.button>
               </div>
 
               {/* Social Links */}
