@@ -14,7 +14,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { personalInfo, navLinks } from "@/lib/data";
-import type { SocialPlatform } from "@/lib/data.types";
+import NavAnchor from "./NavAnchor";
+import type { SocialPlatform } from "@/types";
 import { useIsMobile } from "@/lib/hooks";
 
 // Custom icons for platforms not in Lucide
@@ -93,7 +94,7 @@ export default function Footer() {
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           {/* Brand */}
           <div className="space-y-4">
-            <motion.a
+            <NavAnchor
               href="#"
               className="inline-block text-2xl font-bold"
               whileHover={{ scale: 1.05 }}
@@ -102,7 +103,7 @@ export default function Footer() {
               <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
                 {personalInfo.name.split(" ")[0].toLowerCase()}
               </span>
-            </motion.a>
+            </NavAnchor>
             <p className="text-gray-400 max-w-xs">
               {personalInfo.tagline}
             </p>
@@ -124,13 +125,13 @@ export default function Footer() {
             <ul className="space-y-2">
               {navLinks.map((link) => (
                 <li key={link.name}>
-                  <motion.a
+                  <NavAnchor
                     href={link.href}
                     className="text-gray-400 hover:text-purple-400 transition-colors"
                     whileHover={{ x: 5 }}
                   >
                     {link.name}
-                  </motion.a>
+                  </NavAnchor>
                 </li>
               ))}
             </ul>

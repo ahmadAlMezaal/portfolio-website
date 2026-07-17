@@ -19,22 +19,28 @@ src/
 ├── app/
 │   ├── layout.tsx      # Root layout with metadata (imports from config)
 │   ├── page.tsx        # Main page composing all sections
+│   ├── learnings/
+│   │   └── page.tsx    # /learnings — Field Notes page (build-time shiki highlighting)
 │   └── globals.css     # Global styles + theme variables
 ├── components/
 │   ├── Navbar.tsx      # Navigation with theme toggle
+│   ├── NavAnchor.tsx   # Path-aware nav link (hash links work from any route)
 │   ├── Hero.tsx        # Hero section with typing animation
 │   ├── About.tsx       # About section with stats
 │   ├── Skills.tsx      # Skills displayed as tags
 │   ├── Experience.tsx  # Work experience timeline
 │   ├── Projects.tsx    # Featured projects grid
+│   ├── Learnings.tsx   # Field Notes cards with tabbed code editor
 │   ├── Contact.tsx     # Contact form and info
 │   ├── Footer.tsx      # Footer with links
 │   └── ThemeProvider.tsx
-└── lib/
-    ├── data.ts              # Re-exports config data + nav links
-    ├── data.types.ts        # TypeScript interfaces
-    ├── data.config.ts       # Personal data (GITIGNORED)
-    └── data.config.example.ts # Template for cloning
+├── lib/
+│   ├── data.ts              # Re-exports config data + nav links
+│   ├── data.config.ts       # Personal data (GITIGNORED)
+│   ├── data.config.example.ts # Template for cloning
+│   └── highlight.ts         # Build-time shiki highlighting for learnings
+└── types/
+    └── index.ts             # Shared TypeScript interfaces (import from "@/types")
 ```
 
 ## Configuration System
@@ -60,6 +66,8 @@ All personal information is stored in `src/lib/data.config.ts` which is gitignor
 - `projects`: Portfolio projects (flexible links, optional images)
 - `education`: Educational background
 - `certifications`: Professional certifications
+- `learnings` (optional): Field Notes entries for the /learnings page
+- `currentlyLearning` (optional): "currently exploring" chips on /learnings
 
 ### Status Options
 
@@ -159,6 +167,32 @@ Projects use a flexible `links` array instead of fixed `liveUrl`/`githubUrl` fie
 - Empty `links: []` array shows "Private / available on request" badge
 - `image: null` or missing image shows a gradient placeholder with folder icon
 
+### Learnings / Field Notes
+
+The `/learnings` page renders `learnings` entries as expandable cards with a
+code-editor block. Each entry requires code in all three languages —
+`typescript`, `go`, and `python` — which become the editor's filename tabs:
+
+```typescript
+{
+  title: "Singleton",
+  category: "pattern", // "pattern" | "law" | "paradigm" | "principle"
+  oneLiner: "The concept in a single sentence.",
+  code: {
+    typescript: `...`,
+    go: `...`,
+    python: `...`,
+  },
+  fieldNote: "Where this showed up in real work.",
+  verdict: "One honest line of judgement.",
+}
+```
+
+Highlighting happens at build time via shiki (`src/lib/highlight.ts`), so no
+highlighter ships to the client. `currentlyLearning` renders as chips in the
+page header. Both fields are optional; the page shows an empty state without
+them.
+
 ### Favicon
 
 The portfolio uses SVG favicon by default (`public/icon.svg`). To customize:
@@ -210,6 +244,15 @@ public/
 - `.ai/` - AI assistant working files
 
 ## Notes for AI Assistants
+
+- Do NOT add banner/section-divider comments like:
+  ```
+  // ---------------------------------------------------------------------------
+  // SECTION NAME
+  // ---------------------------------------------------------------------------
+  ```
+  Pre-existing banners may stay, but new sections get no banner — at most a
+  short single-line comment when something genuinely needs explaining.
 
 - All personal data flows through `data.config.ts` → `data.ts` → components
 - The Skills component displays skills as tags (no progress bars/percentages)

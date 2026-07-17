@@ -6,7 +6,7 @@
 // This file is gitignored to keep your personal information private.
 // =============================================================================
 
-import type { PortfolioConfig } from "./data.types";
+import type { PortfolioConfig } from "@/types";
 
 const config: PortfolioConfig = {
   // ---------------------------------------------------------------------------
@@ -460,6 +460,318 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
   // ---------------------------------------------------------------------------
   certifications: [
     "DevOps & Cloud (Docker, Kubernetes, Terraform, Ansible) - Simplilearn",
+  ],
+
+  currentlyLearning: [
+    "Model Context Protocol (MCP)",
+    "Go",
+    "LLM agent orchestration",
+  ],
+
+  learnings: [
+    {
+      title: "Singleton",
+      category: "pattern",
+      oneLiner:
+        "Guarantee a single shared instance of something expensive or stateful.",
+      code: {
+        typescript: `// One client per Lambda container — a fresh client
+// per invocation exhausts the RDS connection pool.
+let prisma: PrismaClient | undefined;
+
+export const getPrisma = (): PrismaClient => {
+  prisma ??= new PrismaClient();
+  return prisma;
+};`,
+        go: `var (
+	db   *sql.DB
+	once sync.Once
+)
+
+// DB lazily opens the pool exactly once,
+// no matter how many goroutines race here.
+func DB() *sql.DB {
+	once.Do(func() {
+		db, _ = sql.Open("postgres", dsn)
+	})
+	return db
+}`,
+        python: `from functools import lru_cache
+
+@lru_cache(maxsize=1)
+def get_client() -> Client:
+    # Cached at module level — the Pythonic singleton.
+    return Client(dsn=settings.DSN)`,
+      },
+      fieldNote:
+        "A Lambda that opened a fresh database client on every invocation melted our RDS connection limit during a traffic spike. One cached instance per container fixed it in four lines.",
+      verdict:
+        "Use sparingly — in TypeScript a module export is already a singleton; in Go, sync.Once is the whole pattern.",
+    },
+    {
+      title: "Circuit Breaker",
+      category: "pattern",
+      oneLiner:
+        "Stop calling a failing dependency for a while instead of queueing retries behind it.",
+      code: {
+        typescript: `let failures = 0;
+let openUntil = 0;
+
+export async function callBank<T>(fn: () => Promise<T>) {
+  if (Date.now() < openUntil) throw new Error("circuit open");
+  try {
+    const result = await fn();
+    failures = 0;
+    return result;
+  } catch (err) {
+    if (++failures >= 5) openUntil = Date.now() + 30_000;
+    throw err;
+  }
+}`,
+        go: `func (b *Breaker) Call(fn func() error) error {
+	if time.Now().Before(b.openUntil) {
+		return ErrCircuitOpen
+	}
+	if err := fn(); err != nil {
+		b.failures++
+		if b.failures >= 5 {
+			b.openUntil = time.Now().Add(30 * time.Second)
+		}
+		return err
+	}
+	b.failures = 0
+	return nil
+}`,
+        python: `def call(self, fn):
+    if time.monotonic() < self.open_until:
+        raise CircuitOpen()
+    try:
+        result = fn()
+    except Exception:
+        self.failures += 1
+        if self.failures >= 5:
+            self.open_until = time.monotonic() + 30
+        raise
+    self.failures = 0
+    return result`,
+      },
+      fieldNote:
+        "Open banking APIs go down more often than their status pages admit. A breaker in front of one flaky bank connector stopped a slow upstream from queueing retries and dragging the whole aggregation pipeline down with it.",
+      verdict:
+        "Essential in front of third parties you don't control. Trip fast, recover slowly.",
+    },
+    {
+      title: "Factory Method",
+      category: "pattern",
+      oneLiner:
+        "Let one place decide which concrete implementation to construct, behind a shared interface.",
+      code: {
+        typescript: `const providers = {
+  stripe: () => new StripeGateway(),
+  truelayer: () => new TrueLayerGateway(),
+  plaid: () => new PlaidGateway(),
+} satisfies Record<string, () => Gateway>;
+
+export const gatewayFor = (provider: keyof typeof providers) =>
+  providers[provider]();`,
+        go: `func NewGateway(provider string) (Gateway, error) {
+	switch provider {
+	case "stripe":
+		return &StripeGateway{}, nil
+	case "truelayer":
+		return &TrueLayerGateway{}, nil
+	case "plaid":
+		return &PlaidGateway{}, nil
+	default:
+		return nil, fmt.Errorf("unknown provider %q", provider)
+	}
+}`,
+        python: `GATEWAYS = {
+    "stripe": StripeGateway,
+    "truelayer": TrueLayerGateway,
+    "plaid": PlaidGateway,
+}
+
+def gateway_for(provider: str) -> Gateway:
+    try:
+        return GATEWAYS[provider]()
+    except KeyError:
+        raise UnknownProvider(provider)`,
+      },
+      fieldNote:
+        "Every open banking aggregator is secretly a factory: one interface, a dozen bank connectors behind it. Adding a bank became a config entry plus one class, instead of a new branch in every call site.",
+      verdict:
+        "The most useful classic. If you're switching on a type string in more than one place, you want a factory.",
+    },
+    {
+      title: "Builder",
+      category: "pattern",
+      oneLiner:
+        "Assemble a complex object step by step instead of through a constructor with nine arguments.",
+      code: {
+        typescript: `class ReportBuilder {
+  private opts: ReportOptions = defaults();
+
+  between(from: string, to: string) {
+    this.opts.range = { from, to };
+    return this;
+  }
+  currency(code: string) {
+    this.opts.currency = code;
+    return this;
+  }
+  build(): Report {
+    return runReport(this.opts);
+  }
+}
+
+const report = new ReportBuilder()
+  .between("2026-01-01", "2026-06-30")
+  .currency("GBP")
+  .build();`,
+        go: `// Go's idiom for the same job: functional options.
+func WithCurrency(code string) Option {
+	return func(r *Report) { r.currency = code }
+}
+
+func NewReport(opts ...Option) *Report {
+	r := &Report{currency: "GBP"}
+	for _, opt := range opts {
+		opt(r)
+	}
+	return r
+}`,
+        python: `@dataclass
+class Report:
+    currency: str = "GBP"
+    group_by: str | None = None
+    refunds: bool = False
+
+# Python rarely needs a builder — keyword
+# arguments already are one.
+report = Report(currency="EUR", refunds=True)`,
+      },
+      fieldNote:
+        "A transaction-report endpoint grew to nine optional parameters and every call site was a guessing game. The builder made them readable; in Go the same job is done by functional options, and in Python by keyword arguments.",
+      verdict:
+        "A cure for telescoping constructors — though some languages ship the cure in their syntax.",
+    },
+    {
+      title: "Hyrum's Law",
+      category: "law",
+      oneLiner:
+        "With enough users, every observable behaviour of your system will be depended on — documented or not.",
+      code: {
+        typescript: `// The documented contract: "returns the user's accounts".
+// The real contract: "returns them newest-first" — because
+// one client sorted nothing and shipped anyway.
+app.get("/accounts", async (req, res) => {
+  const accounts = await repo.list(req.userId);
+  res.json(accounts); // insertion order, forever
+});`,
+        go: `// "The iteration order over maps is not specified."
+// Go randomises it on purpose, so nobody can depend
+// on it. Hyrum's Law, solved at the language level.
+for id, acc := range accounts {
+	process(id, acc)
+}`,
+        python: `# dicts kept insertion order as a CPython detail in 3.6.
+# Enough code depended on it that 3.7 made it the law.
+prefs = {"currency": "GBP", "locale": "en_GB"}
+first = next(iter(prefs))  # "currency" — now guaranteed`,
+      },
+      fieldNote:
+        "A partner integration broke when we changed the key order of a JSON response — behaviour we never documented and they never asked about. Both sides paid for it.",
+      verdict:
+        "You can't opt out. You can only choose which behaviours you promise, and randomise the rest.",
+    },
+    {
+      title: "Idempotency",
+      category: "principle",
+      oneLiner:
+        "Doing the same operation twice must have the same effect as doing it once.",
+      code: {
+        typescript: `app.post("/payments", async (req, res) => {
+  const key = req.header("Idempotency-Key");
+  const existing = await store.get(key);
+  if (existing) return res.status(200).json(existing);
+
+  const payment = await charge(req.body);
+  await store.put(key, payment);
+  res.status(201).json(payment);
+});`,
+        go: `func (s *Server) CreatePayment(w http.ResponseWriter, r *http.Request) {
+	key := r.Header.Get("Idempotency-Key")
+	if p, ok := s.store.Get(key); ok {
+		writeJSON(w, http.StatusOK, p)
+		return
+	}
+	p := s.charge(r)
+	s.store.Put(key, p)
+	writeJSON(w, http.StatusCreated, p)
+}`,
+        python: `@app.post("/payments")
+def create_payment():
+    key = request.headers["Idempotency-Key"]
+    if existing := store.get(key):
+        return existing, 200
+
+    payment = charge(request.json)
+    store.put(key, payment)
+    return payment, 201`,
+      },
+      fieldNote:
+        "Mobile clients retry on timeouts, and a timeout doesn't mean the charge failed — sometimes it means it succeeded slowly. Idempotency keys are the difference between a support ticket and charging someone twice.",
+      verdict:
+        "Non-negotiable for anything that moves money. Retries are only a feature if repeats are safe.",
+    },
+    {
+      title: "Event Sourcing",
+      category: "paradigm",
+      oneLiner:
+        "Store what happened as an append-only log; derive current state by replaying it.",
+      code: {
+        typescript: `type Event =
+  | { type: "opened"; balance: number }
+  | { type: "credited"; amount: number }
+  | { type: "debited"; amount: number };
+
+const balance = (events: Event[]): number =>
+  events.reduce((total, e) => {
+    switch (e.type) {
+      case "opened":   return e.balance;
+      case "credited": return total + e.amount;
+      case "debited":  return total - e.amount;
+    }
+  }, 0);`,
+        go: `func Balance(events []Event) int64 {
+	var total int64
+	for _, e := range events {
+		switch e.Type {
+		case Opened:
+			total = e.Amount
+		case Credited:
+			total += e.Amount
+		case Debited:
+			total -= e.Amount
+		}
+	}
+	return total
+}`,
+        python: `def balance(events: list[Event]) -> int:
+    total = 0
+    for e in events:
+        match e:
+            case Opened(amount):   total = amount
+            case Credited(amount): total += amount
+            case Debited(amount):  total -= amount
+    return total`,
+      },
+      fieldNote:
+        "Storing transactions as an append-only log instead of mutating a balance column meant we could answer 'why is this balance wrong?' by replaying history — and rebuild a corrupted read model without touching the source of truth.",
+      verdict:
+        "A wonderful audit trail with a real operational cost. Reach for it when 'how did we get here?' is a business question, not a debugging one.",
+    },
   ],
 };
 
