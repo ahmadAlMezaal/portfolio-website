@@ -462,18 +462,12 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
     "DevOps & Cloud (Docker, Kubernetes, Terraform, Ansible) - Simplilearn",
   ],
 
-  // ---------------------------------------------------------------------------
-  // CURRENTLY LEARNING (short chips shown at the top of /learnings)
-  // ---------------------------------------------------------------------------
   currentlyLearning: [
     "Model Context Protocol (MCP)",
     "Go",
     "LLM agent orchestration",
   ],
 
-  // ---------------------------------------------------------------------------
-  // LEARNINGS / FIELD NOTES (powers the /learnings page)
-  // ---------------------------------------------------------------------------
   learnings: [
     {
       title: "Singleton",

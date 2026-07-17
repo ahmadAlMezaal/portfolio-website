@@ -245,6 +245,15 @@ public/
 
 ## Notes for AI Assistants
 
+- Do NOT add banner/section-divider comments like:
+  ```
+  // ---------------------------------------------------------------------------
+  // SECTION NAME
+  // ---------------------------------------------------------------------------
+  ```
+  Pre-existing banners may stay, but new sections get no banner — at most a
+  short single-line comment when something genuinely needs explaining.
+
 - All personal data flows through `data.config.ts` → `data.ts` → components
 - The Skills component displays skills as tags (no progress bars/percentages)
 - Metadata in layout.tsx imports from config, not hardcoded

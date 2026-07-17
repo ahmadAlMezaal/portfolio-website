@@ -253,16 +253,10 @@ const config: PortfolioConfig = {
     "Certification Name 3",
   ],
 
-  // ---------------------------------------------------------------------------
-  // CURRENTLY LEARNING (optional — short chips shown at the top of /learnings)
-  // ---------------------------------------------------------------------------
   currentlyLearning: ["Topic one", "Topic two"],
 
-  // ---------------------------------------------------------------------------
-  // LEARNINGS / FIELD NOTES (optional — powers the /learnings page)
-  // Code is required in all three languages (typescript, go, python).
-  // Categories: "pattern" | "law" | "paradigm" | "principle"
-  // ---------------------------------------------------------------------------
+  // Optional /learnings entries — code is required in all three languages;
+  // categories: "pattern" | "law" | "paradigm" | "principle"
   learnings: [
     {
       title: "Singleton",
