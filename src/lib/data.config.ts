@@ -6,7 +6,7 @@
 // This file is gitignored to keep your personal information private.
 // =============================================================================
 
-import type { PortfolioConfig } from "./data.types";
+import type { PortfolioConfig } from "@/types";
 
 const config: PortfolioConfig = {
   // ---------------------------------------------------------------------------

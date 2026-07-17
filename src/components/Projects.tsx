@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { projects } from "@/lib/data";
-import type { ProjectLinkType, Project, ProjectStatus } from "@/lib/data.types";
+import type { ProjectLinkType, Project, ProjectStatus } from "@/types";
 import { useIsMobile } from "@/lib/hooks";
 
 // Custom brand icons (not available in lucide-react)

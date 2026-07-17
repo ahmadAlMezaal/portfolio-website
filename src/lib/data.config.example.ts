@@ -9,7 +9,7 @@
 //
 // =============================================================================
 
-import type { PortfolioConfig } from './data.types';
+import type { PortfolioConfig } from "@/types";
 
 const config: PortfolioConfig = {
   // ---------------------------------------------------------------------------

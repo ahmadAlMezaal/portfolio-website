@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { personalInfo, navLinks } from "@/lib/data";
 import NavAnchor from "./NavAnchor";
-import type { SocialPlatform } from "@/lib/data.types";
+import type { SocialPlatform } from "@/types";
 import { useIsMobile } from "@/lib/hooks";
 
 // Custom icons for platforms not in Lucide

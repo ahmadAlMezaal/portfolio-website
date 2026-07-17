@@ -2,7 +2,7 @@
 // `next build`, so shiki never ships to the client.
 
 import { codeToHtml } from "shiki";
-import type { Learning, LearningLanguage } from "./data.types";
+import type { Learning, LearningLanguage } from "@/types";
 
 const EDITOR_THEME = "github-dark-default";
 

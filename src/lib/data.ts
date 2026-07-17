@@ -17,7 +17,7 @@ import type {
   Education,
   NavLink,
   Learning,
-} from './data.types';
+} from "@/types";
 
 // Re-export all config data
 export const siteMetadata: SiteMetadata = config.siteMetadata;

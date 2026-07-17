@@ -7,7 +7,7 @@ import type {
   Learning,
   LearningCategory,
   LearningLanguage,
-} from "@/lib/data.types";
+} from "@/types";
 import type { HighlightedCode } from "@/lib/highlight";
 
 export type LearningItem = {
@@ -38,7 +38,7 @@ type CategoryMeta = {
 
 const CATEGORY_META: Record<LearningCategory, CategoryMeta> = {
   pattern: {
-    label: "Patterns",
+    label: "Design Patterns",
     description:
       "Design patterns: reusable, named solutions to recurring design problems — a shared vocabulary for structure.",
     reference: {
@@ -63,13 +63,7 @@ const CATEGORY_META: Record<LearningCategory, CategoryMeta> = {
   },
 };
 
-const FILTERS: ("all" | LearningCategory)[] = [
-  "all",
-  "pattern",
-  "law",
-  "paradigm",
-  "principle",
-];
+const FILTERS: LearningCategory[] = ["pattern", "law", "paradigm", "principle"];
 
 // "Hyrum's Law" -> "hyrums_law"
 const fileSlug = (title: string): string =>
@@ -206,17 +200,14 @@ export default function Learnings({
   items: LearningItem[];
   currentlyLearning: string[];
 }) {
-  const [filter, setFilter] = useState<"all" | LearningCategory>("all");
+  const [filter, setFilter] = useState<LearningCategory>("pattern");
 
   const visible = useMemo(
-    () =>
-      filter === "all"
-        ? items
-        : items.filter((item) => item.learning.category === filter),
+    () => items.filter((item) => item.learning.category === filter),
     [items, filter]
   );
 
-  const activeMeta = filter === "all" ? null : CATEGORY_META[filter];
+  const activeMeta = CATEGORY_META[filter];
 
   return (
     <section className="pt-32 pb-20">
@@ -285,11 +276,9 @@ export default function Learnings({
               >
                 <div className="flex flex-wrap justify-center gap-3">
                   {FILTERS.map((f) => {
-                    const count =
-                      f === "all"
-                        ? items.length
-                        : items.filter((i) => i.learning.category === f)
-                            .length;
+                    const count = items.filter(
+                      (i) => i.learning.category === f
+                    ).length;
                     if (count === 0) return null;
                     return (
                       <button
@@ -301,7 +290,7 @@ export default function Learnings({
                             : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
                         }`}
                       >
-                        {f === "all" ? "All" : CATEGORY_META[f].label}
+                        {CATEGORY_META[f].label}
                         <span className="ml-1.5 font-mono text-xs opacity-70">
                           {count}
                         </span>
@@ -311,29 +300,27 @@ export default function Learnings({
                 </div>
 
                 <AnimatePresence mode="wait">
-                  {activeMeta && (
-                    <motion.p
-                      key={filter}
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -6 }}
-                      transition={{ duration: 0.2 }}
-                      className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400"
-                    >
-                      {activeMeta.description}
-                      {activeMeta.reference && (
-                        <a
-                          href={activeMeta.reference.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="ml-2 inline-flex items-center gap-1 text-purple-600 dark:text-purple-400 hover:underline"
-                        >
-                          {activeMeta.reference.label}
-                          <ExternalLink className="h-3 w-3" />
-                        </a>
-                      )}
-                    </motion.p>
-                  )}
+                  <motion.p
+                    key={filter}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.2 }}
+                    className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400"
+                  >
+                    {activeMeta.description}
+                    {activeMeta.reference && (
+                      <a
+                        href={activeMeta.reference.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="ml-2 inline-flex items-center gap-1 text-purple-600 dark:text-purple-400 hover:underline"
+                      >
+                        {activeMeta.reference.label}
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    )}
+                  </motion.p>
                 </AnimatePresence>
               </motion.div>
 

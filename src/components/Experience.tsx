@@ -5,7 +5,7 @@ import { useInView } from "framer-motion";
 import { useRef } from "react";
 import { Briefcase, MapPin, Calendar, CheckCircle2, TrendingUp, ExternalLink } from "lucide-react";
 import { experiences } from "@/lib/data";
-import type { Experience as ExperienceType, ExperienceRole } from "@/lib/data.types";
+import type { Experience as ExperienceType, ExperienceRole } from "@/types";
 
 // Helper to check if experience has multiple roles
 function hasMultipleRoles(exp: ExperienceType): exp is ExperienceType & { roles: ExperienceRole[] } {

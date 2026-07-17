@@ -34,12 +34,13 @@ src/
 │   ├── Contact.tsx     # Contact form and info
 │   ├── Footer.tsx      # Footer with links
 │   └── ThemeProvider.tsx
-└── lib/
-    ├── data.ts              # Re-exports config data + nav links
-    ├── data.types.ts        # TypeScript interfaces
-    ├── data.config.ts       # Personal data (GITIGNORED)
-    ├── data.config.example.ts # Template for cloning
-    └── highlight.ts         # Build-time shiki highlighting for learnings
+├── lib/
+│   ├── data.ts              # Re-exports config data + nav links
+│   ├── data.config.ts       # Personal data (GITIGNORED)
+│   ├── data.config.example.ts # Template for cloning
+│   └── highlight.ts         # Build-time shiki highlighting for learnings
+└── types/
+    └── index.ts             # Shared TypeScript interfaces (import from "@/types")
 ```
 
 ## Configuration System

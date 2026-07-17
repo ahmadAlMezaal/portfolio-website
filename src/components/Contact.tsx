@@ -23,7 +23,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { personalInfo } from "@/lib/data";
-import type { SocialPlatform } from "@/lib/data.types";
+import type { SocialPlatform } from "@/types";
 import { useShouldReduceMotion, useClipboard } from "@/lib/hooks";
 import SectionBackground from "./SectionBackground";
 
