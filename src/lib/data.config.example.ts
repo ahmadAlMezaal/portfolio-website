@@ -252,6 +252,49 @@ const config: PortfolioConfig = {
     "Certification Name 2",
     "Certification Name 3",
   ],
+
+  // ---------------------------------------------------------------------------
+  // CURRENTLY LEARNING (optional — short chips shown at the top of /learnings)
+  // ---------------------------------------------------------------------------
+  currentlyLearning: ["Topic one", "Topic two"],
+
+  // ---------------------------------------------------------------------------
+  // LEARNINGS / FIELD NOTES (optional — powers the /learnings page)
+  // Code is required in all three languages (typescript, go, python).
+  // Categories: "pattern" | "law" | "paradigm" | "principle"
+  // ---------------------------------------------------------------------------
+  learnings: [
+    {
+      title: "Singleton",
+      category: "pattern",
+      oneLiner: "Guarantee a single shared instance of something expensive.",
+      code: {
+        typescript: `let instance: Client | undefined;
+
+export const getClient = (): Client => {
+  instance ??= new Client();
+  return instance;
+};`,
+        go: `var (
+	client *Client
+	once   sync.Once
+)
+
+func GetClient() *Client {
+	once.Do(func() { client = New() })
+	return client
+}`,
+        python: `from functools import lru_cache
+
+@lru_cache(maxsize=1)
+def get_client() -> Client:
+    return Client()`,
+      },
+      fieldNote: "Where this showed up in your real work — the anecdote.",
+      verdict: "Your one honest line of judgement about the concept.",
+    },
+    // Add more learnings...
+  ],
 };
 
 export default config;

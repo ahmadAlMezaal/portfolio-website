@@ -89,7 +89,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`dark ${jetBrainsMono.variable}`}>
+    <html
+      lang="en"
+      className={`dark ${jetBrainsMono.variable}`}
+      // The anti-flash script below sets data-theme before hydration.
+      suppressHydrationWarning
+    >
       <head>
         {/* Apply the saved theme before paint to avoid a flash of the default. */}
         <script

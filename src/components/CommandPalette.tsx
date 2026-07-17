@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Home,
   User,
@@ -21,6 +22,7 @@ import {
   ExternalLink,
   Search,
   CornerDownLeft,
+  BookOpen,
 } from "lucide-react";
 import { navLinks, personalInfo } from "@/lib/data";
 import { assetPath, isCvAvailable } from "@/lib/utils";
@@ -66,6 +68,7 @@ const NAV_ICONS: Record<string, ReactNode> = {
   "#about": <User size={16} />,
   "#skills": <Code2 size={16} />,
   "#projects": <FolderGit2 size={16} />,
+  "/learnings": <BookOpen size={16} />,
   "#contact": <Mail size={16} />,
 };
 
@@ -84,6 +87,8 @@ function socialLabel(platform: string): string {
 export default function CommandPalette() {
   const { theme, setTheme } = useTheme();
   const { copy } = useClipboard();
+  const router = useRouter();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
@@ -91,6 +96,20 @@ export default function CommandPalette() {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+
+  // Hash links scroll in place on the home page, navigate home elsewhere.
+  const navigate = useCallback(
+    (href: string) => {
+      if (!href.startsWith("#")) {
+        router.push(href);
+      } else if (pathname === "/") {
+        scrollToHash(href);
+      } else {
+        router.push(`/${href}`);
+      }
+    },
+    [router, pathname]
+  );
 
   const commands = useMemo<Command[]>(() => {
     const cmds: Command[] = [
@@ -108,7 +127,7 @@ export default function CommandPalette() {
         group: "Navigation" as const,
         icon: NAV_ICONS[link.href] ?? <Home size={16} />,
         keywords: link.name,
-        perform: () => scrollToHash(link.href),
+        perform: () => navigate(link.href),
       })),
       ...THEMES.map((t) => ({
         id: `theme-${t.id}`,
@@ -179,7 +198,7 @@ export default function CommandPalette() {
     }
 
     return cmds;
-  }, [theme, setTheme, copy]);
+  }, [theme, setTheme, copy, navigate]);
 
   // Sections in fixed group order, each fuzzy-filtered and ranked.
   const { sections, flat } = useMemo(() => {
