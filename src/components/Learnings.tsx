@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Sparkles } from "lucide-react";
+import { ChevronDown, ExternalLink, Sparkles } from "lucide-react";
 import type {
   Learning,
   LearningCategory,
@@ -29,6 +29,47 @@ const CATEGORY_STYLES: Record<LearningCategory, string> = {
   principle:
     "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400",
 };
+
+type CategoryMeta = {
+  label: string;
+  description: string;
+  reference?: { label: string; url: string };
+};
+
+const CATEGORY_META: Record<LearningCategory, CategoryMeta> = {
+  pattern: {
+    label: "Patterns",
+    description:
+      "Design patterns: reusable, named solutions to recurring design problems — a shared vocabulary for structure.",
+    reference: {
+      label: "refactoring.guru",
+      url: "https://refactoring.guru/design-patterns",
+    },
+  },
+  law: {
+    label: "Laws",
+    description:
+      "Empirical observations about how software — and the people building it — actually behave.",
+  },
+  paradigm: {
+    label: "Paradigms",
+    description:
+      "Whole ways of structuring programs — each a different answer to “where does state live?”",
+  },
+  principle: {
+    label: "Principles",
+    description:
+      "Rules of thumb that keep systems safe to change, safe to retry, and safe to operate.",
+  },
+};
+
+const FILTERS: ("all" | LearningCategory)[] = [
+  "all",
+  "pattern",
+  "law",
+  "paradigm",
+  "principle",
+];
 
 // "Hyrum's Law" -> "hyrums_law"
 const fileSlug = (title: string): string =>
@@ -165,6 +206,18 @@ export default function Learnings({
   items: LearningItem[];
   currentlyLearning: string[];
 }) {
+  const [filter, setFilter] = useState<"all" | LearningCategory>("all");
+
+  const visible = useMemo(
+    () =>
+      filter === "all"
+        ? items
+        : items.filter((item) => item.learning.category === filter),
+    [items, filter]
+  );
+
+  const activeMeta = filter === "all" ? null : CATEGORY_META[filter];
+
   return (
     <section className="pt-32 pb-20">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -222,15 +275,90 @@ export default function Learnings({
               {"// nothing here yet — add `learnings` to data.config.ts"}
             </motion.p>
           ) : (
-            <div className="space-y-6">
-              {items.map((item, index) => (
-                <LearningCard
-                  key={item.learning.title}
-                  item={item}
-                  defaultOpen={index === 0}
-                />
-              ))}
-            </div>
+            <>
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+                }}
+                className="mb-8"
+              >
+                <div className="flex flex-wrap justify-center gap-3">
+                  {FILTERS.map((f) => {
+                    const count =
+                      f === "all"
+                        ? items.length
+                        : items.filter((i) => i.learning.category === f)
+                            .length;
+                    if (count === 0) return null;
+                    return (
+                      <button
+                        key={f}
+                        onClick={() => setFilter(f)}
+                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                          filter === f
+                            ? "bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900 shadow-lg shadow-purple-500/25"
+                            : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
+                        }`}
+                      >
+                        {f === "all" ? "All" : CATEGORY_META[f].label}
+                        <span className="ml-1.5 font-mono text-xs opacity-70">
+                          {count}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <AnimatePresence mode="wait">
+                  {activeMeta && (
+                    <motion.p
+                      key={filter}
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      transition={{ duration: 0.2 }}
+                      className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400"
+                    >
+                      {activeMeta.description}
+                      {activeMeta.reference && (
+                        <a
+                          href={activeMeta.reference.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="ml-2 inline-flex items-center gap-1 text-purple-600 dark:text-purple-400 hover:underline"
+                        >
+                          {activeMeta.reference.label}
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      )}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+
+              <motion.div
+                key={filter}
+                className="space-y-6"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: {
+                    opacity: 1,
+                    transition: { staggerChildren: 0.08 },
+                  },
+                }}
+                initial="hidden"
+                animate="visible"
+              >
+                {visible.map((item, index) => (
+                  <LearningCard
+                    key={item.learning.title}
+                    item={item}
+                    defaultOpen={index === 0}
+                  />
+                ))}
+              </motion.div>
+            </>
           )}
         </motion.div>
       </div>

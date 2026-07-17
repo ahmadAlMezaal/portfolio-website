@@ -567,6 +567,102 @@ export async function callBank<T>(fn: () => Promise<T>) {
         "Essential in front of third parties you don't control. Trip fast, recover slowly.",
     },
     {
+      title: "Factory Method",
+      category: "pattern",
+      oneLiner:
+        "Let one place decide which concrete implementation to construct, behind a shared interface.",
+      code: {
+        typescript: `const providers = {
+  stripe: () => new StripeGateway(),
+  truelayer: () => new TrueLayerGateway(),
+  plaid: () => new PlaidGateway(),
+} satisfies Record<string, () => Gateway>;
+
+export const gatewayFor = (provider: keyof typeof providers) =>
+  providers[provider]();`,
+        go: `func NewGateway(provider string) (Gateway, error) {
+	switch provider {
+	case "stripe":
+		return &StripeGateway{}, nil
+	case "truelayer":
+		return &TrueLayerGateway{}, nil
+	case "plaid":
+		return &PlaidGateway{}, nil
+	default:
+		return nil, fmt.Errorf("unknown provider %q", provider)
+	}
+}`,
+        python: `GATEWAYS = {
+    "stripe": StripeGateway,
+    "truelayer": TrueLayerGateway,
+    "plaid": PlaidGateway,
+}
+
+def gateway_for(provider: str) -> Gateway:
+    try:
+        return GATEWAYS[provider]()
+    except KeyError:
+        raise UnknownProvider(provider)`,
+      },
+      fieldNote:
+        "Every open banking aggregator is secretly a factory: one interface, a dozen bank connectors behind it. Adding a bank became a config entry plus one class, instead of a new branch in every call site.",
+      verdict:
+        "The most useful classic. If you're switching on a type string in more than one place, you want a factory.",
+    },
+    {
+      title: "Builder",
+      category: "pattern",
+      oneLiner:
+        "Assemble a complex object step by step instead of through a constructor with nine arguments.",
+      code: {
+        typescript: `class ReportBuilder {
+  private opts: ReportOptions = defaults();
+
+  between(from: string, to: string) {
+    this.opts.range = { from, to };
+    return this;
+  }
+  currency(code: string) {
+    this.opts.currency = code;
+    return this;
+  }
+  build(): Report {
+    return runReport(this.opts);
+  }
+}
+
+const report = new ReportBuilder()
+  .between("2026-01-01", "2026-06-30")
+  .currency("GBP")
+  .build();`,
+        go: `// Go's idiom for the same job: functional options.
+func WithCurrency(code string) Option {
+	return func(r *Report) { r.currency = code }
+}
+
+func NewReport(opts ...Option) *Report {
+	r := &Report{currency: "GBP"}
+	for _, opt := range opts {
+		opt(r)
+	}
+	return r
+}`,
+        python: `@dataclass
+class Report:
+    currency: str = "GBP"
+    group_by: str | None = None
+    refunds: bool = False
+
+# Python rarely needs a builder — keyword
+# arguments already are one.
+report = Report(currency="EUR", refunds=True)`,
+      },
+      fieldNote:
+        "A transaction-report endpoint grew to nine optional parameters and every call site was a guessing game. The builder made them readable; in Go the same job is done by functional options, and in Python by keyword arguments.",
+      verdict:
+        "A cure for telescoping constructors — though some languages ship the cure in their syntax.",
+    },
+    {
       title: "Hyrum's Law",
       category: "law",
       oneLiner:
