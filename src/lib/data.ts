@@ -6,7 +6,8 @@
 // See data.config.example.ts for the template format.
 // =============================================================================
 
-import config from './data.config';
+import remoteConfig from './portfolio-data.json';
+import localConfig from './data.config';
 import type {
   SiteMetadata,
   PersonalInfo,
@@ -18,6 +19,12 @@ import type {
   NavLink,
   Learning,
 } from "@/types";
+import type { PortfolioConfig } from "@/types";
+
+// Remote data (written by scripts/sync-data.mjs when PORTFOLIO_DATA_URL is
+// set) wins over the local config fallback.
+const config: PortfolioConfig =
+  (remoteConfig as unknown as PortfolioConfig | null) ?? localConfig;
 
 // Re-export all config data
 export const siteMetadata: SiteMetadata = config.siteMetadata;

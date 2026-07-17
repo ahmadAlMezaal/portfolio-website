@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/sync-data.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/sync-data.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postinstall": "node scripts/sync-data.mjs"
   },
   "dependencies": {
     "framer-motion": "^12.23.26",

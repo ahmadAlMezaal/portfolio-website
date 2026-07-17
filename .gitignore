@@ -43,6 +43,9 @@ public/projects/*.webp
 # AI assistant working files
 .ai/
 
+# fetched portfolio content (written by scripts/sync-data.mjs)
+src/lib/portfolio-data.json
+
 # vercel
 .vercel
 
