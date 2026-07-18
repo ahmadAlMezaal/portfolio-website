@@ -1,6 +1,4 @@
-// Section background accents layered over the global <MatrixRain> canvas:
-// a soft green glow plus very faint CRT scanlines. The `type` prop is kept
-// for call-site compatibility but the terminal motif is uniform site-wide.
+// The `type` prop is kept for call-site compatibility; the terminal motif is uniform site-wide.
 type SceneType = "particles" | "nodes" | "wave";
 
 interface SectionBackgroundProps {

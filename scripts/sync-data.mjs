@@ -1,7 +1,4 @@
-// Fetches the full portfolio content from PORTFOLIO_DATA_URL and writes it to
-// src/lib/portfolio-data.json (gitignored) before `next dev` / `next build`.
-// Without a URL the site falls back to src/lib/data.config.ts, so clones of
-// this repo keep working with local data only.
+// Fetches portfolio content from PORTFOLIO_DATA_URL into src/lib/portfolio-data.json (gitignored); without a URL the site falls back to data.config.ts.
 
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";

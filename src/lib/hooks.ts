@@ -1,22 +1,11 @@
-// =============================================================================
-// CUSTOM HOOKS FOR PERFORMANCE OPTIMIZATION
-// =============================================================================
-
 import { useState, useEffect, useCallback, useRef } from "react";
 
-/**
- * Hook to detect if the user is on a mobile device.
- * Uses both media query and touch detection for reliability.
- * Returns false during SSR to avoid hydration mismatch.
- */
+// Detects mobile via media query + touch; returns false during SSR to avoid hydration mismatch.
 export function useIsMobile(breakpoint: number = 768): boolean {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Check media query
     const mediaQuery = window.matchMedia(`(max-width: ${breakpoint}px)`);
-
-    // Also consider touch capability as a mobile indicator
     const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
     const checkMobile = () => {
@@ -32,10 +21,6 @@ export function useIsMobile(breakpoint: number = 768): boolean {
   return isMobile;
 }
 
-/**
- * Hook to detect if user prefers reduced motion.
- * Respects system accessibility settings.
- */
 export function usePrefersReducedMotion(): boolean {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
@@ -55,10 +40,7 @@ export function usePrefersReducedMotion(): boolean {
   return prefersReducedMotion;
 }
 
-/**
- * Combined hook that returns true if animations should be reduced.
- * True when: on mobile OR user prefers reduced motion.
- */
+// True on mobile or when the user prefers reduced motion.
 export function useShouldReduceMotion(): boolean {
   const isMobile = useIsMobile();
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -66,12 +48,7 @@ export function useShouldReduceMotion(): boolean {
   return isMobile || prefersReducedMotion;
 }
 
-/**
- * Hook for throttled scroll position tracking.
- * Uses requestAnimationFrame for optimal performance.
- * @param threshold - Scroll position threshold to track (default: 0)
- * @returns Whether scroll position is past the threshold
- */
+// rAF-throttled "scrolled past threshold" flag.
 export function useScrollPosition(threshold: number = 0): boolean {
   const [isPastThreshold, setIsPastThreshold] = useState(false);
   const rafRef = useRef<number | null>(null);
@@ -79,15 +56,13 @@ export function useScrollPosition(threshold: number = 0): boolean {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Cancel any pending animation frame
       if (rafRef.current !== null) {
-        return; // Already have a pending update
+        return;
       }
 
       rafRef.current = requestAnimationFrame(() => {
         const currentScrollY = window.scrollY;
 
-        // Only update state if we crossed the threshold
         const wasPast = lastScrollY.current > threshold;
         const isPast = currentScrollY > threshold;
 
@@ -100,7 +75,6 @@ export function useScrollPosition(threshold: number = 0): boolean {
       });
     };
 
-    // Check initial position
     setIsPastThreshold(window.scrollY > threshold);
     lastScrollY.current = window.scrollY;
 
@@ -117,11 +91,7 @@ export function useScrollPosition(threshold: number = 0): boolean {
   return isPastThreshold;
 }
 
-/**
- * Hook for copying text to the clipboard with transient "copied" feedback.
- * Falls back to a hidden textarea + execCommand on insecure contexts / old browsers.
- * @param resetMs - How long the `copied` flag stays true (default: 2000ms)
- */
+// Clipboard copy with transient "copied" flag; falls back to textarea + execCommand on insecure contexts.
 export function useClipboard(resetMs: number = 2000): {
   copied: boolean;
   copy: (text: string) => Promise<boolean>;
@@ -170,12 +140,6 @@ export function useClipboard(resetMs: number = 2000): {
   return { copied, copy };
 }
 
-/**
- * Hook for throttled scroll tracking with callback.
- * Useful when you need more control over scroll handling.
- * @param callback - Function to call with scroll position
- * @param deps - Dependencies for the callback
- */
 export function useThrottledScroll(
   callback: (scrollY: number) => void,
   deps: React.DependencyList = []
@@ -196,7 +160,6 @@ export function useThrottledScroll(
       });
     };
 
-    // Initial call
     stableCallback(window.scrollY);
 
     window.addEventListener("scroll", handleScroll, { passive: true });

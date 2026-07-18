@@ -42,16 +42,13 @@ export default function Hero() {
       {/* Dark vignette so the headline stays legible over the code-rain */}
       <div className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_60%_55%_at_50%_45%,rgba(5,8,6,0.6),transparent_78%)]" />
 
-      {/* Animated CSS background (drifting gradient orbs + dot grid).
-          Motion is disabled automatically under prefers-reduced-motion. */}
+      {/* Motion auto-disabled under prefers-reduced-motion via globals.css */}
       <HeroBackground />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center">
-          {/* Per-theme hero intro: terminal (matrix) / HUD (cyberpunk) / CRT boot (amber) */}
           <HeroIntro roleText={displayText} />
 
-          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -91,7 +88,6 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* Scroll Indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

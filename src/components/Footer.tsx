@@ -44,7 +44,6 @@ const DevToIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-// Map platform names to their icons
 const socialIconMap: Record<SocialPlatform, LucideIcon | React.FC<{ className?: string }>> = {
   github: Github,
   linkedin: Linkedin,
@@ -60,7 +59,6 @@ const socialIconMap: Record<SocialPlatform, LucideIcon | React.FC<{ className?: 
   dev: DevToIcon,
 };
 
-// Map platform names to display labels
 const socialLabelMap: Record<SocialPlatform, string> = {
   github: "GitHub",
   linkedin: "LinkedIn",
@@ -86,13 +84,10 @@ export default function Footer() {
 
   return (
     <footer className="relative bg-gray-900 text-white overflow-hidden">
-      {/* Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 via-transparent to-transparent" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Main Footer Content */}
         <div className="grid md:grid-cols-3 gap-8 mb-8">
-          {/* Brand */}
           <div className="space-y-4">
             <NavAnchor
               href="#"
@@ -119,7 +114,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
@@ -137,7 +131,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Social & Contact */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Connect</h3>
             <div className="flex gap-3 mb-4">
@@ -159,10 +152,8 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Divider */}
         <div className="h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent mb-8" />
 
-        {/* Bottom Bar */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <p className="text-gray-400 text-sm flex items-center gap-1">
             Made with <Heart className="w-4 h-4 text-red-500 fill-red-500" /> by{" "}

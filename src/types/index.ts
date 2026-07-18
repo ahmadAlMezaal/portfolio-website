@@ -1,8 +1,3 @@
-// =============================================================================
-// TYPE DEFINITIONS FOR PORTFOLIO DATA
-// =============================================================================
-
-// Available status options for the portfolio
 export type StatusOption =
   | "Open to Opportunities"
   | "Open to Freelance"
@@ -10,7 +5,6 @@ export type StatusOption =
   | "Available for Hire"
   | "Not Available";
 
-// Supported social media platforms
 export type SocialPlatform =
   | "github"
   | "linkedin"
@@ -78,7 +72,7 @@ export interface ExperienceRole {
 // 2. Multiple roles (promotions): uses roles array, title/period/description/achievements are ignored
 export interface Experience {
   company: string;
-  companyUrl?: string; // Optional link to company website
+  companyUrl?: string;
   location: string;
   // Single role fields (used when roles array is not provided)
   title?: string;
@@ -89,7 +83,6 @@ export interface Experience {
   roles?: ExperienceRole[];
 }
 
-// Supported project link types
 export type ProjectLinkType =
   | "website"
   | "github"
@@ -97,7 +90,6 @@ export type ProjectLinkType =
   | "playstore"
   | "case-study";
 
-// Project status
 export type ProjectStatus = "live" | "in_progress" | "private";
 
 export interface ProjectLink {

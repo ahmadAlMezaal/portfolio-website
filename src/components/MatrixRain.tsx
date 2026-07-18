@@ -2,9 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-// Matrix-only code-rain backdrop (rendered solely for the matrix theme by
-// ThemeBackground). Fixed canvas behind content at low opacity; reads the
-// matrix rain colors from CSS vars. Honors prefers-reduced-motion.
+// Code-rain canvas (matrix theme only); reads rain colours from CSS vars, honours prefers-reduced-motion.
 export default function MatrixRain() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -14,7 +12,6 @@ export default function MatrixRain() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Pull the active theme's rain colors from CSS custom properties.
     const root = getComputedStyle(document.documentElement);
     const rainColor = root.getPropertyValue("--rain").trim() || "#00ff9c";
     const leadColor = root.getPropertyValue("--rain-lead").trim() || "#d6ffe0";

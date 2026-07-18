@@ -45,7 +45,6 @@ export default function ShortcutsOverlay() {
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
-  // Also openable from the command palette.
   useEffect(() => onOpenShortcuts(() => setOpen(true)), []);
 
   return (
