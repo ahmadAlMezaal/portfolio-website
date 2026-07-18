@@ -140,7 +140,7 @@ export default function Contact() {
   }));
 
   return (
-    <section id="contact" className="relative py-20 bg-gray-50 dark:bg-[#070d0a]/50 overflow-hidden">
+    <section id="contact" className="relative py-20 section-tint overflow-hidden">
       {/* Animated CSS background - skipped on mobile / reduced-motion */}
       {!shouldReduceMotion && <SectionBackground type="wave" />}
 

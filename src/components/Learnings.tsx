@@ -82,33 +82,32 @@ function CodeEditor({
   const [lang, setLang] = useState<LearningLanguage>("typescript");
 
   return (
-    <div className="overflow-hidden rounded-xl border border-gray-300 dark:border-gray-700 bg-[#0d1117]">
-      <div className="flex items-center border-b border-gray-700/80 bg-[#161b22]">
-        <div className="flex items-center gap-1.5 px-4 shrink-0">
+    <div className="overflow-hidden rounded-xl border border-[var(--card-border)] bg-[var(--background)]">
+      <div className="flex items-center gap-3 border-b border-[var(--card-border)] bg-[var(--muted-bg)] px-4 py-2">
+        <div className="flex items-center gap-1.5 shrink-0">
           <span className="h-3 w-3 rounded-full bg-red-500/80" />
           <span className="h-3 w-3 rounded-full bg-amber-400/80" />
           <span className="h-3 w-3 rounded-full bg-green-500/80" />
         </div>
-        <div className="flex overflow-x-auto">
-          {LANGS.map((l) => (
-            <button
-              key={l.id}
-              onClick={() => setLang(l.id)}
-              aria-pressed={lang === l.id}
-              className={`px-4 py-2.5 text-xs font-mono whitespace-nowrap border-b-2 transition-colors ${
-                lang === l.id
-                  ? "border-purple-500 bg-white/5 text-white"
-                  : "border-transparent text-gray-500 hover:text-gray-300"
-              }`}
-            >
-              {slug}.{l.ext}
-            </button>
-          ))}
+        <div className="relative">
+          <select
+            value={lang}
+            onChange={(e) => setLang(e.target.value as LearningLanguage)}
+            aria-label="Select language"
+            className="cursor-pointer appearance-none rounded-md border border-[var(--card-border)] bg-[var(--card-bg)] py-1.5 pl-3 pr-8 text-xs font-mono text-[var(--foreground)] outline-none focus:border-purple-500"
+          >
+            {LANGS.map((l) => (
+              <option key={l.id} value={l.id}>
+                {slug}.{l.ext}
+              </option>
+            ))}
+          </select>
+          <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-500" />
         </div>
       </div>
 
       <div
-        className="overflow-x-auto text-[13px] leading-relaxed [&_pre]:m-0 [&_pre]:bg-transparent! [&_pre]:p-4"
+        className="overflow-x-auto text-[15px] leading-relaxed [&_pre]:m-0 [&_pre]:bg-transparent! [&_pre]:p-5"
         dangerouslySetInnerHTML={{ __html: html[lang] }}
       />
     </div>
@@ -180,7 +179,7 @@ function LearningCard({
               </p>
 
               <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed border-t border-gray-200 dark:border-gray-700 pt-4">
-                <span className="font-mono text-xs text-green-600 dark:text-green-400 mr-2">
+                <span className="font-mono text-xs text-[rgb(var(--accent-rgb))] mr-2">
                   $ verdict:
                 </span>
                 {learning.verdict}

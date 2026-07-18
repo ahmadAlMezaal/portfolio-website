@@ -58,7 +58,7 @@ export default function About() {
   ];
 
   return (
-    <section id="about" className="relative py-20 bg-gray-50 dark:bg-[#070d0a]/50 overflow-hidden">
+    <section id="about" className="relative py-20 section-tint overflow-hidden">
       {/* Animated CSS background - skipped on mobile / reduced-motion */}
       {!shouldReduceMotion && <SectionBackground type="particles" />}
 
@@ -143,7 +143,7 @@ export default function About() {
                 )}
 
                 <div className="absolute inset-16 rounded-full bg-gradient-to-br from-purple-600 via-pink-500 to-blue-500 p-1 shadow-2xl shadow-purple-500/25">
-                  <div className="w-full h-full rounded-full bg-gray-100 dark:bg-[#050806] flex items-center justify-center overflow-hidden">
+                  <div className="w-full h-full rounded-full bg-gray-100 dark:bg-[var(--background)] flex items-center justify-center overflow-hidden">
                     <div className="flex items-center justify-center perspective-1000">
                       {initials.split("").map((letter, i) => (
                         <motion.span
