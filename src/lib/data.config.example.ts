@@ -1,6 +1,5 @@
-// Portfolio configuration template.
-// Copy this file to data.config.ts and fill in your details.
-// data.config.ts is gitignored, so your personal info stays private.
+// Placeholder content, rendered when scripts/sync-data.mjs has no
+// PORTFOLIO_DATA_URL to fetch the real portfolio.json from.
 
 import type { PortfolioConfig } from "@/types";
 
@@ -16,6 +15,8 @@ const config: PortfolioConfig = {
       "Your Location",
     ],
     locale: "en_GB", // e.g., "en_US", "en_GB", etc.
+    siteUrl: "https://example.com", // deployed origin, no trailing slash
+    twitterHandle: "@yourhandle", // optional
   },
 
   // Personal information

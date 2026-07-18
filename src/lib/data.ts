@@ -1,5 +1,5 @@
 import remoteConfig from './portfolio-data.json';
-import localConfig from './data.config';
+import exampleConfig from './data.config.example';
 import type {
   SiteMetadata,
   PersonalInfo,
@@ -14,9 +14,9 @@ import type {
 import type { PortfolioConfig } from "@/types";
 
 // Remote data (written by scripts/sync-data.mjs when PORTFOLIO_DATA_URL is
-// set) wins over the local config fallback.
+// set) wins; without it the site renders the placeholder example config.
 const config: PortfolioConfig =
-  (remoteConfig as unknown as PortfolioConfig | null) ?? localConfig;
+  (remoteConfig as unknown as PortfolioConfig | null) ?? exampleConfig;
 
 export const siteMetadata: SiteMetadata = config.siteMetadata;
 export const personalInfo: PersonalInfo = config.personalInfo;

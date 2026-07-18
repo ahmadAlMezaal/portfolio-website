@@ -262,7 +262,7 @@ export default function Learnings({
               }}
               className="text-center font-mono text-sm text-gray-400"
             >
-              {"// nothing here yet — add `learnings` to data.config.ts"}
+              {"// nothing here yet — add `learnings` to your portfolio data"}
             </motion.p>
           ) : (
             <>

@@ -1,4 +1,4 @@
-// Fetches portfolio content from PORTFOLIO_DATA_URL into src/lib/portfolio-data.json (gitignored); without a URL the site falls back to data.config.ts.
+// Fetches portfolio content from PORTFOLIO_DATA_URL into src/lib/portfolio-data.json (gitignored); without a URL the site falls back to the placeholder data.config.example.ts.
 
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -44,6 +44,9 @@ function validate(data) {
     const ok = kind === "array" ? Array.isArray(value) : typeof value === "object" && value !== null;
     if (!ok) errors.push(`"${key}" must be ${kind === "array" ? "an array" : "an object"}`);
   }
+  if (typeof data.siteMetadata?.siteUrl !== "string" || !/^https?:\/\//.test(data.siteMetadata.siteUrl)) {
+    errors.push('"siteMetadata.siteUrl" must be an absolute http(s) URL');
+  }
   for (const [i, learning] of (data.learnings ?? []).entries()) {
     for (const lang of ["typescript", "go", "python"]) {
       if (typeof learning?.code?.[lang] !== "string") {
@@ -60,7 +63,7 @@ const token = fromEnvOrDotenv(TOKEN_KEY);
 if (!url) {
   if (!existsSync(TARGET)) {
     writeFileSync(TARGET, "null\n");
-    console.log(`sync-data: ${ENV_KEY} not set — using local data.config.ts`);
+    console.log(`sync-data: ${ENV_KEY} not set — using placeholder data.config.example.ts`);
   } else {
     console.log(`sync-data: ${ENV_KEY} not set — keeping existing ${TARGET}`);
   }

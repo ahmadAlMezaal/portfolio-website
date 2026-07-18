@@ -36,8 +36,7 @@ src/
 │   └── ThemeProvider.tsx
 ├── lib/
 │   ├── data.ts              # Re-exports config data + nav links
-│   ├── data.config.ts       # Personal data (GITIGNORED)
-│   ├── data.config.example.ts # Template for cloning
+│   ├── data.config.example.ts # Placeholder content (fallback when no remote data)
 │   └── highlight.ts         # Build-time shiki highlighting for learnings
 └── types/
     └── index.ts             # Shared TypeScript interfaces (import from "@/types")
@@ -45,13 +44,14 @@ src/
 
 ## Configuration System
 
-All personal information is stored in `src/lib/data.config.ts` which is gitignored. This allows the repo to be public while keeping personal data private.
+ALL personal content lives outside this repo, in the private
+[`portfolio-data`](https://github.com/ahmadAlMezaal/portfolio-data) repo as
+`portfolio.json` (shaped as `PortfolioConfig` from `@/types`). This repo is
+public and contains no personal data beyond deployment infrastructure
+(`public/CNAME`, the committed `public/og-image.png`, and project logos in
+`public/assets/`).
 
-### Remote content (portfolio-data repo)
-
-The full site content can also be served from the private
-[`portfolio-data`](https://github.com/ahmadAlMezaal/portfolio-data) repo
-(`portfolio.json`, shaped as `PortfolioConfig` from `@/types`):
+### How content is fetched
 
 - `scripts/sync-data.mjs` runs before `next dev`/`next build` (npm pre-hooks)
   and on `postinstall`. When `PORTFOLIO_DATA_URL` is set (env or `.env.local`),
@@ -60,19 +60,25 @@ The full site content can also be served from the private
   `src/lib/portfolio-data.json`. On fetch or validation failure the build
   fails loudly.
 - `data.ts` uses that file when present (non-null), otherwise falls back to
-  the local `data.config.ts`.
-- The deploy workflow only sets `PORTFOLIO_DATA_URL` when the
-  `PORTFOLIO_DATA_TOKEN` secret exists, so deployments work before the secret
-  is configured (using the committed config) and switch to remote data once
-  it is.
+  the placeholder `data.config.example.ts`, so clones build out of the box
+  with template content.
+- The deploy workflow always sets `PORTFOLIO_DATA_URL` and passes the
+  `PORTFOLIO_DATA_TOKEN` secret (fine-grained PAT, `contents: read` on
+  portfolio-data). If the secret is missing the build fails rather than
+  deploying placeholder content.
+- For local dev with real content, put `PORTFOLIO_DATA_URL` and
+  `PORTFOLIO_DATA_TOKEN` in `.env.local`. The synced JSON persists (the sync
+  script keeps it when the URL is unset), so a one-off sync also works.
 
-**To customize:**
+**To customize (when cloning this repo as a template):**
 
-1. Copy `src/lib/data.config.example.ts` to `src/lib/data.config.ts`
-2. Fill in your personal information
-3. Place your CV at `public/cv.pdf`
-4. Add project images to `public/projects/`
-5. (Optional) Replace `public/icon.svg` with your own favicon
+1. Seed a starter file with `node scripts/export-template.mjs > portfolio.json`,
+   fill it in, host it anywhere, and point `PORTFOLIO_DATA_URL` at it — any
+   URL returning `PortfolioConfig`-shaped JSON works (GitHub contents API,
+   gist, object storage, CMS). See the README's "Content" section.
+2. Place your CV at `public/cv.pdf`
+3. Add project images to `public/projects/`
+4. (Optional) Replace `public/icon.svg` with your own favicon
 
 **Config includes:**
 
@@ -256,7 +262,9 @@ public/
 
 ## Gitignored Files
 
-- `src/lib/data.config.ts` - Personal configuration
+- `src/lib/portfolio-data.json` - Fetched portfolio content
+- `src/lib/data.config.ts` - Legacy local config (no longer used; ignored so
+  stale local copies don't get committed)
 - `public/cv.pdf` - CV/Resume file
 - `public/projects/*.jpg` - Project images (except .gitkeep)
 - `public/projects/*.png` - Project images
@@ -273,7 +281,8 @@ public/
   Pre-existing banners may stay, but new sections get no banner — at most a
   short single-line comment when something genuinely needs explaining.
 
-- All personal data flows through `data.config.ts` → `data.ts` → components
+- All content flows through `portfolio-data.json` (or the example fallback) →
+  `data.ts` → components; never hardcode personal data in components
 - The Skills component displays skills as tags (no progress bars/percentages)
 - Metadata in layout.tsx imports from config, not hardcoded
 - Check `data.config.example.ts` for the expected config structure

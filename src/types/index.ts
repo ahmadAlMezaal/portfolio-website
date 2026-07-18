@@ -42,6 +42,8 @@ export interface SiteMetadata {
   description: string;
   keywords: string[];
   locale: string;
+  siteUrl: string;
+  twitterHandle?: string;
 }
 
 export interface Stat {

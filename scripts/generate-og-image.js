@@ -1,7 +1,26 @@
-// Generates the 1200x630 Open Graph image. Usage: node scripts/generate-og-image.js
+// Generates the 1200x630 Open Graph image from the synced portfolio data. Usage: node scripts/generate-og-image.js
 
 const fs = require('fs');
 const path = require('path');
+
+const dataPath = path.join(__dirname, '..', 'src', 'lib', 'portfolio-data.json');
+const data = fs.existsSync(dataPath)
+  ? JSON.parse(fs.readFileSync(dataPath, 'utf8'))
+  : null;
+if (!data) {
+  console.error(
+    'No synced portfolio data found. Set PORTFOLIO_DATA_URL (and PORTFOLIO_DATA_TOKEN) and run: node scripts/sync-data.mjs'
+  );
+  process.exit(1);
+}
+
+const escapeXml = (s) =>
+  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+const name = escapeXml(data.personalInfo.name);
+const title = escapeXml(data.personalInfo.title);
+const tagline = escapeXml(data.personalInfo.tagline);
+const domain = escapeXml(data.siteMetadata.siteUrl.replace(/^https?:\/\//, ''));
 
 async function generateOGImage() {
   let sharp;
@@ -51,7 +70,7 @@ async function generateOGImage() {
         font-weight="800"
         fill="#ffffff"
         text-anchor="middle"
-      >Ahmad Al Mezaal</text>
+      >${name}</text>
 
       <!-- Title -->
       <text
@@ -62,7 +81,7 @@ async function generateOGImage() {
         font-weight="500"
         fill="url(#titleGradient)"
         text-anchor="middle"
-      >Senior Software Engineer</text>
+      >${title}</text>
 
       <!-- Tagline -->
       <text
@@ -72,7 +91,7 @@ async function generateOGImage() {
         font-size="24"
         fill="#9ca3af"
         text-anchor="middle"
-      >Fintech • Open Banking • Cloud-Native Systems</text>
+      >${tagline}</text>
 
       <!-- Domain -->
       <text
@@ -82,7 +101,7 @@ async function generateOGImage() {
         font-size="24"
         fill="#6b7280"
         text-anchor="middle"
-      >theaam.dev</text>
+      >${domain}</text>
     </svg>
   `;
 
