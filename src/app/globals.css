@@ -172,6 +172,12 @@ body {
   line-height: 1.6;
 }
 
+/* Subtle per-theme section alternation — recolours with the active palette
+   instead of a fixed hex, so About/Experience/Contact stay consistent. */
+.section-tint {
+  background-color: color-mix(in oklab, var(--muted-bg) 55%, transparent);
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   letter-spacing: -0.025em;
