@@ -19,6 +19,15 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Job-level so the postinstall sync sees the data source too, not just the
+    # build step — otherwise install logs a misleading "PORTFOLIO_DATA_URL not
+    # set" before the build fetches the real content.
+    env:
+      # Empty for the custom domain; "/portfolio-website" for project pages.
+      NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH || '' }}
+      # Content from the private portfolio-data repo; a missing token fails loudly.
+      PORTFOLIO_DATA_URL: https://api.github.com/repos/ahmadAlMezaal/portfolio-data/contents/portfolio.json
+      PORTFOLIO_DATA_TOKEN: ${{ secrets.PORTFOLIO_DATA_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,7 +35,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version-file: ".nvmrc"
           cache: "yarn"
 
       - name: Setup Pages
@@ -36,14 +45,6 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build with Next.js
-        env:
-          # For custom domain (theaam.dev): leave empty (default)
-          # For project pages (username.github.io/repo): set to "/portfolio-website"
-          NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH || '' }}
-          # Content from the private portfolio-data repo; a missing
-          # PORTFOLIO_DATA_TOKEN secret fails the build loudly.
-          PORTFOLIO_DATA_URL: https://api.github.com/repos/ahmadAlMezaal/portfolio-data/contents/portfolio.json
-          PORTFOLIO_DATA_TOKEN: ${{ secrets.PORTFOLIO_DATA_TOKEN }}
         run: yarn build
 
       - name: Add .nojekyll file
