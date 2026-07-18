@@ -107,7 +107,7 @@ function CodeEditor({
       </div>
 
       <div
-        className="overflow-x-auto text-[13px] leading-relaxed [&_pre]:m-0 [&_pre]:bg-transparent! [&_pre]:p-4"
+        className="overflow-x-auto text-[15px] leading-relaxed [&_pre]:m-0 [&_pre]:bg-transparent! [&_pre]:p-5"
         dangerouslySetInnerHTML={{ __html: html[lang] }}
       />
     </div>
