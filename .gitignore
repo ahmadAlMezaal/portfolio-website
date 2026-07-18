@@ -53,5 +53,5 @@ src/lib/portfolio-data.json
 *.tsbuildinfo
 next-env.d.ts
 
-# legacy local config (content now lives in the portfolio-data repo)
+# legacy local config
 src/lib/data.config.ts

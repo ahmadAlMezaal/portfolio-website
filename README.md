@@ -36,18 +36,52 @@ yarn dev
 yarn build
 ```
 
-## Customization
+## Content
 
-All content is fetched at build time from a separate (private) data repo as
-`portfolio.json`, shaped as `PortfolioConfig` (see `src/types`). Without that,
-the site renders the placeholder content in `src/lib/data.config.example.ts`.
+Everything the site renders comes from a single `portfolio.json`, fetched at
+build time by `scripts/sync-data.mjs` from wherever `PORTFOLIO_DATA_URL`
+points. The site itself contains no personal content — without a data source
+it renders the placeholder in `src/lib/data.config.example.ts`, so a fresh
+clone builds and runs as a template out of the box.
 
-1. Create a repo holding your `portfolio.json` (private works with a
-   fine-grained PAT that has `contents: read`)
-2. Set `PORTFOLIO_DATA_URL` (and `PORTFOLIO_DATA_TOKEN` if private) in
-   `.env.local` — see `scripts/sync-data.mjs`
-3. Add your CV to `public/cv.pdf`
-4. Add project images to `public/projects/`
+This instance reads from the private
+[`portfolio-data`](https://github.com/ahmadAlMezaal/portfolio-data) repo
+through the GitHub contents API, but any URL that returns the JSON works:
+a public repo, a gist, object storage, or a headless CMS endpoint.
+
+### Use it with your own content
+
+1. Seed a `portfolio.json` from the template and fill it in — its shape is
+   the `PortfolioConfig` interface in `src/types/index.ts`:
+
+   ```bash
+   node scripts/export-template.mjs > portfolio.json
+   ```
+
+2. Host it anywhere. For a private GitHub repo, use the contents API URL and
+   a fine-grained PAT with `contents: read` on that repo:
+
+   ```
+   https://api.github.com/repos/<user>/<data-repo>/contents/portfolio.json
+   ```
+
+3. Point the build at it — locally via `.env.local`:
+
+   ```bash
+   PORTFOLIO_DATA_URL=<url>
+   PORTFOLIO_DATA_TOKEN=<token>   # only for private sources
+   ```
+
+   and in CI by setting the `PORTFOLIO_DATA_TOKEN` secret and updating
+   `PORTFOLIO_DATA_URL` in `.github/workflows/deploy.yml`.
+
+4. Replace the deployment-specific assets: `public/CNAME` (your domain, or
+   delete it), `public/cv.pdf`, project images in `public/projects/` and
+   `public/assets/`, and regenerate `public/og-image.png` with
+   `node scripts/generate-og-image.js` after a sync.
+
+The sync script validates the JSON shape and fails the build loudly on a bad
+fetch, so a broken source never deploys silently.
 
 See [CLAUDE.md](./CLAUDE.md) for detailed configuration options.
 

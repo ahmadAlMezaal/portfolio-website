@@ -72,8 +72,10 @@ public and contains no personal data beyond deployment infrastructure
 
 **To customize (when cloning this repo as a template):**
 
-1. Host your own `portfolio.json` and point `PORTFOLIO_DATA_URL` at it, or
-   edit `src/lib/data.config.example.ts` directly
+1. Seed a starter file with `node scripts/export-template.mjs > portfolio.json`,
+   fill it in, host it anywhere, and point `PORTFOLIO_DATA_URL` at it — any
+   URL returning `PortfolioConfig`-shaped JSON works (GitHub contents API,
+   gist, object storage, CMS). See the README's "Content" section.
 2. Place your CV at `public/cv.pdf`
 3. Add project images to `public/projects/`
 4. (Optional) Replace `public/icon.svg` with your own favicon

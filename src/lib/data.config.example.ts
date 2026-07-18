@@ -1,7 +1,5 @@
-// Placeholder portfolio content, shaped as PortfolioConfig.
-// Real content lives in a separate (private) data repo as portfolio.json and
-// is fetched by scripts/sync-data.mjs when PORTFOLIO_DATA_URL is set; without
-// it the site renders this template so the repo works out of the box.
+// Placeholder content, rendered when scripts/sync-data.mjs has no
+// PORTFOLIO_DATA_URL to fetch the real portfolio.json from.
 
 import type { PortfolioConfig } from "@/types";
 
@@ -17,8 +15,8 @@ const config: PortfolioConfig = {
       "Your Location",
     ],
     locale: "en_GB", // e.g., "en_US", "en_GB", etc.
-    siteUrl: "https://example.com", // your deployed site's origin, no trailing slash
-    twitterHandle: "@yourhandle", // optional — omit if you don't use Twitter/X
+    siteUrl: "https://example.com", // deployed origin, no trailing slash
+    twitterHandle: "@yourhandle", // optional
   },
 
   // Personal information

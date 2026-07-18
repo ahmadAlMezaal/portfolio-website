@@ -44,7 +44,6 @@ function validate(data) {
     const ok = kind === "array" ? Array.isArray(value) : typeof value === "object" && value !== null;
     if (!ok) errors.push(`"${key}" must be ${kind === "array" ? "an array" : "an object"}`);
   }
-  // layout.tsx does `new URL(siteMetadata.siteUrl)` — catch a missing value here.
   if (typeof data.siteMetadata?.siteUrl !== "string" || !/^https?:\/\//.test(data.siteMetadata.siteUrl)) {
     errors.push('"siteMetadata.siteUrl" must be an absolute http(s) URL');
   }

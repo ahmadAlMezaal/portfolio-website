@@ -1,6 +1,4 @@
-// Generates the 1200x630 Open Graph image from the synced portfolio data.
-// Usage: run a data sync first (yarn dev/build with PORTFOLIO_DATA_URL set),
-// then: node scripts/generate-og-image.js
+// Generates the 1200x630 Open Graph image from the synced portfolio data. Usage: node scripts/generate-og-image.js
 
 const fs = require('fs');
 const path = require('path');
