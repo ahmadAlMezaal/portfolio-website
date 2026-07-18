@@ -1,20 +1,8 @@
-// =============================================================================
-// UTILITY FUNCTIONS
-// =============================================================================
-
-/**
- * Get the base path for the application.
- * Used for constructing asset URLs that work with GitHub Pages.
- */
+// Base path for asset URLs (GitHub Pages support).
 export function getBasePath(): string {
   return process.env.NEXT_PUBLIC_BASE_PATH || "";
 }
 
-/**
- * Construct an asset URL with the correct base path.
- * @param path - The path to the asset (e.g., "/cv.pdf", "/icon.svg")
- * @returns The full path including base path
- */
 export function assetPath(path: string): string {
   if (/^https?:\/\//i.test(path)) {
     return path;
@@ -24,11 +12,7 @@ export function assetPath(path: string): string {
   return `${basePath}${normalizedPath}`;
 }
 
-/**
- * Check if the CV is available for download.
- * Defaults to true (show button). Only hides if explicitly set to "false" during CI
- * when CV_PDF_URL is not configured and no cv.pdf exists.
- */
+// Defaults to true; CI sets NEXT_PUBLIC_CV_AVAILABLE="false" when no CV is configured.
 export function isCvAvailable(): boolean {
   return process.env.NEXT_PUBLIC_CV_AVAILABLE !== "false";
 }

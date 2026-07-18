@@ -10,7 +10,6 @@ import NavAnchor from "./NavAnchor";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Use throttled scroll position for better performance
   const scrolled = useScrollPosition(20);
   const isMobile = useIsMobile();
 
@@ -27,7 +26,6 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
           <NavAnchor
             href="#"
             className="text-xl font-bold font-display tracking-tight"
@@ -40,7 +38,6 @@ export default function Navbar() {
             </span>
           </NavAnchor>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link, index) => (
               <NavAnchor
@@ -57,9 +54,7 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Right side */}
           <div className="flex items-center space-x-4">
-            {/* Status Badge */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -77,7 +72,6 @@ export default function Navbar() {
               </span>
             </motion.div>
 
-            {/* Mobile Menu Button */}
             <motion.button
               onClick={() => setIsOpen(!isOpen)}
               className="md:hidden p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
@@ -89,7 +83,6 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
         <AnimatePresence>
           {isOpen && (
             <motion.div

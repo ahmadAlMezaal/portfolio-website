@@ -1,12 +1,5 @@
-// =============================================================================
-// PORTFOLIO DATA EXPORTS
-// =============================================================================
-// This file re-exports all data from the config file and adds navigation links.
-// Personal information is stored in data.config.ts (gitignored).
-// See data.config.example.ts for the template format.
-// =============================================================================
-
-import config from './data.config';
+import remoteConfig from './portfolio-data.json';
+import localConfig from './data.config';
 import type {
   SiteMetadata,
   PersonalInfo,
@@ -18,8 +11,13 @@ import type {
   NavLink,
   Learning,
 } from "@/types";
+import type { PortfolioConfig } from "@/types";
 
-// Re-export all config data
+// Remote data (written by scripts/sync-data.mjs when PORTFOLIO_DATA_URL is
+// set) wins over the local config fallback.
+const config: PortfolioConfig =
+  (remoteConfig as unknown as PortfolioConfig | null) ?? localConfig;
+
 export const siteMetadata: SiteMetadata = config.siteMetadata;
 export const personalInfo: PersonalInfo = config.personalInfo;
 export const roles: string[] = config.roles;

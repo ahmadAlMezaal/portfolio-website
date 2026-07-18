@@ -6,40 +6,25 @@ import { useLenis } from "lenis/react";
 import { Rocket } from "lucide-react";
 import { useThrottledScroll, useIsMobile } from "@/lib/hooks";
 
-// ============================================================================
-// CONSTANTS
-// ============================================================================
-
 const SCROLL_THRESHOLD = 300; // px before button appears
 const ANIMATION_DURATION = 800; // ms for rocket launch
 const ROCKET_EXIT_DISTANCE = -200; // vh units to fly off screen
 const BUTTON_SIZE = 48; // px
 const BUTTON_OFFSET = 24; // px from edges
 
-// ============================================================================
-// TYPES
-// ============================================================================
-
 type RocketState = "idle" | "launching" | "launched";
-
-// ============================================================================
-// AUDIO UTILITY
-// ============================================================================
 
 function playRocketSound() {
   try {
     const audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
 
-    // Create a "whoosh" sound using oscillators and filters
     const duration = 0.6;
     const now = audioContext.currentTime;
 
-    // Main whoosh oscillator (noise-like with rapid frequency sweep)
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
     const filter = audioContext.createBiquadFilter();
 
-    // Configure filter for whoosh effect
     filter.type = "bandpass";
     filter.frequency.setValueAtTime(500, now);
     filter.frequency.exponentialRampToValueAtTime(2000, now + duration * 0.3);
@@ -52,13 +37,11 @@ function playRocketSound() {
     oscillator.frequency.exponentialRampToValueAtTime(600, now + duration * 0.2);
     oscillator.frequency.exponentialRampToValueAtTime(1200, now + duration);
 
-    // Volume envelope
     gainNode.gain.setValueAtTime(0, now);
     gainNode.gain.linearRampToValueAtTime(0.15, now + 0.05);
     gainNode.gain.exponentialRampToValueAtTime(0.08, now + duration * 0.5);
     gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration);
 
-    // Connect nodes
     oscillator.connect(filter);
     filter.connect(gainNode);
     gainNode.connect(audioContext.destination);
@@ -83,13 +66,11 @@ function playRocketSound() {
     noiseFilter.connect(noiseGain);
     noiseGain.connect(audioContext.destination);
 
-    // Start and stop
     oscillator.start(now);
     oscillator.stop(now + duration);
     noiseOsc.start(now);
     noiseOsc.stop(now + duration);
 
-    // Cleanup
     setTimeout(() => {
       audioContext.close();
     }, duration * 1000 + 100);
@@ -97,10 +78,6 @@ function playRocketSound() {
     // Audio not supported or blocked - fail silently
   }
 }
-
-// ============================================================================
-// COMPONENT
-// ============================================================================
 
 export default function ScrollToTopRocket() {
   const [isVisible, setIsVisible] = useState(false);
@@ -111,35 +88,29 @@ export default function ScrollToTopRocket() {
   // undefined when smooth scroll is disabled (reduced motion) — we fall back.
   const lenis = useLenis();
 
-  // Track scroll position with throttling for better performance
   useThrottledScroll((scrollY) => {
-    // Don't update visibility while launching
     if (isLaunchingRef.current) return;
 
     const shouldShow = scrollY > SCROLL_THRESHOLD;
     setIsVisible(shouldShow);
 
-    // Reset to idle when becoming visible again
     if (shouldShow && rocketState === "launched") {
       setRocketState("idle");
     }
   }, [rocketState]);
 
-  // Handle launch sequence
   const handleLaunch = useCallback(() => {
     if (isLaunchingRef.current || rocketState === "launching") return;
 
-    // Lock launch state
     isLaunchingRef.current = true;
     setRocketState("launching");
 
-    // Play sound (unless reduced motion)
     if (!prefersReducedMotion) {
       playRocketSound();
     }
 
-    // Perform scroll — route through Lenis when active so it doesn't fight
-    // the smooth-scroll rAF loop; otherwise fall back to the native API.
+    // Route through Lenis when active so it doesn't fight the smooth-scroll
+    // rAF loop; otherwise fall back to the native API.
     const scrollToTop = () => {
       if (lenis && !prefersReducedMotion) {
         lenis.scrollTo(0, { duration: 1.1 });
@@ -163,7 +134,6 @@ export default function ScrollToTopRocket() {
     // Start scroll with slight delay to sync with animation
     setTimeout(scrollToTop, 50);
 
-    // Complete animation sequence
     setTimeout(() => {
       setRocketState("launched");
       setIsVisible(false);
@@ -171,7 +141,6 @@ export default function ScrollToTopRocket() {
     }, ANIMATION_DURATION + 100);
   }, [rocketState, prefersReducedMotion, lenis]);
 
-  // Animation variants for the container
   const containerVariants = {
     hidden: {
       opacity: 0,
@@ -197,7 +166,6 @@ export default function ScrollToTopRocket() {
     },
   };
 
-  // Animation variants for the rocket launch
   const rocketLaunchVariants = {
     idle: {
       y: 0,
@@ -228,7 +196,6 @@ export default function ScrollToTopRocket() {
     },
   };
 
-  // Glow trail animation
   const glowTrailVariants = {
     idle: {
       opacity: 0,
@@ -250,7 +217,6 @@ export default function ScrollToTopRocket() {
     },
   };
 
-  // Particle animation for exhaust effect
   const particleVariants = {
     idle: { opacity: 0, scale: 0 },
     launching: (i: number) => ({
@@ -280,12 +246,10 @@ export default function ScrollToTopRocket() {
           animate="visible"
           exit="exit"
         >
-          {/* Glow backdrop effect */}
           <div className="absolute inset-0 -z-10">
             <div className="absolute inset-0 bg-gradient-to-t from-purple-500/20 via-pink-500/10 to-transparent rounded-full blur-xl scale-150" />
           </div>
 
-          {/* Main button */}
           <motion.button
             onClick={handleLaunch}
             disabled={rocketState === "launching"}
@@ -311,7 +275,7 @@ export default function ScrollToTopRocket() {
             whileTap={rocketState === "idle" ? { scale: 0.95 } : undefined}
             aria-label="Scroll to top"
           >
-            {/* Animated glow ring - static on mobile for performance */}
+            {/* Glow ring static on mobile for performance */}
             {isMobile ? (
               <div
                 className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400 opacity-50"
@@ -333,7 +297,6 @@ export default function ScrollToTopRocket() {
               />
             )}
 
-            {/* Glow trail during launch */}
             <motion.div
               className="absolute left-1/2 top-full -translate-x-1/2 w-4 h-16 origin-top"
               variants={glowTrailVariants}
@@ -343,7 +306,6 @@ export default function ScrollToTopRocket() {
               <div className="w-full h-full bg-gradient-to-b from-orange-400 via-orange-500 to-transparent rounded-full blur-sm" />
             </motion.div>
 
-            {/* Exhaust particles */}
             {rocketState === "launching" && (
               <div className="absolute left-1/2 top-full -translate-x-1/2">
                 {[0, 1, 2, 3, 4, 5].map((i) => (
@@ -367,7 +329,6 @@ export default function ScrollToTopRocket() {
               </div>
             )}
 
-            {/* Rocket icon container */}
             <motion.div
               className="relative z-10 flex items-center justify-center w-full h-full"
               variants={rocketLaunchVariants}
@@ -380,7 +341,6 @@ export default function ScrollToTopRocket() {
               />
             </motion.div>
 
-            {/* Inner highlight */}
             <div className="absolute inset-0 rounded-full bg-gradient-to-t from-transparent via-transparent to-white/20 pointer-events-none" />
           </motion.button>
         </motion.div>

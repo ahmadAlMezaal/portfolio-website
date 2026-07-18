@@ -220,7 +220,6 @@ export default function CommandPalette() {
     return { sections: secs, flat: secs.flatMap((s) => s.items) };
   }, [commands, query]);
 
-  // Global toggle: Cmd/Ctrl+K.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
@@ -232,7 +231,6 @@ export default function CommandPalette() {
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
-  // Reset + focus each time it opens.
   useEffect(() => {
     if (open) {
       setQuery("");
@@ -242,7 +240,6 @@ export default function CommandPalette() {
     }
   }, [open]);
 
-  // Keep the active row in view.
   useEffect(() => {
     listRef.current
       ?.querySelector(`[data-index="${activeIndex}"]`)
@@ -288,7 +285,6 @@ export default function CommandPalette() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.15 }}
         >
-          {/* Backdrop */}
           <div
             className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={() => setOpen(false)}
@@ -305,7 +301,6 @@ export default function CommandPalette() {
             transition={{ duration: 0.15 }}
             onKeyDown={onListKeyDown}
           >
-            {/* Search input */}
             <div className="flex items-center gap-3 border-b border-gray-200 dark:border-gray-700 px-4">
               <Search size={18} className="text-gray-400 shrink-0" />
               <input
@@ -324,7 +319,6 @@ export default function CommandPalette() {
               </kbd>
             </div>
 
-            {/* Results */}
             <div ref={listRef} className="max-h-[50vh] overflow-y-auto p-2">
               {flat.length === 0 ? (
                 <p className="px-3 py-8 text-center text-sm font-mono text-gray-400">
@@ -372,7 +366,6 @@ export default function CommandPalette() {
               )}
             </div>
 
-            {/* Footer */}
             <div className="flex items-center justify-between border-t border-gray-200 dark:border-gray-700 px-4 py-2 text-[10px] font-mono text-gray-400">
               {feedback ? (
                 <span className="text-green-600 dark:text-green-400">{feedback}</span>

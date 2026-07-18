@@ -32,7 +32,6 @@ const AndroidIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-// Icon mapping for project link types
 const linkIcons: Record<
   ProjectLinkType,
   React.ComponentType<{ className?: string }>
@@ -44,7 +43,6 @@ const linkIcons: Record<
   "case-study": FileText,
 };
 
-// Filter type
 type FilterOption = "all" | ProjectStatus;
 
 // Sort projects by: featured > live > in_progress > private (stable sort)
@@ -57,11 +55,9 @@ const sortProjects = (projectList: Project[]): Project[] => {
   };
 
   return [...projectList].sort((a, b) => {
-    // Featured first
     if (a.featured && !b.featured) return -1;
     if (!a.featured && b.featured) return 1;
 
-    // Then by status
     const statusA = a.status || "live";
     const statusB = b.status || "live";
     const orderA = statusOrder[statusA] ?? statusOrder["undefined"];
@@ -71,17 +67,14 @@ const sortProjects = (projectList: Project[]): Project[] => {
   });
 };
 
-// Check if links should be hidden (private status or no links)
 const shouldHideLinks = (project: Project): boolean => {
   return project.status === "private" || project.links.length === 0;
 };
 
-// Placeholder background component
 const ProjectPlaceholder = ({ status }: { status: ProjectStatus }) => {
   if (status === "in_progress") {
     return (
       <div className="absolute inset-0 overflow-hidden">
-        {/* Animated diagonal stripes background */}
         <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 via-orange-500/15 to-yellow-500/20" />
         <div
           className="absolute inset-0 opacity-30"
@@ -95,7 +88,6 @@ const ProjectPlaceholder = ({ status }: { status: ProjectStatus }) => {
             )`,
           }}
         />
-        {/* Subtle icon */}
         <div className="absolute inset-0 flex items-center justify-center">
           <Hammer className="w-16 h-16 text-amber-500/20" />
         </div>
@@ -106,9 +98,7 @@ const ProjectPlaceholder = ({ status }: { status: ProjectStatus }) => {
   if (status === "private") {
     return (
       <div className="absolute inset-0 overflow-hidden">
-        {/* Darker matte gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-gray-600/30 via-gray-700/25 to-gray-800/30" />
-        {/* Subtle icon */}
         <div className="absolute inset-0 flex items-center justify-center">
           <Lock className="w-16 h-16 text-gray-500/20" />
         </div>
@@ -116,15 +106,11 @@ const ProjectPlaceholder = ({ status }: { status: ProjectStatus }) => {
     );
   }
 
-  // Default: "live" status
   return (
     <div className="absolute inset-0 overflow-hidden">
-      {/* Clean purple/pink/blue gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 via-pink-500/15 to-blue-500/20" />
-      {/* Mesh-style gradient overlay */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-purple-500/10 via-transparent to-transparent" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent" />
-      {/* Subtle icon */}
       <div className="absolute inset-0 flex items-center justify-center">
         <Layers className="w-16 h-16 text-purple-500/15" />
       </div>
@@ -132,7 +118,6 @@ const ProjectPlaceholder = ({ status }: { status: ProjectStatus }) => {
   );
 };
 
-// Filter pill component
 const FilterPill = ({
   label,
   isActive,
@@ -165,13 +150,11 @@ export default function Projects() {
   const [activeFilter, setActiveFilter] = useState<FilterOption>("all");
   const isMobile = useIsMobile();
 
-  // Featured projects for home page (curated via the `featured` flag in config)
   const featuredProjects = useMemo(
     () => projects.filter((p) => p.featured),
     []
   );
 
-  // Sorted and filtered projects for "all" view
   const allProjectsSorted = useMemo(() => sortProjects(projects), []);
 
   const filteredProjects = useMemo(() => {
@@ -181,10 +164,8 @@ export default function Projects() {
     );
   }, [allProjectsSorted, activeFilter]);
 
-  // Determine which projects to display
   const displayedProjects = showAll ? filteredProjects : featuredProjects;
 
-  // Animation should play if: section is in view OR user has clicked show all
   const shouldAnimate = isInView || hasInteracted;
 
   const containerVariants = {
@@ -206,7 +187,6 @@ export default function Projects() {
     },
   };
 
-  // Reset filter when collapsing back to featured view
   const handleToggleShowAll = () => {
     setHasInteracted(true);
     if (showAll) {
@@ -224,7 +204,6 @@ export default function Projects() {
           initial="hidden"
           animate={shouldAnimate ? "visible" : "hidden"}
         >
-          {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center mb-12">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">
               <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
@@ -238,7 +217,6 @@ export default function Projects() {
             </p>
           </motion.div>
 
-          {/* Filter Pills - only shown when viewing all projects */}
           {showAll && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -269,7 +247,7 @@ export default function Projects() {
             </motion.div>
           )}
 
-          {/* Projects Grid - key forces re-animation when toggling */}
+          {/* key forces re-animation when toggling */}
           <motion.div
             key={`${showAll ? "all" : "featured"}-${activeFilter}`}
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
@@ -292,9 +270,7 @@ export default function Projects() {
                   <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
 
                   <div className="relative bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700 h-full flex flex-col">
-                    {/* Project Image / Placeholder */}
                     <div className="relative h-48 bg-gradient-to-br from-purple-600/10 via-pink-500/10 to-blue-500/10 overflow-hidden">
-                      {/* Show actual image if available, otherwise show placeholder */}
                       {project.image ? (
                         <>
                           <Image
@@ -309,16 +285,13 @@ export default function Projects() {
                             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                             priority={project.featured}
                           />
-                          {/* Unified dark overlay */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/45 to-black/15" />
                         </>
                       ) : (
                         <ProjectPlaceholder status={project.status || "live"} />
                       )}
 
-                      {/* Badges - stacked in top-right */}
                       <div className="absolute top-3 right-3 flex flex-col items-end gap-2 z-10">
-                        {/* Featured badge */}
                         {project.featured && (
                           <div className="flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-purple-600 to-pink-500 text-gray-900 text-xs font-bold rounded-full shadow-lg">
                             <Star className="w-3 h-3" />
@@ -326,7 +299,6 @@ export default function Projects() {
                           </div>
                         )}
 
-                        {/* Status badge - only for in_progress and private */}
                         {project.status === "in_progress" && (
                           <div className="flex items-center gap-1 px-2.5 py-1 bg-amber-500/90 backdrop-blur-sm text-white text-xs font-medium rounded-full shadow-lg">
                             <Clock className="w-3 h-3" />
@@ -341,14 +313,12 @@ export default function Projects() {
                         )}
                       </div>
 
-                      {/* Hover Overlay with Links - Desktop only */}
                       {!isMobile && (
                         <motion.div
                           className="absolute inset-0 bg-gradient-to-r from-purple-600/90 via-pink-500/90 to-blue-500/90 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                           initial={false}
                         >
                           {!hideLinks ? (
-                            // Render link buttons dynamically
                             project.links.map((link) => {
                               const IconComponent =
                                 linkIcons[link.type] || ExternalLink;
@@ -368,7 +338,6 @@ export default function Projects() {
                               );
                             })
                           ) : (
-                            // Private or no links - show "available on request"
                             <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-medium">
                               <Lock className="w-4 h-4" />
                               Available on request
@@ -378,7 +347,6 @@ export default function Projects() {
                       )}
                     </div>
 
-                    {/* Content */}
                     <div className="p-6 flex-1 flex flex-col">
                       <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
                         {project.title}
@@ -387,7 +355,6 @@ export default function Projects() {
                         {project.description}
                       </p>
 
-                      {/* Tags */}
                       <div className="flex flex-wrap gap-2">
                         {project.tags.map((tag) => (
                           <span
@@ -399,7 +366,6 @@ export default function Projects() {
                         ))}
                       </div>
 
-                      {/* Mobile: Show link buttons inline */}
                       {isMobile && !hideLinks && project.links.length > 0 && (
                         <div className="flex flex-wrap gap-2 mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
                           {project.links.map((link) => {
@@ -421,7 +387,6 @@ export default function Projects() {
                         </div>
                       )}
 
-                      {/* "Available on request" line for private/no links - shown below tags */}
                       {hideLinks && (
                         <div className="flex items-center gap-1.5 mt-4 pt-3 border-t border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 text-xs">
                           <Lock className="w-3 h-3" />
@@ -435,7 +400,6 @@ export default function Projects() {
             })}
           </motion.div>
 
-          {/* Show More/Less Button - only show if there are non-featured projects */}
           {projects.length > featuredProjects.length && (
             <motion.div variants={itemVariants} className="text-center mt-12">
               <motion.button

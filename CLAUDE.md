@@ -47,6 +47,25 @@ src/
 
 All personal information is stored in `src/lib/data.config.ts` which is gitignored. This allows the repo to be public while keeping personal data private.
 
+### Remote content (portfolio-data repo)
+
+The full site content can also be served from the private
+[`portfolio-data`](https://github.com/ahmadAlMezaal/portfolio-data) repo
+(`portfolio.json`, shaped as `PortfolioConfig` from `@/types`):
+
+- `scripts/sync-data.mjs` runs before `next dev`/`next build` (npm pre-hooks)
+  and on `postinstall`. When `PORTFOLIO_DATA_URL` is set (env or `.env.local`),
+  it fetches the JSON — with `PORTFOLIO_DATA_TOKEN` as a Bearer token for the
+  private repo — validates the shape, and writes the gitignored
+  `src/lib/portfolio-data.json`. On fetch or validation failure the build
+  fails loudly.
+- `data.ts` uses that file when present (non-null), otherwise falls back to
+  the local `data.config.ts`.
+- The deploy workflow only sets `PORTFOLIO_DATA_URL` when the
+  `PORTFOLIO_DATA_TOKEN` secret exists, so deployments work before the secret
+  is configured (using the committed config) and switch to remote data once
+  it is.
+
 **To customize:**
 
 1. Copy `src/lib/data.config.example.ts` to `src/lib/data.config.ts`

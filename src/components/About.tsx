@@ -28,7 +28,6 @@ export default function About() {
     visible: { opacity: 1, y: 0 },
   };
 
-  // Get initials from name
   const initials = personalInfo.name
     .split(" ")
     .map((n) => n[0])
@@ -70,7 +69,6 @@ export default function About() {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">
               <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
@@ -88,7 +86,6 @@ export default function About() {
               <div className="relative w-80 h-80 mx-auto">
                 {shouldReduceMotion ? (
                   <>
-                    {/* Static rings for mobile */}
                     <div className="absolute inset-0 rounded-full border-2 border-dashed border-purple-500/30">
                       {[...Array(8)].map((_, i) => (
                         <div
@@ -108,7 +105,6 @@ export default function About() {
                   </>
                 ) : (
                   <>
-                    {/* Animated rings for desktop */}
                     <motion.div
                       className="absolute inset-0 rounded-full border-2 border-dashed border-purple-500/30"
                       animate={{ rotate: 360 }}
@@ -146,10 +142,8 @@ export default function About() {
                   </>
                 )}
 
-                {/* Main initials container */}
                 <div className="absolute inset-16 rounded-full bg-gradient-to-br from-purple-600 via-pink-500 to-blue-500 p-1 shadow-2xl shadow-purple-500/25">
                   <div className="w-full h-full rounded-full bg-gray-100 dark:bg-[#050806] flex items-center justify-center overflow-hidden">
-                    {/* Initials - simplified animation on mobile */}
                     <div className="flex items-center justify-center perspective-1000">
                       {initials.split("").map((letter, i) => (
                         <motion.span
@@ -171,7 +165,6 @@ export default function About() {
                       ))}
                     </div>
 
-                    {/* Shimmer effect - only on desktop */}
                     {!shouldReduceMotion && (
                       <motion.div
                         className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12"
@@ -182,7 +175,6 @@ export default function About() {
                   </div>
                 </div>
 
-                {/* Floating tech icons - static on mobile, animated on desktop */}
                 {floatingIcons.map(({ Icon, color, position, delay }, index) => (
                   shouldReduceMotion ? (
                     <div
@@ -213,7 +205,6 @@ export default function About() {
                   )
                 ))}
 
-                {/* Orbiting particles - only on desktop */}
                 {!shouldReduceMotion && (
                   <>
                     <motion.div
@@ -249,7 +240,6 @@ export default function About() {
               </div>
             </motion.div>
 
-            {/* Content */}
             <motion.div variants={itemVariants} className="space-y-6">
               <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                 <MapPin className="w-5 h-5 text-purple-600" />
@@ -260,7 +250,6 @@ export default function About() {
                 {personalInfo.bio}
               </p>
 
-              {/* Stats */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6">
                 {stats.map((stat, index) => (
                   <motion.div

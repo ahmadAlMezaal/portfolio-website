@@ -106,7 +106,6 @@ export default function RootLayout({
       <body className="font-mono antialiased">
         <ThemeProvider>
           <SmoothScroll>
-            {/* Per-theme animated backdrop (code-rain / synthwave / CRT) */}
             <ThemeBackground />
             <JsonLd url={siteUrl} />
             {children}

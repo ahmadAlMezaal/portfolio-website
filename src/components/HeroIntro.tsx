@@ -28,7 +28,6 @@ function Caret({ className = "" }: { className?: string }) {
   );
 }
 
-// --- matrix: classic mac-style terminal window ---
 function MatrixIntro({ roleText }: Props) {
   return (
     <motion.div
@@ -74,7 +73,6 @@ function MatrixIntro({ roleText }: Props) {
   );
 }
 
-// --- cyberpunk: neon HUD nameplate ---
 function CyberpunkIntro({ roleText }: Props) {
   return (
     <motion.div
@@ -97,7 +95,6 @@ function CyberpunkIntro({ roleText }: Props) {
   );
 }
 
-// --- amber: retro CRT boot screen ---
 function AmberIntro({ roleText }: Props) {
   return (
     <motion.div

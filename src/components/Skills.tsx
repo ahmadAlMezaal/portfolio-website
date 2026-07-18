@@ -49,7 +49,6 @@ export default function Skills() {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">
               <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
@@ -61,7 +60,6 @@ export default function Skills() {
             </p>
           </motion.div>
 
-          {/* Skills Grid */}
           <div className="grid md:grid-cols-3 gap-8">
             {skills.map((category, categoryIndex) => (
               <motion.div
@@ -74,7 +72,6 @@ export default function Skills() {
                   initial={false}
                 />
                 <div className="relative bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl border border-gray-200 dark:border-gray-700 h-full">
-                  {/* Category Header */}
                   <div className="flex items-center gap-3 mb-6">
                     <div className="p-3 rounded-xl bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900">
                       {categoryIcons[category.category]}
@@ -84,7 +81,6 @@ export default function Skills() {
                     </h3>
                   </div>
 
-                  {/* Skills List */}
                   <div className="flex flex-wrap gap-2">
                     {category.items.map((skill, skillIndex) => (
                       <motion.span
