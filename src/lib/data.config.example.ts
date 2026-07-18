@@ -1,20 +1,11 @@
-// =============================================================================
-// PORTFOLIO CONFIGURATION TEMPLATE
-// =============================================================================
-//
-// HOW TO USE:
-// 1. Copy this file and rename it to: data.config.ts
-// 2. Fill in your personal information below
-// 3. The data.config.ts file is gitignored, so your personal info stays private
-//
-// =============================================================================
+// Portfolio configuration template.
+// Copy this file to data.config.ts and fill in your details.
+// data.config.ts is gitignored, so your personal info stays private.
 
 import type { PortfolioConfig } from "@/types";
 
 const config: PortfolioConfig = {
-  // ---------------------------------------------------------------------------
-  // SITE METADATA (used for SEO and social sharing)
-  // ---------------------------------------------------------------------------
+  // Site metadata (SEO and social sharing)
   siteMetadata: {
     title: "Your Name | Your Title",
     description: "A brief description of yourself for search engines and social sharing.",
@@ -27,9 +18,7 @@ const config: PortfolioConfig = {
     locale: "en_GB", // e.g., "en_US", "en_GB", etc.
   },
 
-  // ---------------------------------------------------------------------------
-  // PERSONAL INFORMATION
-  // ---------------------------------------------------------------------------
+  // Personal information
   personalInfo: {
     name: "Your Name",
     title: "Your Job Title",
@@ -49,13 +38,10 @@ const config: PortfolioConfig = {
       { platform: "linkedin", url: "https://linkedin.com/in/yourusername" },
       // { platform: "twitter", url: "https://twitter.com/yourusername" },
       // { platform: "medium", url: "https://medium.com/@yourusername" },
-      // Add more social links as needed...
     ],
   },
 
-  // ---------------------------------------------------------------------------
-  // ROLES (displayed in typing animation on hero section)
-  // ---------------------------------------------------------------------------
+  // Roles (hero typing animation)
   roles: [
     "Your Primary Role",
     "Another Role",
@@ -63,9 +49,7 @@ const config: PortfolioConfig = {
     "Another Specialty",
   ],
 
-  // ---------------------------------------------------------------------------
-  // STATISTICS (displayed in About section)
-  // ---------------------------------------------------------------------------
+  // Stats (About section)
   stats: [
     { label: "Years Experience", value: "X+" },
     { label: "Projects Completed", value: "X+" },
@@ -73,16 +57,13 @@ const config: PortfolioConfig = {
     { label: "Technologies", value: "X+" },
   ],
 
-  // ---------------------------------------------------------------------------
-  // SKILLS (organized by category, level is percentage 0-100)
-  // ---------------------------------------------------------------------------
+  // Skills (displayed as tags; level is 0-100)
   skills: [
     {
       category: "Frontend",
       items: [
         { name: "Skill Name", level: 90 },
         { name: "Another Skill", level: 85 },
-        // Add more skills...
       ],
     },
     {
@@ -90,7 +71,6 @@ const config: PortfolioConfig = {
       items: [
         { name: "Skill Name", level: 88 },
         { name: "Another Skill", level: 80 },
-        // Add more skills...
       ],
     },
     {
@@ -98,17 +78,11 @@ const config: PortfolioConfig = {
       items: [
         { name: "Skill Name", level: 85 },
         { name: "Another Skill", level: 75 },
-        // Add more skills...
       ],
     },
   ],
 
-  // ---------------------------------------------------------------------------
-  // WORK EXPERIENCE (most recent first)
-  // ---------------------------------------------------------------------------
-  // You can use either:
-  // 1. Single role format (title, period, description, achievements)
-  // 2. Multiple roles format (roles array) - for promotions at same company
+  // Work experience (most recent first) — single-role fields, or a roles[] array for promotions at the same company
   experiences: [
     // Example: Multiple roles at same company (promotions)
     {
@@ -151,18 +125,9 @@ const config: PortfolioConfig = {
         "Key achievement #3",
       ],
     },
-    // Add more experiences...
   ],
 
-  // ---------------------------------------------------------------------------
-  // PROJECTS (featured projects appear first on the portfolio)
-  // ---------------------------------------------------------------------------
-  // Each project supports:
-  //   - links: Array of { type, label, url } - website, github, appstore, playstore, case-study
-  //   - image: Optional path - null shows a placeholder
-  //   - imageFit: "cover" (default, fills card) or "contain" (shows full logo with padding)
-  //   - status: "live" (default), "in_progress", or "private"
-  //   - featured: true to show on homepage
+  // Projects — link types: website | github | appstore | playstore | case-study; status: "live" (default) | "in_progress" | "private"; featured: true shows on the homepage
   projects: [
     // Example: Live web project with screenshot
     {
@@ -228,12 +193,9 @@ const config: PortfolioConfig = {
       featured: true,
       // status defaults to "live" when not specified
     },
-    // Add more projects...
   ],
 
-  // ---------------------------------------------------------------------------
-  // EDUCATION
-  // ---------------------------------------------------------------------------
+  // Education
   education: [
     {
       degree: "Degree Name",
@@ -241,12 +203,9 @@ const config: PortfolioConfig = {
       period: "YYYY - YYYY",
       description: "Brief description or achievements.",
     },
-    // Add more education entries...
   ],
 
-  // ---------------------------------------------------------------------------
-  // CERTIFICATIONS (simple list of certification names)
-  // ---------------------------------------------------------------------------
+  // Certifications
   certifications: [
     "Certification Name 1",
     "Certification Name 2",
@@ -287,7 +246,6 @@ def get_client() -> Client:
       fieldNote: "Where this showed up in your real work — the anecdote.",
       verdict: "Your one honest line of judgement about the concept.",
     },
-    // Add more learnings...
   ],
 };
 

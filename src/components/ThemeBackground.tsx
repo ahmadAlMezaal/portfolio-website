@@ -3,10 +3,7 @@
 import { useTheme } from "./ThemeProvider";
 import MatrixRain from "./MatrixRain";
 
-// Swaps the whole background motif per theme:
-//  - matrix    → falling code-rain canvas
-//  - cyberpunk → synthwave perspective grid + horizon glow + soft scanlines
-//  - amber     → CRT scanlines + flicker + roll bar + warm vignette
+// Swaps the whole background motif per theme, not just the palette.
 export default function ThemeBackground() {
   const { theme } = useTheme();
 

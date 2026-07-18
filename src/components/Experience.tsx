@@ -7,12 +7,10 @@ import { Briefcase, MapPin, Calendar, CheckCircle2, TrendingUp, ExternalLink } f
 import { experiences } from "@/lib/data";
 import type { Experience as ExperienceType, ExperienceRole } from "@/types";
 
-// Helper to check if experience has multiple roles
 function hasMultipleRoles(exp: ExperienceType): exp is ExperienceType & { roles: ExperienceRole[] } {
   return Array.isArray(exp.roles) && exp.roles.length > 0;
 }
 
-// Helper to get the overall period for multi-role experiences
 function getOverallPeriod(roles: ExperienceRole[]): string {
   if (roles.length === 0) return "";
   const lastRole = roles[roles.length - 1];
@@ -22,7 +20,7 @@ function getOverallPeriod(roles: ExperienceRole[]): string {
   return `${startYear} - ${endYear}`;
 }
 
-// Helper to calculate duration from period string (e.g., "Apr 2022 - Aug 2024")
+// Duration from a period string like "Apr 2022 - Aug 2024".
 function calculateDuration(period: string): string {
   const months: Record<string, number> = {
     Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
@@ -51,7 +49,7 @@ function calculateDuration(period: string): string {
   let totalMonths = (endDate.getFullYear() - startDate.getFullYear()) * 12;
   totalMonths += endDate.getMonth() - startDate.getMonth();
   totalMonths += 1; // Include the start month (LinkedIn-style)
-  totalMonths = Math.max(1, totalMonths); // At least 1 month
+  totalMonths = Math.max(1, totalMonths);
 
   const years = Math.floor(totalMonths / 12);
   const remainingMonths = totalMonths % 12;
@@ -65,7 +63,6 @@ function calculateDuration(period: string): string {
   }
 }
 
-// Company name component with optional link
 function CompanyName({ name, url, isMultiRole }: { name: string; url?: string; isMultiRole: boolean }) {
   const baseClasses = isMultiRole
     ? "text-xl font-bold text-purple-600 dark:text-purple-400"
@@ -107,7 +104,6 @@ export default function Experience() {
     visible: { opacity: 1, y: 0 },
   };
 
-  // Render a single role's content (achievements and description)
   const renderRoleContent = (
     role: { title: string; period: string; description: string; achievements: string[] },
     expIndex: number,
@@ -167,7 +163,6 @@ export default function Experience() {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">
               <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
@@ -179,12 +174,9 @@ export default function Experience() {
             </p>
           </motion.div>
 
-          {/* Timeline */}
           <div className="relative">
-            {/* Timeline Line */}
             <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-600 via-pink-500 to-blue-500 transform md:-translate-x-1/2" />
 
-            {/* Experience Items */}
             <div className="space-y-12">
               {experiences.map((exp, index) => {
                 const isMultiRole = hasMultipleRoles(exp);
@@ -201,7 +193,6 @@ export default function Experience() {
                       index % 2 === 0 ? "md:flex-row-reverse" : ""
                     }`}
                   >
-                    {/* Timeline Dot */}
                     <motion.div
                       className="absolute left-0 md:left-1/2 w-4 h-4 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full transform -translate-x-1/2 border-4 border-white dark:border-[#0d1b2a]"
                       initial={{ scale: 0 }}
@@ -209,17 +200,14 @@ export default function Experience() {
                       transition={{ delay: 0.3 + index * 0.2 }}
                     />
 
-                    {/* Content */}
                     <div className={`md:w-1/2 pl-8 md:pl-0 ${index % 2 === 0 ? "md:pr-12" : "md:pl-12"}`}>
                       <motion.div
                         className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl border border-gray-200 dark:border-gray-700 relative group hover:border-purple-500/50 dark:hover:border-purple-400/50 transition-colors duration-300"
                         whileHover={{ y: -5 }}
                         transition={{ duration: 0.2 }}
                       >
-                        {/* Subtle glow on hover */}
                         <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300 -z-10" />
 
-                        {/* Header */}
                         <div className="flex items-start gap-4 mb-4">
                           <div className="p-3 rounded-xl bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-white shrink-0">
                             {isMultiRole ? (
@@ -247,7 +235,6 @@ export default function Experience() {
                           </div>
                         </div>
 
-                        {/* Meta Info */}
                         <div className="flex flex-wrap gap-4 mb-4 text-sm text-gray-600 dark:text-gray-400">
                           <div className="flex items-center gap-1">
                             <MapPin className="w-4 h-4" />
@@ -262,7 +249,6 @@ export default function Experience() {
                           </div>
                         </div>
 
-                        {/* Content - Single Role vs Multiple Roles */}
                         {isMultiRole ? (
                           <div className="space-y-6">
                             {exp.roles!.map((role, roleIndex) => (

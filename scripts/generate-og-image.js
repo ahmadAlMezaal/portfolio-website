@@ -1,13 +1,4 @@
-/**
- * OG Image Generator Script
- *
- * Generates a 1200x630 Open Graph image for social sharing.
- *
- * Usage: node scripts/generate-og-image.js
- *
- * Requirements: Install sharp first
- *   yarn add -D sharp
- */
+// Generates the 1200x630 Open Graph image. Usage: node scripts/generate-og-image.js
 
 const fs = require('fs');
 const path = require('path');
@@ -26,7 +17,6 @@ async function generateOGImage() {
   const width = 1200;
   const height = 630;
 
-  // Create SVG with the OG image design
   const svg = `
     <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
       <defs>

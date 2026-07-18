@@ -53,7 +53,6 @@ const DevToIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-// Map platform names to their icons
 const socialIconMap: Record<SocialPlatform, LucideIcon | React.FC<{ className?: string }>> = {
   github: Github,
   linkedin: Linkedin,
@@ -81,7 +80,6 @@ function maskEmail(email: string): string {
   return `${maskedLocal}@${maskedDomain}`;
 }
 
-// Map platform names to display labels
 const socialLabelMap: Record<SocialPlatform, string> = {
   github: "GitHub",
   linkedin: "LinkedIn",
@@ -153,7 +151,6 @@ export default function Contact() {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">
               <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
@@ -166,9 +163,7 @@ export default function Contact() {
           </motion.div>
 
           <div className="grid lg:grid-cols-2 gap-12">
-            {/* Contact Info */}
             <motion.div variants={itemVariants} className="space-y-8">
-              {/* Quick Info Cards */}
               <div className="space-y-4">
                 <motion.div
                   className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700"
@@ -235,7 +230,6 @@ export default function Contact() {
                 </motion.button>
               </div>
 
-              {/* Social Links */}
               <div>
                 <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
                   Connect with me
@@ -259,7 +253,6 @@ export default function Contact() {
               </div>
             </motion.div>
 
-            {/* Contact Form */}
             <motion.div variants={itemVariants}>
               <form
                 onSubmit={handleSubmit}

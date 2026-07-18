@@ -1,17 +1,6 @@
-// =============================================================================
-// PORTFOLIO CONFIGURATION FILE
-// =============================================================================
-// This file contains all your personal information for the portfolio.
-// Copy data.config.example.ts to data.config.ts and fill in your details.
-// This file is gitignored to keep your personal information private.
-// =============================================================================
-
 import type { PortfolioConfig } from "@/types";
 
 const config: PortfolioConfig = {
-  // ---------------------------------------------------------------------------
-  // SITE METADATA (used for SEO and social sharing)
-  // ---------------------------------------------------------------------------
   siteMetadata: {
     title: "Ahmad Al Mezaal | Senior Software Engineer",
     description:
@@ -33,9 +22,6 @@ const config: PortfolioConfig = {
     locale: "en_GB",
   },
 
-  // ---------------------------------------------------------------------------
-  // PERSONAL INFORMATION
-  // ---------------------------------------------------------------------------
   personalInfo: {
     name: "Ahmad Al Mezaal",
     title: "Senior Software Engineer",
@@ -58,9 +44,6 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
     ],
   },
 
-  // ---------------------------------------------------------------------------
-  // ROLES (displayed in typing animation on hero section)
-  // ---------------------------------------------------------------------------
   roles: [
     "Senior Software Engineer",
     "Product Engineer",
@@ -69,9 +52,6 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
     "Cloud-Native Developer",
   ],
 
-  // ---------------------------------------------------------------------------
-  // STATISTICS
-  // ---------------------------------------------------------------------------
   stats: [
     { label: "Years Experience", value: "6+" },
     { label: "Projects Completed", value: "20+" },
@@ -79,9 +59,6 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
     { label: "Technologies Used", value: "15+" },
   ],
 
-  // ---------------------------------------------------------------------------
-  // SKILLS (organized by category, level is percentage 0-100)
-  // ---------------------------------------------------------------------------
   skills: [
     {
       category: "Backend & Data",
@@ -115,9 +92,6 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
     },
   ],
 
-  // ---------------------------------------------------------------------------
-  // WORK EXPERIENCE
-  // ---------------------------------------------------------------------------
   experiences: [
     {
       title: "Senior Software Engineer",
@@ -227,9 +201,6 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
     },
   ],
 
-  // ---------------------------------------------------------------------------
-  // PROJECTS
-  // ---------------------------------------------------------------------------
   projects: [
     {
       title: "Munin",
@@ -443,9 +414,6 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
     },
   ],
 
-  // ---------------------------------------------------------------------------
-  // EDUCATION
-  // ---------------------------------------------------------------------------
   education: [
     {
       degree: "BSc in Computer Science",
@@ -455,9 +423,6 @@ I focus on building resilient, cloud-native systems on AWS, designing data pipel
     },
   ],
 
-  // ---------------------------------------------------------------------------
-  // CERTIFICATIONS
-  // ---------------------------------------------------------------------------
   certifications: [
     "DevOps & Cloud (Docker, Kubernetes, Terraform, Ansible) - Simplilearn",
   ],

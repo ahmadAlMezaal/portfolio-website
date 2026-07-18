@@ -90,7 +90,6 @@ export default function KonamiEasterEgg() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          {/* Falling glyph confetti */}
           {glyphs.map((g) => (
             <motion.span
               key={g.id}
@@ -114,7 +113,6 @@ export default function KonamiEasterEgg() {
             </motion.span>
           ))}
 
-          {/* Banner */}
           <div className="absolute inset-0 flex items-center justify-center">
             <motion.div
               initial={{ scale: 0.85, opacity: 0 }}
