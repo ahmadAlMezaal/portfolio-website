@@ -12,7 +12,7 @@ import JsonLd from "@/components/JsonLd";
 import { siteMetadata, personalInfo } from "@/lib/data";
 import { getBasePath } from "@/lib/utils";
 
-const siteUrl = "https://theaam.dev";
+const siteUrl = siteMetadata.siteUrl;
 
 // Single typeface for the whole site — a developer/terminal monospace.
 const jetBrainsMono = JetBrains_Mono({
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteMetadata.title,
     description: siteMetadata.description,
-    creator: "@ahmadalmezaal",
+    creator: siteMetadata.twitterHandle,
     images: [`${siteUrl}/og-image.png`],
   },
   robots: {

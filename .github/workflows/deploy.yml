@@ -40,11 +40,11 @@ jobs:
           # For custom domain (theaam.dev): leave empty (default)
           # For project pages (username.github.io/repo): set to "/portfolio-website"
           NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH || '' }}
-          # Remote content from the private portfolio-data repo. Until the
-          # PORTFOLIO_DATA_TOKEN secret is configured (fine-grained PAT with
-          # contents:read on portfolio-data), the build falls back to the
-          # committed data.config.ts.
-          PORTFOLIO_DATA_URL: ${{ secrets.PORTFOLIO_DATA_TOKEN && 'https://api.github.com/repos/ahmadAlMezaal/portfolio-data/contents/portfolio.json' || '' }}
+          # All site content comes from the private portfolio-data repo; the
+          # PORTFOLIO_DATA_TOKEN secret (fine-grained PAT with contents:read
+          # on portfolio-data) is required — the build fails loudly without it
+          # rather than silently deploying the placeholder content.
+          PORTFOLIO_DATA_URL: https://api.github.com/repos/ahmadAlMezaal/portfolio-data/contents/portfolio.json
           PORTFOLIO_DATA_TOKEN: ${{ secrets.PORTFOLIO_DATA_TOKEN }}
         run: yarn build
 

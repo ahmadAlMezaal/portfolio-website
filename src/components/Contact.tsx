@@ -112,7 +112,7 @@ export default function Contact() {
 
     const subject = encodeURIComponent("Portfolio Enquiry");
     const body = encodeURIComponent(
-      `Hi Ahmad,\n\n${formState.message}\n\n---\nFrom: ${formState.name}\nEmail: ${formState.email}`
+      `Hi ${personalInfo.name.split(" ")[0]},\n\n${formState.message}\n\n---\nFrom: ${formState.name}\nEmail: ${formState.email}`
     );
 
     window.location.href = `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;

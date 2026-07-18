@@ -38,8 +38,14 @@ yarn build
 
 ## Customization
 
-1. Copy `src/lib/data.config.example.ts` to `src/lib/data.config.ts`
-2. Fill in your personal info, experience, and projects
+All content is fetched at build time from a separate (private) data repo as
+`portfolio.json`, shaped as `PortfolioConfig` (see `src/types`). Without that,
+the site renders the placeholder content in `src/lib/data.config.example.ts`.
+
+1. Create a repo holding your `portfolio.json` (private works with a
+   fine-grained PAT that has `contents: read`)
+2. Set `PORTFOLIO_DATA_URL` (and `PORTFOLIO_DATA_TOKEN` if private) in
+   `.env.local` — see `scripts/sync-data.mjs`
 3. Add your CV to `public/cv.pdf`
 4. Add project images to `public/projects/`
 
