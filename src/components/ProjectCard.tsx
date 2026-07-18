@@ -1,0 +1,229 @@
+"use client";
+
+import { motion } from "framer-motion";
+import {
+  ExternalLink,
+  Github,
+  Star,
+  Globe,
+  FileText,
+  Lock,
+  Clock,
+  Hammer,
+  Layers,
+} from "lucide-react";
+import Image from "next/image";
+import type { ProjectLinkType, Project, ProjectStatus } from "@/types";
+import { useIsMobile } from "@/lib/hooks";
+import { shouldHideLinks, cardVariants } from "@/lib/projects";
+
+// Custom brand icons (not available in lucide-react)
+const AppleIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+  </svg>
+);
+
+const AndroidIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M17.523 15.341c-.5 0-.906-.406-.906-.906s.406-.906.906-.906.906.406.906.906-.406.906-.906.906zm-11.046 0c-.5 0-.906-.406-.906-.906s.406-.906.906-.906.906.406.906.906-.406.906-.906.906zm11.4-6.328l1.994-3.455a.416.416 0 00-.72-.416l-2.02 3.5a12.16 12.16 0 00-5.13-1.102c-1.85 0-3.58.398-5.131 1.102l-2.02-3.5a.416.416 0 00-.72.416l1.994 3.455C2.696 10.947.5 14.14.5 17.833h23c0-3.693-2.196-6.886-5.623-8.82zM.5 18.833v3.334c0 .92.746 1.666 1.667 1.666h1.666c.92 0 1.667-.746 1.667-1.666v-3.334H.5zm18 0v3.334c0 .92.746 1.666 1.667 1.666h1.666c.92 0 1.667-.746 1.667-1.666v-3.334H18.5z" />
+  </svg>
+);
+
+const linkIcons: Record<
+  ProjectLinkType,
+  React.ComponentType<{ className?: string }>
+> = {
+  website: Globe,
+  github: Github,
+  appstore: AppleIcon,
+  playstore: AndroidIcon,
+  "case-study": FileText,
+};
+
+const ProjectPlaceholder = ({ status }: { status: ProjectStatus }) => {
+  if (status === "in_progress") {
+    return (
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 via-orange-500/15 to-yellow-500/20" />
+        <div
+          className="absolute inset-0 opacity-30"
+          style={{
+            backgroundImage: `repeating-linear-gradient(
+              -45deg,
+              transparent,
+              transparent 10px,
+              rgba(251, 191, 36, 0.1) 10px,
+              rgba(251, 191, 36, 0.1) 20px
+            )`,
+          }}
+        />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Hammer className="w-16 h-16 text-amber-500/20" />
+        </div>
+      </div>
+    );
+  }
+
+  if (status === "private") {
+    return (
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-600/30 via-gray-700/25 to-gray-800/30" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Lock className="w-16 h-16 text-gray-500/20" />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 via-pink-500/15 to-blue-500/20" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-purple-500/10 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent" />
+      <div className="absolute inset-0 flex items-center justify-center">
+        <Layers className="w-16 h-16 text-purple-500/15" />
+      </div>
+    </div>
+  );
+};
+
+export default function ProjectCard({ project }: { project: Project }) {
+  const isMobile = useIsMobile();
+  const hideLinks = shouldHideLinks(project);
+  const imageFit = project.imageFit || "cover";
+
+  return (
+    <motion.div
+      variants={cardVariants}
+      className="group relative"
+      whileHover={{ y: -10 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
+
+      <div className="relative bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700 h-full flex flex-col">
+        <div className="relative h-48 bg-gradient-to-br from-purple-600/10 via-pink-500/10 to-blue-500/10 overflow-hidden">
+          {project.image ? (
+            <>
+              <Image
+                src={project.image}
+                alt={project.title}
+                fill
+                className={
+                  imageFit === "contain" ? "object-contain p-6" : "object-cover"
+                }
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                priority={project.featured}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/45 to-black/15" />
+            </>
+          ) : (
+            <ProjectPlaceholder status={project.status || "live"} />
+          )}
+
+          <div className="absolute top-3 right-3 flex flex-col items-end gap-2 z-10">
+            {project.featured && (
+              <div className="flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-purple-600 to-pink-500 text-gray-900 text-xs font-bold rounded-full shadow-lg">
+                <Star className="w-3 h-3" />
+                Featured
+              </div>
+            )}
+
+            {project.status === "in_progress" && (
+              <div className="flex items-center gap-1 px-2.5 py-1 bg-amber-500/90 backdrop-blur-sm text-white text-xs font-medium rounded-full shadow-lg">
+                <Clock className="w-3 h-3" />
+                In Progress
+              </div>
+            )}
+            {project.status === "private" && (
+              <div className="flex items-center gap-1 px-2.5 py-1 bg-gray-600/90 backdrop-blur-sm text-white text-xs font-medium rounded-full shadow-lg">
+                <Lock className="w-3 h-3" />
+                Private
+              </div>
+            )}
+          </div>
+
+          {!isMobile && (
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-purple-600/90 via-pink-500/90 to-blue-500/90 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              initial={false}
+            >
+              {!hideLinks ? (
+                project.links.map((link) => {
+                  const IconComponent = linkIcons[link.type] || ExternalLink;
+                  return (
+                    <motion.a
+                      key={`${link.type}-${link.url}`}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={link.label}
+                      className="p-3 bg-white rounded-full text-gray-800 hover:scale-110 transition-transform shadow-lg"
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <IconComponent className="w-5 h-5" />
+                    </motion.a>
+                  );
+                })
+              ) : (
+                <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-medium">
+                  <Lock className="w-4 h-4" />
+                  Available on request
+                </div>
+              )}
+            </motion.div>
+          )}
+        </div>
+
+        <div className="p-6 flex-1 flex flex-col">
+          <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
+            {project.title}
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 flex-1">
+            {project.description}
+          </p>
+
+          <div className="flex flex-wrap gap-2">
+            {project.tags.map((tag) => (
+              <span
+                key={tag}
+                className="px-3 py-1 text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-full"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          {isMobile && !hideLinks && project.links.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+              {project.links.map((link) => {
+                const IconComponent = linkIcons[link.type] || ExternalLink;
+                return (
+                  <a
+                    key={`mobile-${link.type}-${link.url}`}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900 text-xs font-bold rounded-full shadow-md active:scale-95 transition-transform"
+                  >
+                    <IconComponent className="w-3.5 h-3.5" />
+                    {link.label}
+                  </a>
+                );
+              })}
+            </div>
+          )}
+
+          {hideLinks && (
+            <div className="flex items-center gap-1.5 mt-4 pt-3 border-t border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 text-xs">
+              <Lock className="w-3 h-3" />
+              Available on request
+            </div>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
