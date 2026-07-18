@@ -3,6 +3,7 @@ import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import SmoothScroll from "@/components/SmoothScroll";
+import ScrollReset from "@/components/ScrollReset";
 import ThemeBackground from "@/components/ThemeBackground";
 import ScrollToTopRocket from "@/components/ScrollToTopRocket";
 import CommandPalette from "@/components/CommandPalette";
@@ -106,6 +107,7 @@ export default function RootLayout({
       <body className="font-mono antialiased">
         <ThemeProvider>
           <SmoothScroll>
+            <ScrollReset />
             <ThemeBackground />
             <JsonLd url={siteUrl} />
             {children}
