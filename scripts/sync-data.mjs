@@ -47,6 +47,9 @@ function validate(data) {
   if (typeof data.siteMetadata?.siteUrl !== "string" || !/^https?:\/\//.test(data.siteMetadata.siteUrl)) {
     errors.push('"siteMetadata.siteUrl" must be an absolute http(s) URL');
   }
+  if (data.focusAreas !== undefined && (!Array.isArray(data.focusAreas) || data.focusAreas.some((a) => typeof a !== "string"))) {
+    errors.push('"focusAreas" must be an array of strings when present');
+  }
   for (const [i, learning] of (data.learnings ?? []).entries()) {
     for (const lang of ["typescript", "go", "python"]) {
       if (typeof learning?.code?.[lang] !== "string") {

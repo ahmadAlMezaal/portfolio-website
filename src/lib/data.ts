@@ -29,6 +29,7 @@ export const education: Education[] = config.education;
 export const certifications: string[] = config.certifications;
 export const learnings: Learning[] = config.learnings ?? [];
 export const currentlyLearning: string[] = config.currentlyLearning ?? [];
+export const focusAreas: string[] = config.focusAreas ?? [];
 
 // Navigation links (not personal data, kept here)
 export const navLinks: NavLink[] = [
