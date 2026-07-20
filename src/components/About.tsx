@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
 import { MapPin, Briefcase, GraduationCap, Heart, Code2, Database, Cloud, Terminal } from "lucide-react";
-import { personalInfo, stats } from "@/lib/data";
+import { personalInfo, stats, focusAreas } from "@/lib/data";
 import { useShouldReduceMotion } from "@/lib/hooks";
 import SectionBackground from "./SectionBackground";
 
@@ -250,25 +250,44 @@ export default function About() {
                 {personalInfo.bio}
               </p>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6">
-                {stats.map((stat, index) => (
-                  <motion.div
-                    key={stat.label}
-                    className="text-center p-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                    transition={{ delay: 0.5 + index * 0.1 }}
-                    whileHover={{ scale: 1.05, y: -5 }}
-                  >
-                    <div className="text-3xl font-bold font-display tracking-tight bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
-                      {stat.value}
-                    </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                      {stat.label}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+              {focusAreas.length > 0 ? (
+                <div className="flex flex-wrap gap-3 pt-6">
+                  {focusAreas.map((area, index) => (
+                    <motion.span
+                      key={area}
+                      className="px-4 py-2 rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 text-sm font-medium"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                      transition={{ delay: 0.5 + index * 0.1 }}
+                      whileHover={{ scale: 1.05, y: -2 }}
+                    >
+                      <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
+                        {area}
+                      </span>
+                    </motion.span>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6">
+                  {stats.map((stat, index) => (
+                    <motion.div
+                      key={stat.label}
+                      className="text-center p-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                      transition={{ delay: 0.5 + index * 0.1 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <div className="text-3xl font-bold font-display tracking-tight bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
+                        {stat.value}
+                      </div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        {stat.label}
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
             </motion.div>
           </div>
         </motion.div>

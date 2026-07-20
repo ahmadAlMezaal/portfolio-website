@@ -50,12 +50,18 @@ const config: PortfolioConfig = {
     "Another Specialty",
   ],
 
-  // Stats (About section)
+  // Stats (About section) — numeric tiles. Shown only when focusAreas is empty.
   stats: [
     { label: "Years Experience", value: "X+" },
     { label: "Projects Completed", value: "X+" },
     { label: "Happy Clients", value: "X+" },
     { label: "Technologies", value: "X+" },
+  ],
+
+  // Optional: qualitative "focus" chips for the About section. When set, these
+  // replace the numeric stat tiles above. Leave empty to keep the tiles.
+  focusAreas: [
+    // "Your Domain", "A Strength", "Another Strength",
   ],
 
   // Skills (displayed as tags; level is 0-100)

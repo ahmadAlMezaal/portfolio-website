@@ -150,4 +150,7 @@ export interface PortfolioConfig {
   // Optional: powers the /learnings page. Omit both to hide the page content.
   learnings?: Learning[];
   currentlyLearning?: string[]; // short "currently exploring" chips
+  // Optional: qualitative "focus" chips shown in the About section. When
+  // present they replace the numeric stat tiles.
+  focusAreas?: string[];
 }
