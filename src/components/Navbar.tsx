@@ -33,7 +33,10 @@ export default function Navbar() {
             whileTap={{ scale: 0.95 }}
           >
             <span className="text-purple-400">{">"}_</span>
-            <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
+            <span
+              className="glitch-text glitch-idle inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent"
+              data-text={personalInfo.name.split(" ")[0].toLowerCase()}
+            >
               {personalInfo.name.split(" ")[0].toLowerCase()}
             </span>
           </NavAnchor>

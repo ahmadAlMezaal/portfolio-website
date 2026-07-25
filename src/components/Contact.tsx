@@ -334,12 +334,14 @@ export default function Contact() {
                   <div className="space-y-3">
                     <motion.button
                       type="submit"
-                      className="w-full py-4 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900 font-bold rounded-xl shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transition-all flex items-center justify-center gap-2"
+                      className="glitch-box w-full py-4 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900 font-bold rounded-xl shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transition-all flex items-center justify-center gap-2"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
                       <Mail className="w-5 h-5" />
-                      Open Email Client
+                      <span className="glitch-text" data-text="Open Email Client">
+                        Open Email Client
+                      </span>
                     </motion.button>
 
                     {personalInfo.bookingUrl && (

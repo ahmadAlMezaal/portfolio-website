@@ -30,7 +30,7 @@ const FilterPill = ({
   <button
     onClick={onClick}
     className={`
-      px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+      glitch-box px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
       ${
         isActive
           ? "bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900 shadow-lg shadow-purple-500/25"
@@ -38,7 +38,9 @@ const FilterPill = ({
       }
     `}
   >
-    {label}
+    <span className="glitch-text" data-text={label}>
+      {label}
+    </span>
   </button>
 );
 

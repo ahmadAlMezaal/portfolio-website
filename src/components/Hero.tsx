@@ -57,13 +57,15 @@ export default function Hero() {
           >
             <motion.a
               href="#contact"
-              className="group relative px-8 py-4 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900 font-bold rounded-full overflow-hidden shadow-lg shadow-purple-500/25"
+              className="glitch-box group relative px-8 py-4 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900 font-bold rounded-full overflow-hidden shadow-lg shadow-purple-500/25"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <span className="relative z-10 flex items-center gap-2">
                 <Mail size={20} />
-                Contact Me
+                <span className="glitch-text" data-text="Contact Me">
+                  Contact Me
+                </span>
               </span>
               <motion.div
                 className="absolute inset-0 bg-gradient-to-r from-blue-500 via-pink-500 to-purple-600"
@@ -77,12 +79,14 @@ export default function Hero() {
               <motion.a
                 href={assetPath(personalInfo.resumeUrl)}
                 download
-                className="group px-8 py-4 border-2 border-purple-600 dark:border-purple-400 text-purple-600 dark:text-purple-400 font-semibold rounded-full hover:bg-purple-600 hover:text-white dark:hover:bg-purple-400 dark:hover:text-gray-900 transition-all duration-300 flex items-center gap-2"
+                className="glitch-box group px-8 py-4 border-2 border-purple-600 dark:border-purple-400 text-purple-600 dark:text-purple-400 font-semibold rounded-full hover:bg-purple-600 hover:text-white dark:hover:bg-purple-400 dark:hover:text-gray-900 transition-all duration-300 flex items-center gap-2"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <Download size={20} />
-                Download CV
+                <span className="glitch-text" data-text="Download CV">
+                  Download CV
+                </span>
               </motion.a>
             )}
           </motion.div>

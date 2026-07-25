@@ -129,6 +129,10 @@ html.lenis body {
 
 /* Amber — warm amber → gold → green, on warm-black */
 [data-theme="amber"] {
+  /* Chroma channels the glitch effects split text/edges into */
+  --glitch-a: 255 62 52;
+  --glitch-b: 90 226 255;
+
   --background: #0a0703;
   --foreground: #ffe9c2;
   --card-bg: #16100a;
@@ -587,13 +591,161 @@ h1, h2, h3, h4, h5, h6 {
 }
 .crt-out { color: var(--foreground); }
 
+/* Glitch system — amber only, and scoped to the text it sits on: .glitch-text
+   splits its own text (from data-text) into two chroma channels and shakes it.
+   Put it on a button's label; if the trigger is an ancestor (a button wrapping
+   icon + label), mark that ancestor .glitch-box. Bursts fire on hover/focus,
+   or on a loop when the element also carries .glitch-idle (the name only).
+   Inert on the other themes. */
+
+.glitch-text {
+  position: relative;
+}
+
+[data-theme="amber"] .glitch-text::before,
+[data-theme="amber"] .glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: inherit;
+  opacity: 0;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+  white-space: inherit;
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+}
+
+[data-theme="amber"] .glitch-text::before {
+  color: rgb(var(--glitch-a));
+  text-shadow: 0 0 6px rgb(var(--glitch-a) / 0.5);
+}
+
+[data-theme="amber"] .glitch-text::after {
+  color: rgb(var(--glitch-b));
+  text-shadow: 0 0 6px rgb(var(--glitch-b) / 0.5);
+}
+
+/* One burst on hover/focus — five frames of chroma split, plus a shake. */
+[data-theme="amber"] .glitch-text:hover::before,
+[data-theme="amber"] .glitch-text:focus-visible::before,
+[data-theme="amber"] .glitch-box:hover .glitch-text::before,
+[data-theme="amber"] .glitch-box:focus-visible .glitch-text::before {
+  animation: glitch-burst-a 0.4s steps(1) 1;
+}
+
+[data-theme="amber"] .glitch-text:hover::after,
+[data-theme="amber"] .glitch-text:focus-visible::after,
+[data-theme="amber"] .glitch-box:hover .glitch-text::after,
+[data-theme="amber"] .glitch-box:focus-visible .glitch-text::after {
+  animation: glitch-burst-b 0.4s steps(1) 1;
+}
+
+[data-theme="amber"] .glitch-text:hover,
+[data-theme="amber"] .glitch-text:focus-visible,
+[data-theme="amber"] .glitch-box:hover .glitch-text,
+[data-theme="amber"] .glitch-box:focus-visible .glitch-text {
+  animation: glitch-shake 0.4s steps(1) 1;
+}
+
+@keyframes glitch-burst-a {
+  0%   { opacity: 0.95; clip-path: inset(4% 0 68% 0);  transform: translate(-5px, -2px); }
+  20%  { opacity: 0.9;  clip-path: inset(40% 0 38% 0); transform: translate(4px, 1px); }
+  40%  { opacity: 0.9;  clip-path: inset(68% 0 10% 0); transform: translate(-4px, 0); }
+  60%  { opacity: 0.85; clip-path: inset(16% 0 56% 0); transform: translate(3px, 2px); }
+  80%  { opacity: 0.8;  clip-path: inset(78% 0 4% 0);  transform: translate(-2px, -1px); }
+  92%, 100% { opacity: 0; }
+}
+
+@keyframes glitch-burst-b {
+  0%   { opacity: 0.95; clip-path: inset(4% 0 68% 0);  transform: translate(5px, 2px); }
+  20%  { opacity: 0.9;  clip-path: inset(40% 0 38% 0); transform: translate(-4px, -1px); }
+  40%  { opacity: 0.9;  clip-path: inset(68% 0 10% 0); transform: translate(4px, 0); }
+  60%  { opacity: 0.85; clip-path: inset(16% 0 56% 0); transform: translate(-3px, -2px); }
+  80%  { opacity: 0.8;  clip-path: inset(78% 0 4% 0);  transform: translate(2px, 1px); }
+  92%, 100% { opacity: 0; }
+}
+
+@keyframes glitch-shake {
+  0%   { transform: translate(2px, -1px) skewX(-4deg); }
+  20%  { transform: translate(-3px, 1px) skewX(3deg); }
+  40%  { transform: translate(2px, 0) skewX(-2deg); }
+  60%  { transform: translate(-2px, 1px) skewX(2deg); }
+  80%  { transform: translate(1px, 0); }
+  92%, 100% { transform: none; }
+}
+
+/* Idle: the name glitches on its own — two bursts per six-second cycle, and
+   nothing at all in between. */
+[data-theme="amber"] .glitch-idle::before {
+  animation: glitch-idle-a 6s steps(1) infinite;
+}
+
+[data-theme="amber"] .glitch-idle::after {
+  animation: glitch-idle-b 6s steps(1) infinite;
+}
+
+[data-theme="amber"] .glitch-idle {
+  animation: glitch-idle-shake 6s steps(1) infinite;
+}
+
+/* The hero name keeps its CRT bloom alongside the shake */
+[data-theme="amber"] .glitch-idle.theme-headline {
+  animation:
+    amber-bloom 5s ease-in-out infinite,
+    glitch-idle-shake 6s steps(1) infinite;
+}
+
+@keyframes glitch-idle-a {
+  0%, 12.1%, 57.7%, 100% { opacity: 0; }
+  6%    { opacity: 0.95; clip-path: inset(2% 0 72% 0);  transform: translate(-6px, -2px); }
+  7.2%  { opacity: 0.9;  clip-path: inset(38% 0 40% 0); transform: translate(5px, 1px); }
+  8.4%  { opacity: 0.9;  clip-path: inset(66% 0 12% 0); transform: translate(-4px, 0); }
+  9.6%  { opacity: 0.85; clip-path: inset(14% 0 58% 0); transform: translate(4px, 2px); }
+  10.8% { opacity: 0.8;  clip-path: inset(80% 0 4% 0);  transform: translate(-5px, -1px); }
+  54%   { opacity: 0.9;  clip-path: inset(24% 0 50% 0); transform: translate(5px, 0); }
+  55.2% { opacity: 0.9;  clip-path: inset(58% 0 20% 0); transform: translate(-5px, 1px); }
+  56.4% { opacity: 0.85; clip-path: inset(8% 0 66% 0);  transform: translate(4px, -1px); }
+}
+
+@keyframes glitch-idle-b {
+  0%, 12.1%, 57.7%, 100% { opacity: 0; }
+  6%    { opacity: 0.95; clip-path: inset(2% 0 72% 0);  transform: translate(6px, 2px); }
+  7.2%  { opacity: 0.9;  clip-path: inset(38% 0 40% 0); transform: translate(-5px, -1px); }
+  8.4%  { opacity: 0.9;  clip-path: inset(66% 0 12% 0); transform: translate(4px, 0); }
+  9.6%  { opacity: 0.85; clip-path: inset(14% 0 58% 0); transform: translate(-4px, -2px); }
+  10.8% { opacity: 0.8;  clip-path: inset(80% 0 4% 0);  transform: translate(5px, 1px); }
+  54%   { opacity: 0.9;  clip-path: inset(24% 0 50% 0); transform: translate(-5px, 0); }
+  55.2% { opacity: 0.9;  clip-path: inset(58% 0 20% 0); transform: translate(5px, -1px); }
+  56.4% { opacity: 0.85; clip-path: inset(8% 0 66% 0);  transform: translate(-4px, 1px); }
+}
+
+@keyframes glitch-idle-shake {
+  0%, 12.1%, 57.7%, 100% { transform: none; }
+  6%    { transform: translate(3px, -1px) skewX(-5deg); }
+  7.2%  { transform: translate(-3px, 1px) skewX(4deg); }
+  8.4%  { transform: translate(2px, 0) skewX(-3deg); }
+  9.6%  { transform: translate(-2px, 1px) skewX(2deg); }
+  10.8% { transform: translate(1px, 0); }
+  54%   { transform: translate(-2px, 0) skewX(4deg); }
+  55.2% { transform: translate(3px, -1px) skewX(-3deg); }
+  56.4% { transform: translate(-1px, 1px); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .synthwave-grid::before,
   .crt-overlay,
   .blink-caret,
   .hud-status::before,
   [data-theme="cyberpunk"] .theme-headline,
-  [data-theme="amber"] .theme-headline {
+  [data-theme="amber"] .theme-headline,
+  [data-theme="amber"] .glitch-text,
+  [data-theme="amber"] .glitch-text::before,
+  [data-theme="amber"] .glitch-text::after {
     animation: none !important;
   }
 }

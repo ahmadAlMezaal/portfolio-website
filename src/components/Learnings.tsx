@@ -283,13 +283,18 @@ export default function Learnings({
                       <button
                         key={f}
                         onClick={() => setFilter(f)}
-                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                        className={`glitch-box px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                           filter === f
                             ? "bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900 shadow-lg shadow-purple-500/25"
                             : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
                         }`}
                       >
-                        {CATEGORY_META[f].label}
+                        <span
+                          className="glitch-text"
+                          data-text={CATEGORY_META[f].label}
+                        >
+                          {CATEGORY_META[f].label}
+                        </span>
                         <span className="ml-1.5 font-mono text-xs opacity-70">
                           {count}
                         </span>

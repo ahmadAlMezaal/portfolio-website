@@ -70,7 +70,7 @@ export default function ThemeSwitcher({
               setTheme(t.id);
               setOpen(false);
             }}
-            className="relative flex items-center gap-2.5 px-3 py-2 rounded-lg text-left outline-none transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-offset-transparent"
+            className="glitch-box relative flex items-center gap-2.5 px-3 py-2 rounded-lg text-left outline-none transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-offset-transparent"
             style={{ ["--tw-ring-color" as string]: t.swatch }}
           >
             <span
@@ -84,7 +84,8 @@ export default function ThemeSwitcher({
               }}
             />
             <span
-              className="text-sm font-medium"
+              className="glitch-text text-sm font-medium"
+              data-text={t.label}
               style={
                 isActive
                   ? { color: t.swatch }
