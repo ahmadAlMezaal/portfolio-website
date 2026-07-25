@@ -108,7 +108,10 @@ function AmberIntro({ roleText }: Props) {
       <p>
         <span className="crt-prompt">C:\&gt;</span> whoami
       </p>
-      <p className="crt-name theme-headline">
+      <p
+        className="crt-name theme-headline glitch-text glitch-idle"
+        data-text={personalInfo.name.toUpperCase()}
+      >
         {personalInfo.name.toUpperCase()}
       </p>
 
