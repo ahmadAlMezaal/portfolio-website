@@ -32,7 +32,10 @@ export default function Projects() {
         >
           <motion.div variants={cardVariants} className="text-center mb-12">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
+              <span
+                className="glitch-text glitch-idle glitch-delay-1 inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent"
+                data-text="Featured Projects"
+              >
                 Featured Projects
               </span>
             </h2>

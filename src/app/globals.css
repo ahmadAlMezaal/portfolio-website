@@ -688,6 +688,24 @@ h1, h2, h3, h4, h5, h6 {
     glitch-idle-shake 6s steps(1) infinite;
 }
 
+[data-theme="amber"] .glitch-delay-1,
+[data-theme="amber"] .glitch-delay-1::before,
+[data-theme="amber"] .glitch-delay-1::after {
+  animation-delay: -1.4s;
+}
+
+[data-theme="amber"] .glitch-delay-2,
+[data-theme="amber"] .glitch-delay-2::before,
+[data-theme="amber"] .glitch-delay-2::after {
+  animation-delay: -2.9s;
+}
+
+[data-theme="amber"] .glitch-delay-3,
+[data-theme="amber"] .glitch-delay-3::before,
+[data-theme="amber"] .glitch-delay-3::after {
+  animation-delay: -4.3s;
+}
+
 @keyframes glitch-idle-a {
   0%, 12.1%, 57.7%, 100% { opacity: 0; }
   6%    { opacity: 0.95; clip-path: inset(2% 0 72% 0);  transform: translate(-6px, -2px); }
