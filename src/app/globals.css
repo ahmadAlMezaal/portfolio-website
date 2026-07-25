@@ -129,7 +129,6 @@ html.lenis body {
 
 /* Amber — warm amber → gold → green, on warm-black */
 [data-theme="amber"] {
-  /* Chroma channels the glitch effects split text/edges into */
   --glitch-a: 255 62 52;
   --glitch-b: 90 226 255;
 
@@ -591,13 +590,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 .crt-out { color: var(--foreground); }
 
-/* Glitch system — amber only, and scoped to the text it sits on: .glitch-text
-   splits its own text (from data-text) into two chroma channels and shakes it.
-   Put it on a button's label; if the trigger is an ancestor (a button wrapping
-   icon + label), mark that ancestor .glitch-box. Bursts fire on hover/focus,
-   or on a loop when the element also carries .glitch-idle (the name only).
-   Inert on the other themes. */
-
 .glitch-text {
   position: relative;
 }
@@ -630,7 +622,6 @@ h1, h2, h3, h4, h5, h6 {
   text-shadow: 0 0 6px rgb(var(--glitch-b) / 0.5);
 }
 
-/* One burst on hover/focus — five frames of chroma split, plus a shake. */
 [data-theme="amber"] .glitch-text:hover::before,
 [data-theme="amber"] .glitch-text:focus-visible::before,
 [data-theme="amber"] .glitch-box:hover .glitch-text::before,
@@ -679,8 +670,6 @@ h1, h2, h3, h4, h5, h6 {
   92%, 100% { transform: none; }
 }
 
-/* Idle: the name glitches on its own — two bursts per six-second cycle, and
-   nothing at all in between. */
 [data-theme="amber"] .glitch-idle::before {
   animation: glitch-idle-a 6s steps(1) infinite;
 }
@@ -693,7 +682,6 @@ h1, h2, h3, h4, h5, h6 {
   animation: glitch-idle-shake 6s steps(1) infinite;
 }
 
-/* The hero name keeps its CRT bloom alongside the shake */
 [data-theme="amber"] .glitch-idle.theme-headline {
   animation:
     amber-bloom 5s ease-in-out infinite,
