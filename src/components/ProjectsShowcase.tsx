@@ -8,6 +8,7 @@ import { projects } from "@/lib/data";
 import type { ProjectStatus } from "@/types";
 import { sortProjects, gridContainerVariants } from "@/lib/projects";
 import ProjectCard from "@/components/ProjectCard";
+import DecodeText from "@/components/DecodeText";
 
 type FilterOption = "all" | ProjectStatus;
 
@@ -38,9 +39,7 @@ const FilterPill = ({
       }
     `}
   >
-    <span className="glitch-text" data-text={label}>
-      {label}
-    </span>
+    <DecodeText className="glitch-text" text={label} />
   </button>
 );
 
@@ -69,12 +68,11 @@ export default function ProjectsShowcase() {
 
         <div className="text-center mb-12">
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-            <span
+            <DecodeText
               className="glitch-text glitch-idle glitch-delay-2 inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent"
-              data-text="All Projects"
-            >
-              All Projects
-            </span>
+              text="All Projects"
+              trigger="view"
+            />
           </h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             A complete collection of my work

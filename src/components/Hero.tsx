@@ -6,6 +6,7 @@ import { ArrowDown, Download, Mail } from "lucide-react";
 import { personalInfo, roles } from "@/lib/data";
 import { assetPath, isCvAvailable } from "@/lib/utils";
 import HeroBackground from "./HeroBackground";
+import DecodeText from "./DecodeText";
 import HeroIntro from "./HeroIntro";
 
 export default function Hero() {
@@ -63,9 +64,7 @@ export default function Hero() {
             >
               <span className="relative z-10 flex items-center gap-2">
                 <Mail size={20} />
-                <span className="glitch-text" data-text="Contact Me">
-                  Contact Me
-                </span>
+                <DecodeText className="glitch-text" text="Contact Me" />
               </span>
               <motion.div
                 className="absolute inset-0 bg-gradient-to-r from-blue-500 via-pink-500 to-purple-600"
@@ -84,9 +83,7 @@ export default function Hero() {
                 whileTap={{ scale: 0.95 }}
               >
                 <Download size={20} />
-                <span className="glitch-text" data-text="Download CV">
-                  Download CV
-                </span>
+                <DecodeText className="glitch-text" text="Download CV" />
               </motion.a>
             )}
           </motion.div>

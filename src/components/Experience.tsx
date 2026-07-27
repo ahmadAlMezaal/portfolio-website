@@ -6,6 +6,7 @@ import { useRef } from "react";
 import { Briefcase, MapPin, Calendar, CheckCircle2, TrendingUp, ExternalLink } from "lucide-react";
 import { experiences } from "@/lib/data";
 import type { Experience as ExperienceType, ExperienceRole } from "@/types";
+import DecodeText from "./DecodeText";
 
 function hasMultipleRoles(exp: ExperienceType): exp is ExperienceType & { roles: ExperienceRole[] } {
   return Array.isArray(exp.roles) && exp.roles.length > 0;
@@ -165,12 +166,11 @@ export default function Experience() {
         >
           <motion.div variants={itemVariants} className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              <span
+              <DecodeText
                 className="glitch-text glitch-idle glitch-delay-3 inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent"
-                data-text="Work Experience"
-              >
-                Work Experience
-              </span>
+                text="Work Experience"
+                trigger="view"
+              />
             </h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               My professional journey and career highlights

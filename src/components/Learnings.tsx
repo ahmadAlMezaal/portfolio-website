@@ -9,6 +9,7 @@ import type {
   LearningLanguage,
 } from "@/types";
 import type { HighlightedCode } from "@/lib/highlight";
+import DecodeText from "./DecodeText";
 
 export type LearningItem = {
   learning: Learning;
@@ -227,12 +228,11 @@ export default function Learnings({
             className="text-center mb-12"
           >
             <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-              <span
+              <DecodeText
                 className="glitch-text glitch-idle glitch-delay-3 inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent"
-                data-text="Field Notes"
-              >
-                Field Notes
-              </span>
+                text="Field Notes"
+                trigger="view"
+              />
             </h1>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               Patterns, laws, and paradigms collected in production — with the
@@ -292,12 +292,10 @@ export default function Learnings({
                             : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
                         }`}
                       >
-                        <span
+                        <DecodeText
                           className="glitch-text"
-                          data-text={CATEGORY_META[f].label}
-                        >
-                          {CATEGORY_META[f].label}
-                        </span>
+                          text={CATEGORY_META[f].label}
+                        />
                         <span className="ml-1.5 font-mono text-xs opacity-70">
                           {count}
                         </span>

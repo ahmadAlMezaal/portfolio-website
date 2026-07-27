@@ -7,6 +7,7 @@ import { ArrowRight } from "lucide-react";
 import { projects } from "@/lib/data";
 import { sortProjects, gridContainerVariants, cardVariants } from "@/lib/projects";
 import ProjectCard from "@/components/ProjectCard";
+import DecodeText from "@/components/DecodeText";
 
 // The home section shows only a glimpse; the full list lives at /projects.
 const GLIMPSE_COUNT = 3;
@@ -32,12 +33,11 @@ export default function Projects() {
         >
           <motion.div variants={cardVariants} className="text-center mb-12">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              <span
+              <DecodeText
                 className="glitch-text glitch-idle glitch-delay-1 inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent"
-                data-text="Featured Projects"
-              >
-                Featured Projects
-              </span>
+                text="Featured Projects"
+                trigger="view"
+              />
             </h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               Some of my recent work that I&apos;m proud of

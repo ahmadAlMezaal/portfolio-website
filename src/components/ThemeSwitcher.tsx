@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Settings } from "lucide-react";
 import { THEMES, useTheme } from "./ThemeProvider";
+import DecodeText from "./DecodeText";
 
 // inline: bare list (mobile menu). floating: gear pinned bottom-right, menu opens upward.
 export default function ThemeSwitcher({
@@ -83,17 +84,11 @@ export default function ThemeSwitcher({
                 boxShadow: isActive ? `0 0 8px ${t.swatch}` : "none",
               }}
             />
-            <span
+            <DecodeText
               className="glitch-text text-sm font-medium"
-              data-text={t.label}
-              style={
-                isActive
-                  ? { color: t.swatch }
-                  : undefined
-              }
-            >
-              {t.label}
-            </span>
+              text={t.label}
+              style={isActive ? { color: t.swatch } : undefined}
+            />
             {isActive && (
               <span
                 className="ml-auto text-xs font-mono"

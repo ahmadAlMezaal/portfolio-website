@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { personalInfo } from "@/lib/data";
+import DecodeText from "./DecodeText";
 import { useTheme } from "./ThemeProvider";
 
 type Props = { roleText: string };
@@ -47,9 +48,11 @@ function MatrixIntro({ roleText }: Props) {
           <span className="text-purple-400">whoami</span>
         </p>
         <p className="text-3xl sm:text-5xl font-bold font-display tracking-tight pb-2">
-          <span className="theme-headline inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
-            {personalInfo.name}
-          </span>
+          <DecodeText
+            className="theme-headline inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent"
+            text={personalInfo.name}
+            trigger="idle"
+          />
         </p>
 
         <p className="text-sm sm:text-base pt-2">
