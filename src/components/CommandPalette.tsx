@@ -25,6 +25,7 @@ import {
   BookOpen,
 } from "lucide-react";
 import { navLinks, personalInfo } from "@/lib/data";
+import { socialLabelMap } from "@/lib/social";
 import { assetPath, isCvAvailable } from "@/lib/utils";
 import { useClipboard } from "@/lib/hooks";
 import { THEMES, useTheme } from "./ThemeProvider";
@@ -78,10 +79,6 @@ function scrollToHash(hash: string) {
     return;
   }
   document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
-}
-
-function socialLabel(platform: string): string {
-  return platform.charAt(0).toUpperCase() + platform.slice(1);
 }
 
 export default function CommandPalette() {
@@ -189,7 +186,7 @@ export default function CommandPalette() {
     for (const link of personalInfo.socialLinks) {
       cmds.push({
         id: `social-${link.platform}`,
-        label: `Open ${socialLabel(link.platform)}`,
+        label: `Open ${socialLabelMap[link.platform]}`,
         group: "Social",
         icon: <ExternalLink size={16} />,
         keywords: link.platform,

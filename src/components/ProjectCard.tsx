@@ -15,7 +15,8 @@ import {
 import Image from "next/image";
 import type { ProjectLinkType, Project, ProjectStatus } from "@/types";
 import { useIsMobile } from "@/lib/hooks";
-import { shouldHideLinks, cardVariants } from "@/lib/projects";
+import { shouldHideLinks } from "@/lib/projects";
+import { cardVariants } from "@/lib/motion";
 
 // Custom brand icons (not available in lucide-react)
 const AppleIcon = ({ className }: { className?: string }) => (

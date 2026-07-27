@@ -5,6 +5,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -19,6 +20,7 @@ export type Theme = (typeof THEMES)[number]["id"];
 
 const STORAGE_KEY = "theme";
 const DEFAULT_THEME: Theme = "matrix";
+const SWITCH_MS = 200;
 const VALID = new Set<string>(THEMES.map((t) => t.id));
 
 type ThemeContextValue = { theme: Theme; setTheme: (t: Theme) => void };
@@ -34,6 +36,7 @@ export function useTheme() {
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(DEFAULT_THEME);
+  const switchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Adopt whatever the anti-flash script (or a prior visit) already chose.
   useEffect(() => {
@@ -50,13 +53,29 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const setTheme = useCallback((next: Theme) => {
     setThemeState(next);
-    document.documentElement.dataset.theme = next;
+
+    const root = document.documentElement;
+    root.classList.add("theme-switching");
+    if (switchTimer.current) clearTimeout(switchTimer.current);
+    switchTimer.current = setTimeout(
+      () => root.classList.remove("theme-switching"),
+      SWITCH_MS
+    );
+
+    root.dataset.theme = next;
     try {
       localStorage.setItem(STORAGE_KEY, next);
     } catch {
       /* storage unavailable */
     }
   }, []);
+
+  useEffect(
+    () => () => {
+      if (switchTimer.current) clearTimeout(switchTimer.current);
+    },
+    []
+  );
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>

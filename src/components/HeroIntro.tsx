@@ -49,7 +49,7 @@ function MatrixIntro({ roleText }: Props) {
         </p>
         <p className="text-3xl sm:text-5xl font-bold font-display tracking-tight pb-2">
           <DecodeText
-            className="theme-headline inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent"
+            className="theme-headline inline-block text-gradient"
             text={personalInfo.name}
             trigger="idle"
           />
@@ -84,7 +84,7 @@ function CyberpunkIntro({ roleText }: Props) {
     >
       <div className="hud-status">System: Online</div>
 
-      <h1 className="hud-name theme-headline glitch-text glitch-idle bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
+      <h1 className="hud-name theme-headline glitch-text glitch-idle text-gradient">
         {personalInfo.name}
       </h1>
 

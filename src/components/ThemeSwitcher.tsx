@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Settings } from "lucide-react";
 import { THEMES, useTheme } from "./ThemeProvider";
+import { isTyping } from "@/lib/utils";
 import DecodeText from "./DecodeText";
 
 // inline: bare list (mobile menu). floating: gear pinned bottom-right, menu opens upward.
@@ -23,14 +24,7 @@ export default function ThemeSwitcher({
     const onKey = (e: KeyboardEvent) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       if (e.key.toLowerCase() !== "t") return;
-      const el = e.target as HTMLElement | null;
-      if (
-        el &&
-        (el.isContentEditable ||
-          ["INPUT", "TEXTAREA", "SELECT"].includes(el.tagName))
-      ) {
-        return;
-      }
+      if (isTyping(e.target)) return;
       e.preventDefault();
       const i = THEMES.findIndex((t) => t.id === theme);
       setTheme(THEMES[(i + 1) % THEMES.length].id);

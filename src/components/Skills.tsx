@@ -1,13 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
 import { Code2, Server, Wrench } from "lucide-react";
 import { skills } from "@/lib/data";
 import { useShouldReduceMotion } from "@/lib/hooks";
 import SectionBackground from "./SectionBackground";
-import DecodeText from "./DecodeText";
+import SectionHeading from "./SectionHeading";
+import { sectionContainerVariants, sectionItemVariants, useSectionInView } from "@/lib/motion";
 
 const categoryIcons: Record<string, React.ReactNode> = {
   Frontend: <Code2 className="w-6 h-6" />,
@@ -19,24 +18,8 @@ const categoryIcons: Record<string, React.ReactNode> = {
 };
 
 export default function Skills() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { ref, isInView } = useSectionInView();
   const shouldReduceMotion = useShouldReduceMotion();
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0 },
-  };
 
   return (
     <section id="skills" className="relative py-20 overflow-hidden">
@@ -46,28 +29,23 @@ export default function Skills() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           ref={ref}
-          variants={containerVariants}
+          variants={sectionContainerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          <motion.div variants={itemVariants} className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              <DecodeText
-                className="glitch-text glitch-idle glitch-delay-2 inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent"
-                text="Skills & Expertise"
-                trigger="view"
-              />
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Technologies and tools I use to bring ideas to life
-            </p>
+          <motion.div variants={sectionItemVariants} className="text-center mb-16">
+            <SectionHeading
+              title="Skills & Expertise"
+              subtitle="Technologies and tools I use to bring ideas to life"
+              cycle={2}
+            />
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {skills.map((category, categoryIndex) => (
               <motion.div
                 key={category.category}
-                variants={itemVariants}
+                variants={sectionItemVariants}
                 className="relative group"
               >
                 <motion.div
