@@ -7,6 +7,7 @@ import { MapPin, Briefcase, GraduationCap, Heart, Code2, Database, Cloud, Termin
 import { personalInfo, stats, focusAreas } from "@/lib/data";
 import { useShouldReduceMotion } from "@/lib/hooks";
 import SectionBackground from "./SectionBackground";
+import DecodeText from "./DecodeText";
 
 export default function About() {
   const ref = useRef(null);
@@ -71,12 +72,11 @@ export default function About() {
         >
           <motion.div variants={itemVariants} className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              <span
+              <DecodeText
                 className="glitch-text glitch-idle glitch-delay-1 inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent"
-                data-text="About Me"
-              >
-                About Me
-              </span>
+                text="About Me"
+                trigger="view"
+              />
             </h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               Get to know me better - my background, passions, and what drives me

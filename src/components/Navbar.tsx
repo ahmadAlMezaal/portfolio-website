@@ -6,6 +6,7 @@ import { Menu, X } from "lucide-react";
 import { navLinks, personalInfo } from "@/lib/data";
 import { useScrollPosition, useIsMobile } from "@/lib/hooks";
 import NavAnchor from "./NavAnchor";
+import DecodeText from "./DecodeText";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,12 +34,12 @@ export default function Navbar() {
             whileTap={{ scale: 0.95 }}
           >
             <span className="text-purple-400">{">"}_</span>
-            <span
+            <DecodeText
               className="glitch-text glitch-idle glitch-delay-1 inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent"
-              data-text={personalInfo.name.split(" ")[0].toLowerCase()}
-            >
-              {personalInfo.name.split(" ")[0].toLowerCase()}
-            </span>
+              text={personalInfo.name.split(" ")[0].toLowerCase()}
+              trigger="idle"
+              offsetMs={4500}
+            />
           </NavAnchor>
 
           <div className="hidden md:flex items-center space-x-8">

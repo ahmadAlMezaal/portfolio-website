@@ -7,6 +7,7 @@ import { Code2, Server, Wrench } from "lucide-react";
 import { skills } from "@/lib/data";
 import { useShouldReduceMotion } from "@/lib/hooks";
 import SectionBackground from "./SectionBackground";
+import DecodeText from "./DecodeText";
 
 const categoryIcons: Record<string, React.ReactNode> = {
   Frontend: <Code2 className="w-6 h-6" />,
@@ -51,12 +52,11 @@ export default function Skills() {
         >
           <motion.div variants={itemVariants} className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              <span
+              <DecodeText
                 className="glitch-text glitch-idle glitch-delay-2 inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent"
-                data-text="Skills & Expertise"
-              >
-                Skills & Expertise
-              </span>
+                text="Skills & Expertise"
+                trigger="view"
+              />
             </h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               Technologies and tools I use to bring ideas to life

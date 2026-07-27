@@ -26,6 +26,7 @@ import { personalInfo } from "@/lib/data";
 import type { SocialPlatform } from "@/types";
 import { useShouldReduceMotion, useClipboard } from "@/lib/hooks";
 import SectionBackground from "./SectionBackground";
+import DecodeText from "./DecodeText";
 
 // Custom icons for platforms not in Lucide
 const MediumIcon = ({ className }: { className?: string }) => (
@@ -153,12 +154,11 @@ export default function Contact() {
         >
           <motion.div variants={itemVariants} className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              <span
+              <DecodeText
                 className="glitch-text glitch-idle glitch-delay-2 inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent"
-                data-text="Get In Touch"
-              >
-                Get In Touch
-              </span>
+                text="Get In Touch"
+                trigger="view"
+              />
             </h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               Have a project in mind? Let's work together to bring your ideas to life
@@ -342,9 +342,10 @@ export default function Contact() {
                       whileTap={{ scale: 0.98 }}
                     >
                       <Mail className="w-5 h-5" />
-                      <span className="glitch-text" data-text="Open Email Client">
-                        Open Email Client
-                      </span>
+                      <DecodeText
+                        className="glitch-text"
+                        text="Open Email Client"
+                      />
                     </motion.button>
 
                     {personalInfo.bookingUrl && (
