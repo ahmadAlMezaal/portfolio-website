@@ -1,33 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
 import { MapPin, Briefcase, GraduationCap, Heart, Code2, Database, Cloud, Terminal } from "lucide-react";
 import { personalInfo, stats, focusAreas } from "@/lib/data";
 import { useShouldReduceMotion } from "@/lib/hooks";
 import SectionBackground from "./SectionBackground";
-import DecodeText from "./DecodeText";
+import SectionHeading from "./SectionHeading";
+import { sectionContainerVariants, sectionItemVariants, useSectionInView } from "@/lib/motion";
 
 export default function About() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { ref, isInView } = useSectionInView();
   const shouldReduceMotion = useShouldReduceMotion();
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0 },
-  };
 
   const initials = personalInfo.name
     .split(" ")
@@ -66,26 +49,21 @@ export default function About() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           ref={ref}
-          variants={containerVariants}
+          variants={sectionContainerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          <motion.div variants={itemVariants} className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              <DecodeText
-                className="glitch-text glitch-idle glitch-delay-1 inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent"
-                text="About Me"
-                trigger="view"
-              />
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Get to know me better - my background, passions, and what drives me
-            </p>
+          <motion.div variants={sectionItemVariants} className="text-center mb-16">
+            <SectionHeading
+              title="About Me"
+              subtitle="Get to know me better - my background, passions, and what drives me"
+              cycle={1}
+            />
           </motion.div>
 
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Initials Section - simplified on mobile for performance */}
-            <motion.div variants={itemVariants} className="relative">
+            <motion.div variants={sectionItemVariants} className="relative">
               <div className="relative w-80 h-80 mx-auto">
                 {shouldReduceMotion ? (
                   <>
@@ -243,7 +221,7 @@ export default function About() {
               </div>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="space-y-6">
+            <motion.div variants={sectionItemVariants} className="space-y-6">
               <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                 <MapPin className="w-5 h-5 text-purple-600" />
                 <span>{personalInfo.location}</span>
@@ -264,7 +242,7 @@ export default function About() {
                       transition={{ delay: 0.5 + index * 0.1 }}
                       whileHover={{ scale: 1.05, y: -2 }}
                     >
-                      <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
+                      <span className="text-gradient">
                         {area}
                       </span>
                     </motion.span>
@@ -281,7 +259,7 @@ export default function About() {
                       transition={{ delay: 0.5 + index * 0.1 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
-                      <div className="text-3xl font-bold font-display tracking-tight bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
+                      <div className="text-3xl font-bold font-display tracking-tight text-gradient">
                         {stat.value}
                       </div>
                       <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">

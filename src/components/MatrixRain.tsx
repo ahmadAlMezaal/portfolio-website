@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { randomGlyph } from "@/lib/glyphs";
-import { useThrottledScroll } from "@/lib/hooks";
+import { useScrollSurge } from "@/lib/hooks";
 
 const WAKE_RADIUS = 190;
 const GLOW_RADIUS = 240;
@@ -12,18 +12,7 @@ const SURGE_INTERVAL = 26;
 // Code-rain canvas (matrix theme only); reads rain colours from CSS vars, honours prefers-reduced-motion.
 export default function MatrixRain() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const surgeRef = useRef(0);
-  const lastScrollYRef = useRef<number | null>(null);
-
-  useThrottledScroll((scrollY) => {
-    const previous = lastScrollYRef.current;
-    lastScrollYRef.current = scrollY;
-    if (previous === null) return;
-    surgeRef.current = Math.min(
-      1,
-      surgeRef.current + Math.abs(scrollY - previous) / 320
-    );
-  }, []);
+  const surgeRef = useScrollSurge();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -197,7 +186,7 @@ export default function MatrixRain() {
       window.removeEventListener("pointermove", onPointerMove);
       document.removeEventListener("pointerleave", onPointerLeave);
     };
-  }, []);
+  }, [surgeRef]);
 
   return (
     <canvas

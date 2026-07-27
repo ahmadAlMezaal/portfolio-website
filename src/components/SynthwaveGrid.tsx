@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
-import { usePrefersReducedMotion, useThrottledScroll } from "@/lib/hooks";
+import { usePrefersReducedMotion, useScrollSurge } from "@/lib/hooks";
 
 const GRID_CELL = 44;
 const GLOW_TRAVEL = 300;
@@ -13,14 +13,12 @@ const SURGE_DECAY = 0.93;
 export default function SynthwaveGrid() {
   const glowRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
-  const surgeRef = useRef(0);
   const advanceRef = useRef(0);
-  const lastScrollYRef = useRef<number | null>(null);
   const rafRef = useRef(0);
   const prefersReducedMotion = usePrefersReducedMotion();
 
   // Runs only while a surge is decaying; the grid's idle drift stays in CSS.
-  const startSurge = useCallback(() => {
+  const startSurge = useCallback((surgeRef: React.RefObject<number>) => {
     if (rafRef.current) return;
 
     function step() {
@@ -43,19 +41,7 @@ export default function SynthwaveGrid() {
     rafRef.current = requestAnimationFrame(step);
   }, []);
 
-  useThrottledScroll(
-    (scrollY) => {
-      const previous = lastScrollYRef.current;
-      lastScrollYRef.current = scrollY;
-      if (previous === null || prefersReducedMotion) return;
-      surgeRef.current = Math.min(
-        1,
-        surgeRef.current + Math.abs(scrollY - previous) / 320
-      );
-      startSurge();
-    },
-    [prefersReducedMotion, startSurge]
-  );
+  useScrollSurge({ enabled: !prefersReducedMotion, onSurge: startSurge });
 
   useEffect(() => {
     if (prefersReducedMotion) return;

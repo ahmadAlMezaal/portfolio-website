@@ -12,6 +12,15 @@ export function assetPath(path: string): string {
   return `${basePath}${normalizedPath}`;
 }
 
+export function isTyping(target: EventTarget | null): boolean {
+  const node = target as HTMLElement | null;
+  return (
+    !!node &&
+    (node.isContentEditable ||
+      ["INPUT", "TEXTAREA", "SELECT"].includes(node.tagName))
+  );
+}
+
 // Defaults to true; CI sets NEXT_PUBLIC_CV_AVAILABLE="false" when no CV is configured.
 export function isCvAvailable(): boolean {
   return process.env.NEXT_PUBLIC_CV_AVAILABLE !== "false";

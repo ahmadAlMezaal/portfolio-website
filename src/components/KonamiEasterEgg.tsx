@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePrefersReducedMotion } from "@/lib/hooks";
+import { randomGlyph } from "@/lib/glyphs";
 
 // ↑ ↑ ↓ ↓ ← → ← → B A
 const SEQUENCE = [
@@ -17,8 +18,6 @@ const SEQUENCE = [
   "b",
   "a",
 ];
-
-const GLYPHS = "01ｱｦｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃ{}[]<>=+*/".split("");
 
 type Glyph = {
   id: number;
@@ -35,7 +34,7 @@ function makeGlyphs(count: number): Glyph[] {
     left: Math.random() * 100,
     delay: Math.random() * 1.2,
     duration: 2.4 + Math.random() * 2.2,
-    char: GLYPHS[(Math.random() * GLYPHS.length) | 0],
+    char: randomGlyph(),
     size: 14 + Math.random() * 22,
   }));
 }

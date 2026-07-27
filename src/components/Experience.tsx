@@ -1,12 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
 import { Briefcase, MapPin, Calendar, CheckCircle2, TrendingUp, ExternalLink } from "lucide-react";
 import { experiences } from "@/lib/data";
 import type { Experience as ExperienceType, ExperienceRole } from "@/types";
-import DecodeText from "./DecodeText";
+import SectionHeading from "./SectionHeading";
+import { slowSectionContainerVariants, sectionItemVariants, useSectionInView } from "@/lib/motion";
 
 function hasMultipleRoles(exp: ExperienceType): exp is ExperienceType & { roles: ExperienceRole[] } {
   return Array.isArray(exp.roles) && exp.roles.length > 0;
@@ -87,23 +86,7 @@ function CompanyName({ name, url, isMultiRole }: { name: string; url?: string; i
 }
 
 export default function Experience() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.3,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0 },
-  };
+  const { ref, isInView } = useSectionInView();
 
   const renderRoleContent = (
     role: { title: string; period: string; description: string; achievements: string[] },
@@ -160,21 +143,16 @@ export default function Experience() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           ref={ref}
-          variants={containerVariants}
+          variants={slowSectionContainerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          <motion.div variants={itemVariants} className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              <DecodeText
-                className="glitch-text glitch-idle glitch-delay-3 inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent"
-                text="Work Experience"
-                trigger="view"
-              />
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              My professional journey and career highlights
-            </p>
+          <motion.div variants={sectionItemVariants} className="text-center mb-16">
+            <SectionHeading
+              title="Work Experience"
+              subtitle="My professional journey and career highlights"
+              cycle={2}
+            />
           </motion.div>
 
           <div className="relative">
@@ -191,7 +169,7 @@ export default function Experience() {
                 return (
                   <motion.div
                     key={index}
-                    variants={itemVariants}
+                    variants={sectionItemVariants}
                     className={`relative flex flex-col md:flex-row gap-8 ${
                       index % 2 === 0 ? "md:flex-row-reverse" : ""
                     }`}

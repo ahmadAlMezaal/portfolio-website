@@ -9,7 +9,8 @@ import type {
   LearningLanguage,
 } from "@/types";
 import type { HighlightedCode } from "@/lib/highlight";
-import DecodeText from "./DecodeText";
+import SectionHeading from "./SectionHeading";
+import FilterPill from "./FilterPill";
 
 export type LearningItem = {
   learning: Learning;
@@ -227,17 +228,12 @@ export default function Learnings({
             }}
             className="text-center mb-12"
           >
-            <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-              <DecodeText
-                className="glitch-text glitch-idle glitch-delay-3 inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent"
-                text="Field Notes"
-                trigger="view"
-              />
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Patterns, laws, and paradigms collected in production — with the
-              scars to prove them.
-            </p>
+            <SectionHeading
+              title="Field Notes"
+              subtitle="Patterns, laws, and paradigms collected in production — with the scars to prove them."
+              as="h1"
+              cycle={3}
+            />
 
             {currentlyLearning.length > 0 && (
               <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
@@ -283,23 +279,13 @@ export default function Learnings({
                     ).length;
                     if (count === 0) return null;
                     return (
-                      <button
+                      <FilterPill
                         key={f}
+                        label={CATEGORY_META[f].label}
+                        isActive={filter === f}
                         onClick={() => setFilter(f)}
-                        className={`glitch-box px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                          filter === f
-                            ? "bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900 shadow-lg shadow-purple-500/25"
-                            : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
-                        }`}
-                      >
-                        <DecodeText
-                          className="glitch-text"
-                          text={CATEGORY_META[f].label}
-                        />
-                        <span className="ml-1.5 font-mono text-xs opacity-70">
-                          {count}
-                        </span>
-                      </button>
+                        badge={count}
+                      />
                     );
                   })}
                 </div>
@@ -357,3 +343,4 @@ export default function Learnings({
     </section>
   );
 }
+

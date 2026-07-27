@@ -6,9 +6,11 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { projects } from "@/lib/data";
 import type { ProjectStatus } from "@/types";
-import { sortProjects, gridContainerVariants } from "@/lib/projects";
+import { sortProjects } from "@/lib/projects";
+import { gridContainerVariants } from "@/lib/motion";
 import ProjectCard from "@/components/ProjectCard";
-import DecodeText from "@/components/DecodeText";
+import FilterPill from "@/components/FilterPill";
+import SectionHeading from "@/components/SectionHeading";
 
 type FilterOption = "all" | ProjectStatus;
 
@@ -18,30 +20,6 @@ const FILTERS: { label: string; value: FilterOption }[] = [
   { label: "In Progress", value: "in_progress" },
   { label: "Private", value: "private" },
 ];
-
-const FilterPill = ({
-  label,
-  isActive,
-  onClick,
-}: {
-  label: string;
-  isActive: boolean;
-  onClick: () => void;
-}) => (
-  <button
-    onClick={onClick}
-    className={`
-      glitch-box px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
-      ${
-        isActive
-          ? "bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900 shadow-lg shadow-purple-500/25"
-          : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
-      }
-    `}
-  >
-    <DecodeText className="glitch-text" text={label} />
-  </button>
-);
 
 export default function ProjectsShowcase() {
   const [activeFilter, setActiveFilter] = useState<FilterOption>("all");
@@ -67,16 +45,12 @@ export default function ProjectsShowcase() {
         </Link>
 
         <div className="text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-            <DecodeText
-              className="glitch-text glitch-idle glitch-delay-2 inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent"
-              text="All Projects"
-              trigger="view"
-            />
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            A complete collection of my work
-          </p>
+          <SectionHeading
+            title="All Projects"
+            subtitle="A complete collection of my work"
+            as="h1"
+            cycle={2}
+          />
         </div>
 
         <div className="flex flex-wrap justify-center gap-3 mb-10">
@@ -111,3 +85,4 @@ export default function ProjectsShowcase() {
     </section>
   );
 }
+

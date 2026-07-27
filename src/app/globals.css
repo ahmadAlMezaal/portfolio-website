@@ -279,8 +279,11 @@ h1, h2, h3, h4, h5, h6 {
   animation: gradient-shift 3s ease infinite;
 }
 
-/* Smooth transitions for theme changes */
-* {
+.text-gradient {
+  @apply bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent;
+}
+
+.theme-switching * {
   transition-property: background-color, border-color;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;

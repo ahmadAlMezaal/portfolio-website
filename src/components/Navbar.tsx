@@ -35,7 +35,7 @@ export default function Navbar() {
           >
             <span className="text-purple-400">{">"}_</span>
             <DecodeText
-              className="glitch-text glitch-idle glitch-delay-1 inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent"
+              className="glitch-text glitch-idle glitch-delay-1 inline-block text-gradient"
               text={personalInfo.name.split(" ")[0].toLowerCase()}
               trigger="idle"
               offsetMs={4500}

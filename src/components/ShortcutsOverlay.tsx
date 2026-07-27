@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { onOpenShortcuts } from "./shortcutsBus";
+import { isTyping } from "@/lib/utils";
 
 type Shortcut = { keys: string[]; label: string };
 
@@ -18,15 +19,6 @@ const SHORTCUTS: Shortcut[] = [
     label: "there's a secret…",
   },
 ];
-
-function isTyping(el: EventTarget | null): boolean {
-  const node = el as HTMLElement | null;
-  return (
-    !!node &&
-    (node.isContentEditable ||
-      ["INPUT", "TEXTAREA", "SELECT"].includes(node.tagName))
-  );
-}
 
 export default function ShortcutsOverlay() {
   const [open, setOpen] = useState(false);

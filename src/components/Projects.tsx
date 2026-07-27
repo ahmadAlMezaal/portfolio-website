@@ -1,20 +1,20 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef, useMemo } from "react";
+import { motion } from "framer-motion";
+import { useMemo } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { projects } from "@/lib/data";
-import { sortProjects, gridContainerVariants, cardVariants } from "@/lib/projects";
+import { sortProjects } from "@/lib/projects";
+import { gridContainerVariants, cardVariants, useSectionInView } from "@/lib/motion";
 import ProjectCard from "@/components/ProjectCard";
-import DecodeText from "@/components/DecodeText";
+import SectionHeading from "@/components/SectionHeading";
 
 // The home section shows only a glimpse; the full list lives at /projects.
 const GLIMPSE_COUNT = 3;
 
 export default function Projects() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { ref, isInView } = useSectionInView();
 
   const glimpse = useMemo(
     () => sortProjects(projects).slice(0, GLIMPSE_COUNT),
@@ -32,16 +32,11 @@ export default function Projects() {
           animate={isInView ? "visible" : "hidden"}
         >
           <motion.div variants={cardVariants} className="text-center mb-12">
-            <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              <DecodeText
-                className="glitch-text glitch-idle glitch-delay-1 inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent"
-                text="Featured Projects"
-                trigger="view"
-              />
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Some of my recent work that I&apos;m proud of
-            </p>
+            <SectionHeading
+              title="Featured Projects"
+              subtitle="Some of my recent work that I'm proud of"
+              cycle={3}
+            />
           </motion.div>
 
           <motion.div
