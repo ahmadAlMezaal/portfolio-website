@@ -84,7 +84,7 @@ function CyberpunkIntro({ roleText }: Props) {
     >
       <div className="hud-status">System: Online</div>
 
-      <h1 className="hud-name theme-headline bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
+      <h1 className="hud-name theme-headline glitch-text glitch-idle bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
         {personalInfo.name}
       </h1>
 
