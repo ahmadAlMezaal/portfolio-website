@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { randomGlyph } from "@/lib/glyphs";
+import { useThrottledScroll } from "@/lib/hooks";
 
 const WAKE_RADIUS = 190;
 const GLOW_RADIUS = 240;
@@ -11,6 +12,18 @@ const SURGE_INTERVAL = 26;
 // Code-rain canvas (matrix theme only); reads rain colours from CSS vars, honours prefers-reduced-motion.
 export default function MatrixRain() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const surgeRef = useRef(0);
+  const lastScrollYRef = useRef<number | null>(null);
+
+  useThrottledScroll((scrollY) => {
+    const previous = lastScrollYRef.current;
+    lastScrollYRef.current = scrollY;
+    if (previous === null) return;
+    surgeRef.current = Math.min(
+      1,
+      surgeRef.current + Math.abs(scrollY - previous) / 320
+    );
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -91,8 +104,6 @@ export default function MatrixRain() {
     let pointerX = -1;
     let pointerY = -1;
     let pointerActive = false;
-    let surge = 0;
-    let lastScrollY = window.scrollY;
 
     const onPointerMove = (e: PointerEvent) => {
       pointerX = e.clientX;
@@ -102,16 +113,10 @@ export default function MatrixRain() {
     const onPointerLeave = () => {
       pointerActive = false;
     };
-    const onScroll = () => {
-      const delta = Math.abs(window.scrollY - lastScrollY);
-      lastScrollY = window.scrollY;
-      surge = Math.min(1, surge + delta / 320);
-    };
 
     if (!reduceMotion) {
       window.addEventListener("pointermove", onPointerMove, { passive: true });
       document.addEventListener("pointerleave", onPointerLeave);
-      window.addEventListener("scroll", onScroll, { passive: true });
     }
 
     let raf = 0;
@@ -120,10 +125,12 @@ export default function MatrixRain() {
     const draw = (time: number) => {
       raf = requestAnimationFrame(draw);
       // Throttle to ~18fps: cheaper and gives the deliberate terminal cadence.
-      const interval = REST_INTERVAL - surge * (REST_INTERVAL - SURGE_INTERVAL);
+      const interval =
+        REST_INTERVAL - surgeRef.current * (REST_INTERVAL - SURGE_INTERVAL);
       if (time - last < interval) return;
       last = time;
-      surge *= 0.9;
+      surgeRef.current *= 0.9;
+      const surge = surgeRef.current;
 
       // Translucent wash creates the trailing fade.
       ctx.fillStyle = washColor;
@@ -189,7 +196,6 @@ export default function MatrixRain() {
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", onPointerMove);
       document.removeEventListener("pointerleave", onPointerLeave);
-      window.removeEventListener("scroll", onScroll);
     };
   }, []);
 
