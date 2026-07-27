@@ -1,0 +1,90 @@
+"use client";
+
+import { useCallback, useEffect, useRef } from "react";
+import { usePrefersReducedMotion, useThrottledScroll } from "@/lib/hooks";
+
+const GRID_CELL = 44;
+const GLOW_TRAVEL = 300;
+const ADVANCE_PER_FRAME = 4;
+const SURGE_DECAY = 0.93;
+
+// Cyberpunk backdrop: synthwave grid + horizon glow, both reacting to the
+// pointer and to scroll velocity.
+export default function SynthwaveGrid() {
+  const glowRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const surgeRef = useRef(0);
+  const advanceRef = useRef(0);
+  const lastScrollYRef = useRef<number | null>(null);
+  const rafRef = useRef(0);
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  // Runs only while a surge is decaying; the grid's idle drift stays in CSS.
+  const startSurge = useCallback(() => {
+    if (rafRef.current) return;
+
+    function step() {
+      const grid = gridRef.current;
+      surgeRef.current *= SURGE_DECAY;
+      if (!grid || surgeRef.current < 0.01) {
+        surgeRef.current = 0;
+        rafRef.current = 0;
+        return;
+      }
+      advanceRef.current =
+        (advanceRef.current + surgeRef.current * ADVANCE_PER_FRAME) % GRID_CELL;
+      grid.style.setProperty(
+        "--grid-advance",
+        `${advanceRef.current.toFixed(2)}px`
+      );
+      rafRef.current = requestAnimationFrame(step);
+    }
+
+    rafRef.current = requestAnimationFrame(step);
+  }, []);
+
+  useThrottledScroll(
+    (scrollY) => {
+      const previous = lastScrollYRef.current;
+      lastScrollYRef.current = scrollY;
+      if (previous === null || prefersReducedMotion) return;
+      surgeRef.current = Math.min(
+        1,
+        surgeRef.current + Math.abs(scrollY - previous) / 320
+      );
+      startSurge();
+    },
+    [prefersReducedMotion, startSurge]
+  );
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    let pending = 0;
+
+    const onPointerMove = (event: PointerEvent) => {
+      if (pending) return;
+      const { clientX } = event;
+      pending = requestAnimationFrame(() => {
+        pending = 0;
+        const shift = (clientX / window.innerWidth - 0.5) * GLOW_TRAVEL;
+        glowRef.current?.style.setProperty("--glow-shift", `${shift.toFixed(1)}px`);
+      });
+    };
+
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", onPointerMove);
+      cancelAnimationFrame(pending);
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = 0;
+    };
+  }, [prefersReducedMotion]);
+
+  return (
+    <>
+      <div ref={glowRef} className="synthwave-glow" aria-hidden="true" />
+      <div ref={gridRef} className="synthwave-grid" aria-hidden="true" />
+      <div className="crt-overlay crt-overlay-soft" aria-hidden="true" />
+    </>
+  );
+}

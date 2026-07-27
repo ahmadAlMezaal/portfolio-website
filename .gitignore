@@ -42,6 +42,7 @@ public/projects/*.webp
 
 # AI assistant working files
 .ai/
+.playwright-mcp/
 
 # fetched portfolio content (written by scripts/sync-data.mjs)
 src/lib/portfolio-data.json
