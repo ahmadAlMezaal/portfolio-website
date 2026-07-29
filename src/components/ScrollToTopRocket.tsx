@@ -267,7 +267,6 @@ export default function ScrollToTopRocket() {
             whileTap={rocketState === "idle" ? { scale: 0.95 } : undefined}
             aria-label="Scroll to top"
           >
-            {}
             {isMobile ? (
               <div
                 className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400 opacity-50"

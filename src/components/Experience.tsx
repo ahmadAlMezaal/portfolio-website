@@ -253,7 +253,6 @@ export default function Experience() {
                       </motion.div>
                     </div>
 
-                    {}
                     <div className="hidden md:block md:w-1/2" />
                   </motion.div>
                 );

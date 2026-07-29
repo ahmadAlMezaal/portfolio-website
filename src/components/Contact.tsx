@@ -60,7 +60,6 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative py-20 section-tint overflow-hidden">
-      {}
       {!shouldReduceMotion && <SectionBackground type="wave" />}
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -96,7 +95,6 @@ export default function Contact() {
                   </div>
                 </motion.div>
 
-                {}
                 <motion.button
                   type="button"
                   onClick={() => (revealed ? copy(personalInfo.email) : setRevealed(true))}
