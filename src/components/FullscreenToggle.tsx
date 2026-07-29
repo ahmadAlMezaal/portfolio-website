@@ -41,18 +41,18 @@ export default function FullscreenToggle() {
       title={label}
       whileHover={{ scale: 1.12 }}
       whileTap={{ scale: 0.9 }}
-      className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 border transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-offset-transparent"
+      className="fixed bottom-[9.5rem] right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 border backdrop-blur-lg transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-offset-transparent"
       style={{
         borderColor: `${accent}55`,
-        boxShadow: `0 0 10px ${accent}33`,
+        boxShadow: `0 4px 20px ${accent}44, 0 0 10px ${accent}33`,
         color: accent,
         ["--tw-ring-color" as string]: accent,
       }}
     >
       {isFullscreen ? (
-        <Minimize2 size={17} strokeWidth={2} />
+        <Minimize2 size={22} strokeWidth={2} />
       ) : (
-        <Maximize2 size={17} strokeWidth={2} />
+        <Maximize2 size={22} strokeWidth={2} />
       )}
     </motion.button>
   );

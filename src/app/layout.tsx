@@ -6,6 +6,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import ScrollReset from "@/components/ScrollReset";
 import ThemeBackground from "@/components/ThemeBackground";
 import ScrollToTopRocket from "@/components/ScrollToTopRocket";
+import FullscreenToggle from "@/components/FullscreenToggle";
 import CommandPalette from "@/components/CommandPalette";
 import ShortcutsOverlay from "@/components/ShortcutsOverlay";
 import KonamiEasterEgg from "@/components/KonamiEasterEgg";
@@ -107,6 +108,7 @@ export default function RootLayout({
             <JsonLd url={siteUrl} />
             {children}
             <ScrollToTopRocket />
+            <FullscreenToggle />
             <CommandPalette />
             <ShortcutsOverlay />
             <KonamiEasterEgg />

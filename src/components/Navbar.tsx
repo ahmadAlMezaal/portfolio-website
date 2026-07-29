@@ -7,7 +7,6 @@ import { navLinks, personalInfo } from "@/lib/data";
 import { useScrollPosition, useIsMobile } from "@/lib/hooks";
 import NavAnchor from "./NavAnchor";
 import DecodeText from "./DecodeText";
-import FullscreenToggle from "./FullscreenToggle";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -75,8 +74,6 @@ export default function Navbar() {
                 {personalInfo.status}
               </span>
             </motion.div>
-
-            <FullscreenToggle />
 
             <motion.button
               onClick={() => setIsOpen(!isOpen)}
