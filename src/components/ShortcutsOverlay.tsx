@@ -12,6 +12,8 @@ const SHORTCUTS: Shortcut[] = [
   { keys: ["⌘", "K"], label: "Open command palette" },
   { keys: ["Ctrl", "K"], label: "Command palette (Windows/Linux)" },
   { keys: ["T"], label: "Cycle color theme" },
+  { keys: ["F"], label: "Toggle fullscreen" },
+  { keys: ["⌘", "⇧", "F"], label: "Toggle fullscreen (browser-style combo)" },
   { keys: ["?"], label: "Show this cheatsheet" },
   { keys: ["Esc"], label: "Close any dialog" },
   {

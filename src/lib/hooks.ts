@@ -1,4 +1,10 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  useSyncExternalStore,
+} from "react";
 
 export function useIsMobile(breakpoint: number = 768): boolean {
   const [isMobile, setIsMobile] = useState(false);
@@ -44,6 +50,46 @@ export function useShouldReduceMotion(): boolean {
   const prefersReducedMotion = usePrefersReducedMotion();
 
   return isMobile || prefersReducedMotion;
+}
+
+function subscribeFullscreen(onChange: () => void): () => void {
+  document.addEventListener("fullscreenchange", onChange);
+  return () => document.removeEventListener("fullscreenchange", onChange);
+}
+
+function subscribeNever(): () => void {
+  return () => {};
+}
+
+export function useFullscreen(): {
+  isFullscreen: boolean;
+  supported: boolean;
+  toggle: () => void;
+} {
+  const isFullscreen = useSyncExternalStore(
+    subscribeFullscreen,
+    () => document.fullscreenElement !== null,
+    () => false
+  );
+
+  const supported = useSyncExternalStore(
+    subscribeNever,
+    () => typeof document.documentElement.requestFullscreen === "function",
+    () => false
+  );
+
+  const toggle = useCallback(() => {
+    const root = document.documentElement;
+    if (typeof root.requestFullscreen !== "function") return;
+
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    } else {
+      root.requestFullscreen().catch(() => {});
+    }
+  }, []);
+
+  return { isFullscreen, supported, toggle };
 }
 
 export function useScrollPosition(threshold: number = 0): boolean {
