@@ -1,4 +1,3 @@
-// Fetches portfolio content from PORTFOLIO_DATA_URL into src/lib/portfolio-data.json (gitignored); without a URL the site falls back to the placeholder data.config.example.ts.
 
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -20,8 +19,6 @@ function fromEnvOrDotenv(key) {
   return undefined;
 }
 
-// The keys data.ts re-exports; missing/mistyped ones would break the build in
-// confusing places, so check them here and fail loudly instead.
 const REQUIRED = {
   siteMetadata: "object",
   personalInfo: "object",
@@ -74,8 +71,6 @@ if (!url) {
 }
 
 try {
-  // The data repo is private: authenticate, and ask the GitHub contents API
-  // for the raw file when the URL points at api.github.com.
   const headers = {};
   if (token) headers.Authorization = `Bearer ${token}`;
   if (url.startsWith("https://api.github.com/")) {

@@ -53,7 +53,7 @@ export interface Stat {
 
 export interface SkillItem {
   name: string;
-  level: number; // 0-100 percentage
+  level: number;
 }
 
 export interface SkillCategory {
@@ -61,7 +61,6 @@ export interface SkillCategory {
   items: SkillItem[];
 }
 
-// Individual role within a company (for promotions/multiple positions)
 export interface ExperienceRole {
   title: string;
   period: string;
@@ -69,19 +68,14 @@ export interface ExperienceRole {
   achievements: string[];
 }
 
-// Experience can be either:
-// 1. Single role: uses title, period, description, achievements directly
-// 2. Multiple roles (promotions): uses roles array, title/period/description/achievements are ignored
 export interface Experience {
   company: string;
   companyUrl?: string;
   location: string;
-  // Single role fields (used when roles array is not provided)
   title?: string;
   period?: string;
   description?: string;
   achievements?: string[];
-  // Multiple roles at same company (promotions)
   roles?: ExperienceRole[];
 }
 
@@ -103,12 +97,12 @@ export interface ProjectLink {
 export interface Project {
   title: string;
   description: string;
-  image?: string | null; // Optional - shows placeholder if missing
-  imageFit?: "cover" | "contain"; // How to fit image: cover (default) or contain (for logos)
+  image?: string | null;
+  imageFit?: "cover" | "contain";
   tags: string[];
-  links: ProjectLink[]; // Flexible links array - can be empty for private projects
+  links: ProjectLink[];
   featured: boolean;
-  status?: ProjectStatus; // live (default), in_progress, or private
+  status?: ProjectStatus;
 }
 
 export interface Education {
@@ -120,10 +114,9 @@ export interface Education {
 
 export interface NavLink {
   name: string;
-  href: string; // "#section" for home page sections, "/path" for routes
+  href: string;
 }
 
-// Categories and languages for the Field Notes / Learnings page
 export type LearningCategory = "pattern" | "law" | "paradigm" | "principle";
 
 export type LearningLanguage = "typescript" | "go" | "python";
@@ -131,10 +124,10 @@ export type LearningLanguage = "typescript" | "go" | "python";
 export interface Learning {
   title: string;
   category: LearningCategory;
-  oneLiner: string; // the concept in a single sentence
-  code: Record<LearningLanguage, string>; // all three keys required — they fill the editor tabs
-  fieldNote: string; // where this showed up in real work
-  verdict: string; // one honest line of judgement
+  oneLiner: string;
+  code: Record<LearningLanguage, string>;
+  fieldNote: string;
+  verdict: string;
 }
 
 export interface PortfolioConfig {
@@ -147,10 +140,7 @@ export interface PortfolioConfig {
   projects: Project[];
   education: Education[];
   certifications: string[];
-  // Optional: powers the /learnings page. Omit both to hide the page content.
   learnings?: Learning[];
-  currentlyLearning?: string[]; // short "currently exploring" chips
-  // Optional: qualitative "focus" chips shown in the About section. When
-  // present they replace the numeric stat tiles.
+  currentlyLearning?: string[];
   focusAreas?: string[];
 }

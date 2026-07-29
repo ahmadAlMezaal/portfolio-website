@@ -38,13 +38,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(DEFAULT_THEME);
   const switchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Adopt whatever the anti-flash script (or a prior visit) already chose.
   useEffect(() => {
     let stored: string | null = null;
     try {
       stored = localStorage.getItem(STORAGE_KEY);
     } catch {
-      /* storage unavailable */
     }
     const initial = stored && VALID.has(stored) ? (stored as Theme) : DEFAULT_THEME;
     setThemeState(initial);
@@ -66,7 +64,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     try {
       localStorage.setItem(STORAGE_KEY, next);
     } catch {
-      /* storage unavailable */
     }
   }, []);
 

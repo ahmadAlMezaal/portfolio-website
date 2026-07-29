@@ -13,8 +13,6 @@ import type {
 } from "@/types";
 import type { PortfolioConfig } from "@/types";
 
-// Remote data (written by scripts/sync-data.mjs when PORTFOLIO_DATA_URL is
-// set) wins; without it the site renders the placeholder example config.
 const config: PortfolioConfig =
   (remoteConfig as unknown as PortfolioConfig | null) ?? exampleConfig;
 
@@ -31,7 +29,6 @@ export const learnings: Learning[] = config.learnings ?? [];
 export const currentlyLearning: string[] = config.currentlyLearning ?? [];
 export const focusAreas: string[] = config.focusAreas ?? [];
 
-// Navigation links (not personal data, kept here)
 export const navLinks: NavLink[] = [
   { name: "About", href: "#about" },
   { name: "Skills", href: "#skills" },

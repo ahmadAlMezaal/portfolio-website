@@ -9,7 +9,6 @@ const GLOW_RADIUS = 240;
 const REST_INTERVAL = 55;
 const SURGE_INTERVAL = 26;
 
-// Code-rain canvas (matrix theme only); reads rain colours from CSS vars, honours prefers-reduced-motion.
 export default function MatrixRain() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const surgeRef = useScrollSurge();
@@ -38,7 +37,6 @@ export default function MatrixRain() {
     let cssWidth = 0;
     let cssHeight = 0;
 
-    // Defined before resize() so resize can repaint it under reduced motion.
     const drawStatic = () => {
       ctx.clearRect(0, 0, cssWidth, cssHeight);
       ctx.globalAlpha = 0.12;
@@ -62,8 +60,6 @@ export default function MatrixRain() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       const newColumns = Math.ceil(cssWidth / fontSize);
-      // Preserve existing column positions so resizing doesn't reset the
-      // animation (which would flicker); only seed newly-added columns.
       drops = Array.from({ length: newColumns }, (_, i) =>
         i < drops.length
           ? drops[i]
@@ -83,7 +79,6 @@ export default function MatrixRain() {
       ctx.font = `${fontSize}px "JetBrains Mono", monospace`;
       ctx.textBaseline = "top";
 
-      // Resizing clears the canvas; repaint the static field for reduced motion.
       if (reduceMotion) drawStatic();
     };
 
@@ -113,7 +108,6 @@ export default function MatrixRain() {
 
     const draw = (time: number) => {
       raf = requestAnimationFrame(draw);
-      // Throttle to ~18fps: cheaper and gives the deliberate terminal cadence.
       const interval =
         REST_INTERVAL - surgeRef.current * (REST_INTERVAL - SURGE_INTERVAL);
       if (time - last < interval) return;
@@ -121,7 +115,6 @@ export default function MatrixRain() {
       surgeRef.current *= 0.9;
       const surge = surgeRef.current;
 
-      // Translucent wash creates the trailing fade.
       ctx.fillStyle = washColor;
       ctx.fillRect(0, 0, cssWidth, cssHeight);
 

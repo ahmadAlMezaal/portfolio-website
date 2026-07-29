@@ -7,7 +7,6 @@ import { THEMES, useTheme } from "./ThemeProvider";
 import { isTyping } from "@/lib/utils";
 import DecodeText from "./DecodeText";
 
-// inline: bare list (mobile menu). floating: gear pinned bottom-right, menu opens upward.
 export default function ThemeSwitcher({
   variant = "menu",
 }: {
@@ -19,7 +18,6 @@ export default function ThemeSwitcher({
 
   const active = THEMES.find((t) => t.id === theme) ?? THEMES[0];
 
-  // "T" cycles themes, unless typing in a field or holding a modifier.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;

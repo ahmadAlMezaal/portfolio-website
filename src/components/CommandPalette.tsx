@@ -42,10 +42,9 @@ type Command = {
   keywords?: string;
   hint?: string;
   perform: () => void;
-  feedback?: string; // brief confirmation shown before closing
+  feedback?: string;
 };
 
-// Subsequence fuzzy score. Returns 0 when not all query chars are present.
 function fuzzyScore(query: string, text: string): number {
   const q = query.toLowerCase();
   const t = text.toLowerCase();
@@ -94,7 +93,6 @@ export default function CommandPalette() {
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
-  // Hash links scroll in place on the home page, navigate home elsewhere.
   const navigate = useCallback(
     (href: string) => {
       if (!href.startsWith("#")) {
@@ -197,7 +195,6 @@ export default function CommandPalette() {
     return cmds;
   }, [theme, setTheme, copy, navigate]);
 
-  // Sections in fixed group order, each fuzzy-filtered and ranked.
   const { sections, flat } = useMemo(() => {
     const scored = commands
       .map((c) => ({

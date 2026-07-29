@@ -1,10 +1,7 @@
-// Placeholder content, rendered when scripts/sync-data.mjs has no
-// PORTFOLIO_DATA_URL to fetch the real portfolio.json from.
 
 import type { PortfolioConfig } from "@/types";
 
 const config: PortfolioConfig = {
-  // Site metadata (SEO and social sharing)
   siteMetadata: {
     title: "Your Name | Your Title",
     description: "A brief description of yourself for search engines and social sharing.",
@@ -14,35 +11,28 @@ const config: PortfolioConfig = {
       "Skill 2",
       "Your Location",
     ],
-    locale: "en_GB", // e.g., "en_US", "en_GB", etc.
-    siteUrl: "https://example.com", // deployed origin, no trailing slash
-    twitterHandle: "@yourhandle", // optional
+    locale: "en_GB",
+    siteUrl: "https://example.com",
+    twitterHandle: "@yourhandle",
   },
 
-  // Personal information
   personalInfo: {
     name: "Your Name",
     title: "Your Job Title",
     tagline: "Your catchy tagline or motto",
-    // Status options: "Open to Opportunities" | "Open to Freelance" | "Currently Employed" | "Available for Hire" | "Not Available"
     status: "Open to Opportunities",
     email: "your.email@example.com",
     location: "City, Country",
     bio: `Write a brief bio about yourself here. This can span multiple lines.
     Talk about your passion, what drives you, and what makes you unique.
     Keep it professional but personable.`,
-    resumeUrl: "/cv.pdf", // Place your CV in the public folder
-    // Social links - add only the platforms you use
-    // Supported platforms: github, linkedin, twitter, medium, youtube, instagram, facebook, dribbble, behance, stackoverflow, codepen, dev
+    resumeUrl: "/cv.pdf",
     socialLinks: [
       { platform: "github", url: "https://github.com/yourusername" },
       { platform: "linkedin", url: "https://linkedin.com/in/yourusername" },
-      // { platform: "twitter", url: "https://twitter.com/yourusername" },
-      // { platform: "medium", url: "https://medium.com/@yourusername" },
     ],
   },
 
-  // Roles (hero typing animation)
   roles: [
     "Your Primary Role",
     "Another Role",
@@ -50,7 +40,6 @@ const config: PortfolioConfig = {
     "Another Specialty",
   ],
 
-  // Stats (About section) — numeric tiles. Shown only when focusAreas is empty.
   stats: [
     { label: "Years Experience", value: "X+" },
     { label: "Projects Completed", value: "X+" },
@@ -58,13 +47,9 @@ const config: PortfolioConfig = {
     { label: "Technologies", value: "X+" },
   ],
 
-  // Optional: qualitative "focus" chips for the About section. When set, these
-  // replace the numeric stat tiles above. Leave empty to keep the tiles.
   focusAreas: [
-    // "Your Domain", "A Strength", "Another Strength",
   ],
 
-  // Skills (displayed as tags; level is 0-100)
   skills: [
     {
       category: "Frontend",
@@ -89,12 +74,10 @@ const config: PortfolioConfig = {
     },
   ],
 
-  // Work experience (most recent first) — single-role fields, or a roles[] array for promotions at the same company
   experiences: [
-    // Example: Multiple roles at same company (promotions)
     {
       company: "Tech Company Inc.",
-      companyUrl: "https://techcompany.com", // Optional: link to company website
+      companyUrl: "https://techcompany.com",
       location: "San Francisco, CA",
       roles: [
         {
@@ -119,7 +102,6 @@ const config: PortfolioConfig = {
         },
       ],
     },
-    // Example: Single role at a company
     {
       title: "Junior Developer",
       company: "Startup Co.",
@@ -134,28 +116,24 @@ const config: PortfolioConfig = {
     },
   ],
 
-  // Projects — link types: website | github | appstore | playstore | case-study; status: "live" (default) | "in_progress" | "private"; featured: true shows on the homepage
   projects: [
-    // Example: Live web project with screenshot
     {
       title: "Web Application",
       description: "Brief description of the project and what it does.",
       image: "/projects/project-screenshot.jpg",
-      // imageFit: "cover", // Default - image fills the card
       tags: ["React", "Node.js", "PostgreSQL"],
       links: [
         { type: "website", label: "Live Demo", url: "https://project-url.com" },
         { type: "github", label: "Source Code", url: "https://github.com/yourusername/project" },
       ],
       featured: true,
-      status: "live", // Default - no badge shown
+      status: "live",
     },
-    // Example: Mobile app with logo image (use imageFit: "contain" for logos)
     {
       title: "iOS Mobile App",
       description: "A native iOS application available on the App Store.",
       image: "/projects/app-logo.png",
-      imageFit: "contain", // Use "contain" for logos - shows full image with padding
+      imageFit: "contain",
       tags: ["Swift", "SwiftUI", "Core Data"],
       links: [
         { type: "appstore", label: "App Store", url: "https://apps.apple.com/app/id123456" },
@@ -164,30 +142,27 @@ const config: PortfolioConfig = {
       featured: true,
       status: "live",
     },
-    // Example: Work in progress project
     {
       title: "AI Dashboard",
       description: "An analytics dashboard with AI-powered insights - currently in development.",
-      image: null, // No image yet - shows gradient placeholder
+      image: null,
       tags: ["Next.js", "OpenAI", "TypeScript"],
       links: [
         { type: "github", label: "GitHub", url: "https://github.com/yourusername/ai-dashboard" },
       ],
       featured: true,
-      status: "in_progress", // Shows amber "In Progress" badge
+      status: "in_progress",
     },
-    // Example: Private/internal project
     {
       title: "Enterprise Dashboard",
       description: "Internal analytics platform built for a Fortune 500 client.",
       image: "/projects/enterprise-logo.png",
       imageFit: "contain",
       tags: ["React", "D3.js", "AWS"],
-      links: [], // Empty links + private status = "Available on request"
+      links: [],
       featured: false,
-      status: "private", // Shows gray "Private" badge, hides links
+      status: "private",
     },
-    // Example: Case study
     {
       title: "Design System",
       description: "Comprehensive design system for a fintech startup.",
@@ -198,11 +173,9 @@ const config: PortfolioConfig = {
         { type: "github", label: "Storybook", url: "https://github.com/yourusername/design-system" },
       ],
       featured: true,
-      // status defaults to "live" when not specified
     },
   ],
 
-  // Education
   education: [
     {
       degree: "Degree Name",
@@ -212,7 +185,6 @@ const config: PortfolioConfig = {
     },
   ],
 
-  // Certifications
   certifications: [
     "Certification Name 1",
     "Certification Name 2",
@@ -221,8 +193,6 @@ const config: PortfolioConfig = {
 
   currentlyLearning: ["Topic one", "Topic two"],
 
-  // Optional /learnings entries — code is required in all three languages;
-  // categories: "pattern" | "law" | "paradigm" | "principle"
   learnings: [
     {
       title: "Singleton",

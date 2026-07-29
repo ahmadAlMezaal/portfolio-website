@@ -23,7 +23,6 @@ const SHORTCUTS: Shortcut[] = [
 export default function ShortcutsOverlay() {
   const [open, setOpen] = useState(false);
 
-  // "?" opens the cheatsheet (Shift+/ on most layouts).
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "?" && !e.metaKey && !e.ctrlKey && !e.altKey && !isTyping(e.target)) {

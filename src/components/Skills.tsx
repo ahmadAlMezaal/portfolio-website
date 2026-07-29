@@ -23,7 +23,7 @@ export default function Skills() {
 
   return (
     <section id="skills" className="relative py-20 overflow-hidden">
-      {/* Animated CSS background - skipped on mobile / reduced-motion */}
+      {}
       {!shouldReduceMotion && <SectionBackground type="nodes" />}
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

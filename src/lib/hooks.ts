@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
-// Detects mobile via media query + touch; returns false during SSR to avoid hydration mismatch.
 export function useIsMobile(breakpoint: number = 768): boolean {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -40,7 +39,6 @@ export function usePrefersReducedMotion(): boolean {
   return prefersReducedMotion;
 }
 
-// True on mobile or when the user prefers reduced motion.
 export function useShouldReduceMotion(): boolean {
   const isMobile = useIsMobile();
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -48,7 +46,6 @@ export function useShouldReduceMotion(): boolean {
   return isMobile || prefersReducedMotion;
 }
 
-// rAF-throttled "scrolled past threshold" flag.
 export function useScrollPosition(threshold: number = 0): boolean {
   const [isPastThreshold, setIsPastThreshold] = useState(false);
   const rafRef = useRef<number | null>(null);
@@ -91,7 +88,6 @@ export function useScrollPosition(threshold: number = 0): boolean {
   return isPastThreshold;
 }
 
-// Clipboard copy with transient "copied" flag; falls back to textarea + execCommand on insecure contexts.
 export function useClipboard(resetMs: number = 2000): {
   copied: boolean;
   copy: (text: string) => Promise<boolean>;
