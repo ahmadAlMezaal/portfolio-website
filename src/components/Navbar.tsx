@@ -7,6 +7,7 @@ import { navLinks, personalInfo } from "@/lib/data";
 import { useScrollPosition, useIsMobile } from "@/lib/hooks";
 import { NavAnchor } from "./NavAnchor";
 import { DecodeText } from "./DecodeText";
+import { BookmarksMenu } from "./BookmarksMenu";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,6 +60,8 @@ export const Navbar = () => {
           </div>
 
           <div className="flex items-center space-x-4">
+            <BookmarksMenu />
+
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}

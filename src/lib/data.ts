@@ -10,6 +10,7 @@ import type {
   Education,
   NavLink,
   Learning,
+  BookmarkFolder,
 } from "@/types";
 import type { PortfolioConfig } from "@/types";
 
@@ -28,6 +29,7 @@ export const certifications: string[] = config.certifications;
 export const learnings: Learning[] = config.learnings ?? [];
 export const currentlyLearning: string[] = config.currentlyLearning ?? [];
 export const focusAreas: string[] = config.focusAreas ?? [];
+export const bookmarks: BookmarkFolder[] = config.bookmarks ?? [];
 
 export const navLinks: NavLink[] = [
   { name: "About", href: "#about" },

@@ -130,6 +130,29 @@ export interface Learning {
   verdict: string;
 }
 
+export type BookmarkKind =
+  | "article"
+  | "blog"
+  | "repo"
+  | "package"
+  | "docs"
+  | "video"
+  | "tool";
+
+export interface Bookmark {
+  title: string;
+  url: string;
+  kind: BookmarkKind;
+  note?: string;
+  added?: string;
+}
+
+export interface BookmarkFolder {
+  name: string;
+  description?: string;
+  bookmarks: Bookmark[];
+}
+
 export interface PortfolioConfig {
   siteMetadata: SiteMetadata;
   personalInfo: PersonalInfo;
@@ -143,4 +166,5 @@ export interface PortfolioConfig {
   learnings?: Learning[];
   currentlyLearning?: string[];
   focusAreas?: string[];
+  bookmarks?: BookmarkFolder[];
 }

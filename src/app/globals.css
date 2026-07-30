@@ -265,7 +265,7 @@ h1, h2, h3, h4, h5, h6 {
 .dark .hover\:bg-gray-800:hover { background-color: color-mix(in oklab, var(--card-bg), white 7%); }
 
 .dark input::placeholder, .dark textarea::placeholder {
-  color: #3f7256;
+  color: var(--color-gray-500);
 }
 
 ::-webkit-scrollbar {

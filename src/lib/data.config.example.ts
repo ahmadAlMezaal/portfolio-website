@@ -193,6 +193,40 @@ export const exampleConfig: PortfolioConfig = {
 
   currentlyLearning: ["Topic one", "Topic two"],
 
+  bookmarks: [
+    {
+      name: "react-native",
+      description: "Things that changed how I ship mobile.",
+      bookmarks: [
+        {
+          title: "Article title worth reading",
+          url: "https://example.com/an-article",
+          kind: "article",
+          note: "Why this one earned a place — the line only you can write.",
+          added: "2026-01",
+        },
+        {
+          title: "owner/repository",
+          url: "https://github.com/owner/repository",
+          kind: "repo",
+          note: "Read the source, not the docs.",
+        },
+      ],
+    },
+    {
+      name: "tooling",
+      description: "Small things that removed a whole class of problem.",
+      bookmarks: [
+        {
+          title: "a-package-you-reach-for",
+          url: "https://www.npmjs.com/package/example",
+          kind: "package",
+          note: "Replaced a hundred lines of glue code.",
+        },
+      ],
+    },
+  ],
+
   learnings: [
     {
       title: "Singleton",

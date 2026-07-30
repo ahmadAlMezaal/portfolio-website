@@ -31,6 +31,8 @@ const REQUIRED = {
   certifications: "array",
 };
 
+const BOOKMARK_KINDS = ["article", "blog", "repo", "package", "docs", "video", "tool"];
+
 const validate = (data) => {
   const errors = [];
   if (typeof data !== "object" || data === null || Array.isArray(data)) {
@@ -46,6 +48,25 @@ const validate = (data) => {
   }
   if (data.focusAreas !== undefined && (!Array.isArray(data.focusAreas) || data.focusAreas.some((a) => typeof a !== "string"))) {
     errors.push('"focusAreas" must be an array of strings when present');
+  }
+  for (const [i, folder] of (data.bookmarks ?? []).entries()) {
+    if (typeof folder?.name !== "string" || folder.name.length === 0) {
+      errors.push(`bookmarks[${i}] is missing a "name"`);
+    }
+    if (!Array.isArray(folder?.bookmarks) || folder.bookmarks.length === 0) {
+      errors.push(`bookmarks[${i}] ("${folder?.name}") must have a non-empty "bookmarks" array`);
+      continue;
+    }
+    for (const [j, bookmark] of folder.bookmarks.entries()) {
+      const where = `bookmarks[${i}].bookmarks[${j}] ("${bookmark?.title}")`;
+      if (typeof bookmark?.title !== "string") errors.push(`${where} is missing "title"`);
+      if (typeof bookmark?.url !== "string" || !/^https?:\/\//.test(bookmark.url)) {
+        errors.push(`${where} must have an absolute http(s) "url"`);
+      }
+      if (!BOOKMARK_KINDS.includes(bookmark?.kind)) {
+        errors.push(`${where} has kind "${bookmark?.kind}" — expected one of ${BOOKMARK_KINDS.join(", ")}`);
+      }
+    }
   }
   for (const [i, learning] of (data.learnings ?? []).entries()) {
     for (const lang of ["typescript", "go", "python"]) {
@@ -89,7 +110,8 @@ try {
   }
 
   writeFileSync(TARGET, JSON.stringify(data, null, 2) + "\n");
-  console.log(`sync-data: fetched ${url} (${(data.learnings ?? []).length} learnings, ${data.projects.length} projects)`);
+  const bookmarkCount = (data.bookmarks ?? []).reduce((n, f) => n + (f.bookmarks?.length ?? 0), 0);
+  console.log(`sync-data: fetched ${url} (${(data.learnings ?? []).length} learnings, ${data.projects.length} projects, ${bookmarkCount} bookmarks)`);
 } catch (error) {
   console.error(`sync-data: failed to fetch portfolio data: ${error.message}`);
   process.exit(1);
