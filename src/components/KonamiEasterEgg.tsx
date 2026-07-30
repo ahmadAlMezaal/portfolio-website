@@ -38,7 +38,7 @@ const makeGlyphs = (count: number): Glyph[] => {
   }));
 };
 
-const KonamiEasterEgg = () => {
+export const KonamiEasterEgg = () => {
   const prefersReducedMotion = usePrefersReducedMotion();
   const [active, setActive] = useState(false);
   const [glyphs, setGlyphs] = useState<Glyph[]>([]);
@@ -139,5 +139,3 @@ const KonamiEasterEgg = () => {
     </AnimatePresence>
   );
 };
-
-export default KonamiEasterEgg;

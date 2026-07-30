@@ -1,10 +1,10 @@
 "use client";
 
 import { useTheme } from "./ThemeProvider";
-import MatrixRain from "./MatrixRain";
-import SynthwaveGrid from "./SynthwaveGrid";
+import { MatrixRain } from "./MatrixRain";
+import { SynthwaveGrid } from "./SynthwaveGrid";
 
-const ThemeBackground = () => {
+export const ThemeBackground = () => {
   const { theme } = useTheme();
 
   if (theme === "cyberpunk") {
@@ -22,5 +22,3 @@ const ThemeBackground = () => {
 
   return <MatrixRain />;
 };
-
-export default ThemeBackground;

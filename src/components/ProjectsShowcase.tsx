@@ -8,9 +8,9 @@ import { projects } from "@/lib/data";
 import type { ProjectStatus } from "@/types";
 import { sortProjects } from "@/lib/projects";
 import { gridContainerVariants } from "@/lib/motion";
-import ProjectCard from "@/components/ProjectCard";
-import FilterPill from "@/components/FilterPill";
-import SectionHeading from "@/components/SectionHeading";
+import { ProjectCard } from "@/components/ProjectCard";
+import { FilterPill } from "@/components/FilterPill";
+import { SectionHeading } from "@/components/SectionHeading";
 
 type FilterOption = "all" | ProjectStatus;
 
@@ -21,7 +21,7 @@ const FILTERS: { label: string; value: FilterOption }[] = [
   { label: "Private", value: "private" },
 ];
 
-const ProjectsShowcase = () => {
+export const ProjectsShowcase = () => {
   const [activeFilter, setActiveFilter] = useState<FilterOption>("all");
 
   const allProjectsSorted = useMemo(() => sortProjects(projects), []);
@@ -85,5 +85,3 @@ const ProjectsShowcase = () => {
     </section>
   );
 };
-
-export default ProjectsShowcase;

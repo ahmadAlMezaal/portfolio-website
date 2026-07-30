@@ -36,7 +36,7 @@ const Hint = ({
   );
 };
 
-const StatusBar = () => {
+export const StatusBar = () => {
   const { isFullscreen, supported, toggle } = useFullscreen();
   const scrolled = useScrollPosition(220);
   const pathname = usePathname();
@@ -110,5 +110,3 @@ const StatusBar = () => {
     </AnimatePresence>
   );
 };
-
-export default StatusBar;

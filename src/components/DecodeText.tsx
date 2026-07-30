@@ -20,7 +20,7 @@ type Props = {
   offsetMs?: number;
 };
 
-const DecodeText = ({
+export const DecodeText = ({
   text,
   className,
   style,
@@ -142,5 +142,3 @@ const DecodeText = ({
     </span>
   );
 };
-
-export default DecodeText;

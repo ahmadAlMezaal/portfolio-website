@@ -8,7 +8,7 @@ const GLOW_TRAVEL = 300;
 const ADVANCE_PER_FRAME = 4;
 const SURGE_DECAY = 0.93;
 
-const SynthwaveGrid = () => {
+export const SynthwaveGrid = () => {
   const glowRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const advanceRef = useRef(0);
@@ -71,5 +71,3 @@ const SynthwaveGrid = () => {
     </>
   );
 };
-
-export default SynthwaveGrid;

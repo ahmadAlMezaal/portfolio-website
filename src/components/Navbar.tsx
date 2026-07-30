@@ -5,10 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { navLinks, personalInfo } from "@/lib/data";
 import { useScrollPosition, useIsMobile } from "@/lib/hooks";
-import NavAnchor from "./NavAnchor";
-import DecodeText from "./DecodeText";
+import { NavAnchor } from "./NavAnchor";
+import { DecodeText } from "./DecodeText";
 
-const Navbar = () => {
+export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const scrolled = useScrollPosition(20);
@@ -126,5 +126,3 @@ const Navbar = () => {
     </motion.nav>
   );
 };
-
-export default Navbar;

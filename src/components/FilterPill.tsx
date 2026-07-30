@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import DecodeText from "./DecodeText";
+import { DecodeText } from "./DecodeText";
 
 type Props = {
   label: string;
@@ -10,7 +10,7 @@ type Props = {
   badge?: ReactNode;
 };
 
-const FilterPill = ({ label, isActive, onClick, badge }: Props) => {
+export const FilterPill = ({ label, isActive, onClick, badge }: Props) => {
   return (
     <button
       onClick={onClick}
@@ -27,5 +27,3 @@ const FilterPill = ({ label, isActive, onClick, badge }: Props) => {
     </button>
   );
 };
-
-export default FilterPill;

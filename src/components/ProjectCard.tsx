@@ -88,7 +88,7 @@ const ProjectPlaceholder = ({ status }: { status: ProjectStatus }) => {
   );
 };
 
-const ProjectCard = ({ project }: { project: Project }) => {
+export const ProjectCard = ({ project }: { project: Project }) => {
   const isMobile = useIsMobile();
   const hideLinks = shouldHideLinks(project);
   const imageFit = project.imageFit || "cover";
@@ -227,5 +227,3 @@ const ProjectCard = ({ project }: { project: Project }) => {
     </motion.div>
   );
 };
-
-export default ProjectCard;

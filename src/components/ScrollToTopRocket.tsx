@@ -76,7 +76,7 @@ const playRocketSound = () => {
   }
 };
 
-const ScrollToTopRocket = () => {
+export const ScrollToTopRocket = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [rocketState, setRocketState] = useState<RocketState>("idle");
   const prefersReducedMotion = useReducedMotion();
@@ -336,5 +336,3 @@ const ScrollToTopRocket = () => {
     </AnimatePresence>
   );
 };
-
-export default ScrollToTopRocket;

@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { Code2, Server, Wrench } from "lucide-react";
 import { skills } from "@/lib/data";
 import { useShouldReduceMotion } from "@/lib/hooks";
-import SectionBackground from "./SectionBackground";
-import SectionHeading from "./SectionHeading";
+import { SectionBackground } from "./SectionBackground";
+import { SectionHeading } from "./SectionHeading";
 import { sectionContainerVariants, sectionItemVariants, useSectionInView } from "@/lib/motion";
 
 const categoryIcons: Record<string, React.ReactNode> = {
@@ -17,7 +17,7 @@ const categoryIcons: Record<string, React.ReactNode> = {
   "Frontend & Mobile": <Code2 className="w-6 h-6" />,
 };
 
-const Skills = () => {
+export const Skills = () => {
   const { ref, isInView } = useSectionInView();
   const shouldReduceMotion = useShouldReduceMotion();
 
@@ -85,5 +85,3 @@ const Skills = () => {
     </section>
   );
 };
-
-export default Skills;

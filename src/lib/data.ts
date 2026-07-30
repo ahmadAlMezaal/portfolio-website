@@ -1,5 +1,5 @@
-import remoteConfig from './portfolio-data.json';
-import exampleConfig from './data.config.example';
+import remoteConfig from "./portfolio-data.json";
+import { exampleConfig } from "./data.config.example";
 import type {
   SiteMetadata,
   PersonalInfo,

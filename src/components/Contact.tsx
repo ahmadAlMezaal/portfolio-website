@@ -15,9 +15,9 @@ import {
 import { personalInfo } from "@/lib/data";
 import { socialIconMap, socialLabelMap } from "@/lib/social";
 import { useShouldReduceMotion, useClipboard } from "@/lib/hooks";
-import SectionBackground from "./SectionBackground";
-import DecodeText from "./DecodeText";
-import SectionHeading from "./SectionHeading";
+import { SectionBackground } from "./SectionBackground";
+import { DecodeText } from "./DecodeText";
+import { SectionHeading } from "./SectionHeading";
 import { sectionContainerVariants, sectionItemVariants, useSectionInView } from "@/lib/motion";
 
 const maskEmail = (email: string): string => {
@@ -30,7 +30,7 @@ const maskEmail = (email: string): string => {
   return `${maskedLocal}@${maskedDomain}`;
 };
 
-const Contact = () => {
+export const Contact = () => {
   const { ref, isInView } = useSectionInView();
   const shouldReduceMotion = useShouldReduceMotion();
   const { copied, copy } = useClipboard();
@@ -281,5 +281,3 @@ const Contact = () => {
     </section>
   );
 };
-
-export default Contact;

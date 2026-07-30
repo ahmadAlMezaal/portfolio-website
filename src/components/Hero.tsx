@@ -5,11 +5,11 @@ import { motion } from "framer-motion";
 import { ArrowDown, Download, Mail } from "lucide-react";
 import { personalInfo, roles } from "@/lib/data";
 import { assetPath, isCvAvailable } from "@/lib/utils";
-import HeroBackground from "./HeroBackground";
-import DecodeText from "./DecodeText";
-import HeroIntro from "./HeroIntro";
+import { HeroBackground } from "./HeroBackground";
+import { DecodeText } from "./DecodeText";
+import { HeroIntro } from "./HeroIntro";
 
-const Hero = () => {
+export const Hero = () => {
   const [roleIndex, setRoleIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -107,5 +107,3 @@ const Hero = () => {
     </section>
   );
 };
-
-export default Hero;

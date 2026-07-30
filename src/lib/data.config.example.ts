@@ -1,7 +1,7 @@
 
 import type { PortfolioConfig } from "@/types";
 
-const config: PortfolioConfig = {
+export const exampleConfig: PortfolioConfig = {
   siteMetadata: {
     title: "Your Name | Your Title",
     description: "A brief description of yourself for search engines and social sharing.",
@@ -225,5 +225,3 @@ def get_client() -> Client:
     },
   ],
 };
-
-export default config;

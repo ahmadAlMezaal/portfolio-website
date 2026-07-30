@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import ThemeSwitcher from "@/components/ThemeSwitcher";
-import ProjectsShowcase from "@/components/ProjectsShowcase";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { ProjectsShowcase } from "@/components/ProjectsShowcase";
 import { personalInfo, siteMetadata } from "@/lib/data";
 
 export const metadata: Metadata = {

@@ -5,9 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Settings } from "lucide-react";
 import { THEMES, useTheme } from "./ThemeProvider";
 import { isTyping } from "@/lib/utils";
-import DecodeText from "./DecodeText";
+import { DecodeText } from "./DecodeText";
 
-const ThemeSwitcher = ({
+export const ThemeSwitcher = ({
   variant = "menu",
 }: {
   variant?: "menu" | "inline" | "floating";
@@ -172,5 +172,3 @@ const ThemeSwitcher = ({
     </div>
   );
 };
-
-export default ThemeSwitcher;

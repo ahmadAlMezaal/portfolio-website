@@ -346,15 +346,8 @@ scripts alike.
 
 ```typescript
 export const assetPath = (path: string): string => { ... };
-export const useScrollPosition = (threshold: number = 0): boolean => { ... };
-
-const Navbar = () => { ... };
-
-export default Navbar;
+export const Navbar = () => { ... };
 ```
-
-Components declare the const first and `export default` it on a separate line,
-so the component keeps its name for React DevTools and Fast Refresh.
 
 This is enforced by ESLint (`eslint.config.mjs`), so `yarn lint` fails on any
 `function` keyword:
@@ -363,15 +356,29 @@ This is enforced by ESLint (`eslint.config.mjs`), so `yarn lint` fails on any
 - `prefer-arrow-callback`
 - `no-restricted-syntax` blocking `FunctionDeclaration` and `FunctionExpression`
 
+### Named exports only
+
+Components and helpers are named exports, imported as
+`import { Navbar } from "@/components/Navbar"`. `no-restricted-syntax` blocks
+`ExportDefaultDeclaration`, with two exemptions where the default export is
+not ours to choose:
+
+- **`src/app/**`** — Next.js resolves `page`, `layout`, `robots` and `sitemap`
+  by default export. A named export there is silently ignored, so the page
+  404s or the route renders blank rather than failing the build. Every file
+  convention Next.js may add later (`not-found`, `error`, `loading`, …) is
+  covered by the same exemption.
+- **`*.config.{mjs,ts,js}`** — `next.config.ts`, `postcss.config.mjs` and
+  `eslint.config.mjs` are read by their tools as default exports.
+
+Third-party default imports (`next/link`, `next/image`) and JSON modules
+(`portfolio-data.json`) stay default imports — that is their published shape.
+
 ### Define before use
 
 Arrow consts do not hoist, so declarations are ordered dependencies-first:
 a helper always appears above its first caller, in module scope and inside
 function bodies alike. `@typescript-eslint/no-use-before-define` enforces it.
-
-The other thing to remember: **never `export default () => {}`.** An anonymous
-default export loses the component name in DevTools and breaks Fast Refresh.
-Always name the const and export it on its own line.
 
 ## Commands
 
@@ -452,6 +459,9 @@ content, not code: comments there are fine and should be left alone.
 
 - Arrow functions only — never write a `function` declaration or expression.
   See "Code Style" above; ESLint rejects them.
+
+- Named exports only. `export default` is reserved for `src/app/**` (Next.js
+  file conventions) and root tooling configs; ESLint rejects it elsewhere.
 
 - All content flows through `portfolio-data.json` (or the example fallback) →
   `data.ts` → components; never hardcode personal data in components

@@ -9,8 +9,8 @@ import type {
   LearningLanguage,
 } from "@/types";
 import type { HighlightedCode } from "@/lib/highlight";
-import SectionHeading from "./SectionHeading";
-import FilterPill from "./FilterPill";
+import { SectionHeading } from "./SectionHeading";
+import { FilterPill } from "./FilterPill";
 
 export type LearningItem = {
   learning: Learning;
@@ -193,7 +193,7 @@ const LearningCard = ({
   );
 };
 
-const Learnings = ({
+export const Learnings = ({
   items,
   currentlyLearning,
 }: {
@@ -342,5 +342,3 @@ const Learnings = ({
     </section>
   );
 };
-
-export default Learnings;

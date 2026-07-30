@@ -4,7 +4,7 @@ import { useLenis } from "lenis/react";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
-const ScrollReset = () => {
+export const ScrollReset = () => {
   const pathname = usePathname();
   const lenis = useLenis();
 
@@ -19,5 +19,3 @@ const ScrollReset = () => {
 
   return null;
 };
-
-export default ScrollReset;
