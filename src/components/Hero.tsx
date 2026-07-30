@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { ArrowDown, Download, Mail } from "lucide-react";
 import { personalInfo, roles } from "@/lib/data";
 import { assetPath, isCvAvailable } from "@/lib/utils";

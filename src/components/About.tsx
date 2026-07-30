@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { MapPin, Briefcase, GraduationCap, Heart, Code2, Database, Cloud, Terminal } from "lucide-react";
 import { personalInfo, stats, focusAreas } from "@/lib/data";
 import { useShouldReduceMotion } from "@/lib/hooks";

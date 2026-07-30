@@ -8,7 +8,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { usePathname, useRouter } from "next/navigation";
 import {
   Home,

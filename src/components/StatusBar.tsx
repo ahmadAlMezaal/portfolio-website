@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { usePathname } from "next/navigation";
 import { useFullscreen, useScrollPosition } from "@/lib/hooks";
 import { isTyping } from "@/lib/utils";

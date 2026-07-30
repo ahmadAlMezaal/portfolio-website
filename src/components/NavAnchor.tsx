@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, type HTMLMotionProps } from "framer-motion";
+import { motion, type HTMLMotionProps } from "motion/react";
 
 const MotionLink = motion.create(Link);
 

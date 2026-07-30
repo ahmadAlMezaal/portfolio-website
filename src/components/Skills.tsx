@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Code2, Server, Wrench } from "lucide-react";
 import { skills } from "@/lib/data";
 import { useShouldReduceMotion } from "@/lib/hooks";

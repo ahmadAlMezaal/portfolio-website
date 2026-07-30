@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Briefcase, MapPin, Calendar, CheckCircle2, TrendingUp, ExternalLink } from "lucide-react";
 import { experiences } from "@/lib/data";
 import type { Experience as ExperienceType, ExperienceRole } from "@/types";

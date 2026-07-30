@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { ChevronDown, ExternalLink, Sparkles } from "lucide-react";
 import type {
   Learning,

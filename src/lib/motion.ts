@@ -1,6 +1,6 @@
-import { useInView } from "framer-motion";
+import { useInView } from "motion/react";
 import { useRef } from "react";
-import type { Variants } from "framer-motion";
+import type { Variants } from "motion/react";
 
 export const sectionContainerVariants: Variants = {
   hidden: { opacity: 0 },

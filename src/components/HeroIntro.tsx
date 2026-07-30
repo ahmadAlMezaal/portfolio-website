@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { personalInfo } from "@/lib/data";
 import { DecodeText } from "./DecodeText";
 import { useTheme } from "./ThemeProvider";
@@ -46,13 +46,13 @@ const MatrixIntro = ({ roleText }: Props) => {
           <span className="text-gray-500">$</span>{" "}
           <span className="text-purple-400">whoami</span>
         </p>
-        <p className="text-3xl sm:text-5xl font-bold font-display tracking-tight pb-2">
+        <h1 className="text-3xl sm:text-5xl font-bold font-display tracking-tight pb-2">
           <DecodeText
             className="theme-headline inline-block text-gradient"
             text={personalInfo.name}
             trigger="idle"
           />
-        </p>
+        </h1>
 
         <p className="text-sm sm:text-base pt-2">
           <span className="text-gray-500">$</span>{" "}
@@ -110,12 +110,12 @@ const AmberIntro = ({ roleText }: Props) => {
       <p>
         <span className="crt-prompt">C:\&gt;</span> whoami
       </p>
-      <p
+      <h1
         className="crt-name theme-headline glitch-text glitch-idle"
         data-text={personalInfo.name.toUpperCase()}
       >
         {personalInfo.name.toUpperCase()}
-      </p>
+      </h1>
 
       <p className="pt-2">
         <span className="crt-prompt">C:\&gt;</span> role

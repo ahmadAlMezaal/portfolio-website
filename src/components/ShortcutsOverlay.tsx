@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { X } from "lucide-react";
 import { onOpenShortcuts } from "./shortcutsBus";
 import { isTyping } from "@/lib/utils";

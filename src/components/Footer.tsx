@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Heart } from "lucide-react";
 import { personalInfo, navLinks } from "@/lib/data";
 import { NavAnchor } from "./NavAnchor";
