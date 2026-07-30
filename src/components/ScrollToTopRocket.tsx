@@ -5,6 +5,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useLenis } from "lenis/react";
 import { Rocket } from "lucide-react";
 import { useThrottledScroll, useIsMobile } from "@/lib/hooks";
+import { useTheme, type Theme } from "./ThemeProvider";
 
 const SCROLL_THRESHOLD = 300;
 const ANIMATION_DURATION = 800;
@@ -13,6 +14,49 @@ const BUTTON_SIZE = 48;
 const BUTTON_OFFSET = 24;
 
 type RocketState = "idle" | "launching" | "launched";
+
+type IdleMotion = {
+  animate: Record<string, number[]>;
+  transition: Record<string, unknown>;
+};
+
+const THEME_IDLE: Record<Theme, IdleMotion> = {
+  matrix: {
+    animate: { y: [0, -2.5, 0], rotate: [0, -2, 0] },
+    transition: { duration: 2.4, repeat: Infinity, ease: "easeInOut" },
+  },
+  cyberpunk: {
+    animate: {
+      y: [0, -1.5, 0],
+      opacity: [1, 0.45, 1, 0.7, 1],
+      scale: [1, 1.08, 1],
+    },
+    transition: { duration: 1.6, repeat: Infinity, ease: "easeInOut" },
+  },
+  amber: {
+    animate: {
+      x: [0, -1.5, 1.5, -0.75, 0, 0, 0],
+      y: [0, 1, -1, 0.5, 0, 0, 0],
+      opacity: [1, 0.55, 1, 0.75, 1, 1, 1],
+    },
+    transition: { duration: 2.8, repeat: Infinity, ease: "linear" },
+  },
+};
+
+const HALO_IDLE: Record<Theme, IdleMotion> = {
+  matrix: {
+    animate: { opacity: [0.5, 0.8, 0.5], scale: [1, 1.15, 1] },
+    transition: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+  },
+  cyberpunk: {
+    animate: { opacity: [0.35, 0.9, 0.5, 0.95, 0.35], scale: [1, 1.2, 1.05, 1.2, 1] },
+    transition: { duration: 1.6, repeat: Infinity, ease: "easeInOut" },
+  },
+  amber: {
+    animate: { opacity: [0.45, 0.75, 0.35, 0.8, 0.45], scale: [1, 1.1, 1, 1.12, 1] },
+    transition: { duration: 2.8, repeat: Infinity, ease: "linear" },
+  },
+};
 
 const playRocketSound = () => {
   try {
@@ -83,6 +127,11 @@ export const ScrollToTopRocket = () => {
   const isLaunchingRef = useRef(false);
   const isMobile = useIsMobile();
   const lenis = useLenis();
+  const { theme } = useTheme();
+
+  const isIdle = rocketState === "idle";
+  const idleMotion = THEME_IDLE[theme];
+  const haloMotion = HALO_IDLE[theme];
 
   useThrottledScroll((scrollY) => {
     if (isLaunchingRef.current) return;
@@ -272,15 +321,8 @@ export const ScrollToTopRocket = () => {
             ) : (
               <motion.div
                 className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400"
-                animate={rocketState === "idle" ? {
-                  opacity: [0.5, 0.8, 0.5],
-                  scale: [1, 1.15, 1],
-                } : { opacity: 0 }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
+                animate={isIdle ? haloMotion.animate : { opacity: 0 }}
+                transition={isIdle ? haloMotion.transition : { duration: 0.2 }}
                 style={{ filter: "blur(8px)" }}
               />
             )}
@@ -323,10 +365,21 @@ export const ScrollToTopRocket = () => {
               initial="idle"
               animate={rocketState}
             >
-              <Rocket
-                className="w-5 h-5 -rotate-45"
-                strokeWidth={2.5}
-              />
+              <motion.span
+                className="flex items-center justify-center"
+                animate={
+                  isIdle && !prefersReducedMotion
+                    ? idleMotion.animate
+                    : { x: 0, y: 0, opacity: 1, scale: 1, rotate: 0 }
+                }
+                transition={
+                  isIdle && !prefersReducedMotion
+                    ? idleMotion.transition
+                    : { duration: 0.2 }
+                }
+              >
+                <Rocket className="w-5 h-5 -rotate-45" strokeWidth={2.5} />
+              </motion.span>
             </motion.div>
 
             <div className="absolute inset-0 rounded-full bg-gradient-to-t from-transparent via-transparent to-white/20 pointer-events-none" />

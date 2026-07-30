@@ -3,27 +3,22 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
-  BookText,
   Check,
   ChevronRight,
   Copy,
-  FileText,
   Folder,
   FolderOpen,
-  Github,
-  Package,
-  Play,
-  Rss,
   Search,
-  Wrench,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
-import type { Bookmark, BookmarkFolder, BookmarkKind } from "@/types";
+import type { BookmarkFolder } from "@/types";
+import type { BookmarkHit } from "@/lib/bookmarks";
 import {
+  KIND_ICONS,
   bookmarkUrlLabel,
   countBookmarks,
-  filterFolders,
   folderSlug,
+  queryTokens,
+  searchBookmarks,
 } from "@/lib/bookmarks";
 import { useClipboard, useHash } from "@/lib/hooks";
 import { cardVariants, gridContainerVariants } from "@/lib/motion";
@@ -31,22 +26,49 @@ import { SectionHeading } from "./SectionHeading";
 
 const ROOT = "";
 
-const KIND_ICONS: Record<BookmarkKind, LucideIcon> = {
-  article: FileText,
-  blog: Rss,
-  repo: Github,
-  package: Package,
-  docs: BookText,
-  video: Play,
-  tool: Wrench,
+const longestPrefixToken = (word: string, tokens: string[]): string | null => {
+  let best: string | null = null;
+  for (const token of tokens) {
+    if (word.startsWith(token) && (best === null || token.length > best.length)) {
+      best = token;
+    }
+  }
+  return best;
 };
 
-type Row = {
-  folder: string;
-  bookmark: Bookmark;
+const Highlighted = ({ text, tokens }: { text: string; tokens: string[] }) => {
+  if (tokens.length === 0) return <>{text}</>;
+
+  return (
+    <>
+      {text.split(/([a-zA-Z0-9]+)/).map((segment, index) => {
+        if (index % 2 === 0) return segment;
+
+        const token = longestPrefixToken(segment.toLowerCase(), tokens);
+        if (token === null) return segment;
+
+        return (
+          <span key={index}>
+            <mark className="rounded-sm bg-[rgb(var(--accent-rgb)/0.22)] px-px text-[rgb(var(--accent-rgb))]">
+              {segment.slice(0, token.length)}
+            </mark>
+            {segment.slice(token.length)}
+          </span>
+        );
+      })}
+    </>
+  );
 };
 
-const BookmarkRow = ({ row, showFolder }: { row: Row; showFolder: boolean }) => {
+const BookmarkRow = ({
+  row,
+  showFolder,
+  tokens,
+}: {
+  row: BookmarkHit;
+  showFolder: boolean;
+  tokens: string[];
+}) => {
   const { copied, copy } = useClipboard();
   const { bookmark } = row;
   const KindIcon = KIND_ICONS[bookmark.kind];
@@ -66,7 +88,7 @@ const BookmarkRow = ({ row, showFolder }: { row: Row; showFolder: boolean }) => 
         <span className="min-w-0 flex-1">
           <span className="flex flex-wrap items-baseline gap-x-2">
             <span className="truncate text-sm font-medium text-gray-800 dark:text-gray-100">
-              {bookmark.title}
+              <Highlighted text={bookmark.title} tokens={tokens} />
             </span>
             {showFolder && (
               <span className="shrink-0 font-mono text-[10px] text-gray-400 dark:text-gray-500">
@@ -161,14 +183,19 @@ export const Bookmarks = ({
     return folders[0]?.name ?? ROOT;
   }, [picked, hash, folders]);
 
-  const rows = useMemo<Row[]>(() => {
-    const scope = searching
-      ? folders
-      : folders.filter((f) => activeName === ROOT || f.name === activeName);
+  const tokens = useMemo(
+    () => (searching ? queryTokens(query) : []),
+    [query, searching]
+  );
 
-    return filterFolders(scope, query).flatMap((folder) =>
-      folder.bookmarks.map((bookmark) => ({ folder: folder.name, bookmark }))
-    );
+  const rows = useMemo<BookmarkHit[]>(() => {
+    if (searching) return searchBookmarks(folders, query);
+
+    return folders
+      .filter((f) => activeName === ROOT || f.name === activeName)
+      .flatMap((folder) =>
+        folder.bookmarks.map((bookmark) => ({ folder: folder.name, bookmark }))
+      );
   }, [folders, query, searching, activeName]);
 
   const location = searching
@@ -276,7 +303,7 @@ export const Bookmarks = ({
                 <div className="min-w-0">
                   {rows.length === 0 ? (
                     <p className="px-4 py-16 text-center font-mono text-sm text-gray-400">
-                      {"// no bookmark matches that"}
+                      {`// nothing matches "${query.trim()}"`}
                     </p>
                   ) : (
                     <ul>
@@ -284,6 +311,7 @@ export const Bookmarks = ({
                         <BookmarkRow
                           key={row.bookmark.url}
                           row={row}
+                          tokens={tokens}
                           showFolder={searching || activeName === ROOT}
                         />
                       ))}

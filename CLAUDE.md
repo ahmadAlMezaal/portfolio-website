@@ -45,6 +45,7 @@ src/
 │   ├── FilterPill.tsx    # Shared filter pill
 │   ├── Learnings.tsx     # Field Notes cards with tabbed code editor
 │   ├── Bookmarks.tsx     # Bookmark manager: folder sidebar + link rows
+│   ├── BookmarksMenu.tsx # Navbar star menu with cascading folder submenus
 │   ├── Contact.tsx       # Contact form and info
 │   ├── Footer.tsx        # Footer with links
 │   ├── SectionHeading.tsx# Shared section title (glitch cycles)
@@ -308,6 +309,18 @@ Folder selection comes from the URL hash first, then the first folder; the
 search box filters across every folder at once and shows which folder each hit
 came from.
 
+Search is token-based, not substring: the query is split on non-alphanumerics
+and every token must match a word in the title, folder, host, kind or note —
+so `react n` finds `react-native`. Tokens are scored (exact word > word prefix
+> infix, weighted by field) and hits are ranked. Matches are highlighted in the
+title only, at word starts only; highlighting every infix made single-letter
+tokens light up half the page.
+
+`BookmarksMenu` puts the same content behind the navbar star, like a browser's
+bookmark menu: folders cascade into a submenu on hover, with `All bookmarks`
+opening the full page. It is `lg` and up only — the nav row cannot fit it
+below that.
+
 ### Favicon
 
 The portfolio uses SVG favicon by default (`public/icon.svg`). To customize:
@@ -357,7 +370,17 @@ remap cannot reach them).
 
 **When adding a palette:** copy a complete existing block. Every variable must
 be defined in every block — a value silently inherited from `matrix` is a bug,
-not a default.
+not a default. `ScrollToTopRocket` also keys its idle animation off the active
+theme (`THEME_IDLE` / `HALO_IDLE`): matrix hovers, cyberpunk neon-flickers,
+amber CRT-glitches. A new palette needs an entry in both records or the
+lookup is `undefined`.
+
+Only *some shades* of each remapped family are defined. A badge built as
+`bg-X-100 dark:bg-X-900/30 text-X-400` is safe for `purple` and `emerald`
+only — `blue-900`, `cyan-400` and friends are not remapped and leak literal
+Tailwind colour into amber and cyberpunk. Prefer
+`bg-[rgb(var(--accent-rgb)/0.12)] text-[rgb(var(--accent-rgb))]` and let an
+icon carry the meaning, as `Bookmarks.tsx` does.
 
 ## Interaction Layer
 
@@ -368,6 +391,8 @@ Global chrome lives in `layout.tsx` and is present on every route:
 - **`F`** or **`⌘/Ctrl+Shift+F`** — toggle fullscreen
 - **`T`** — cycle palette
 - **`?`** — keyboard cheatsheet
+- **Navbar star** — browser-style bookmark menu; folders cascade on hover
+  (`lg` and up)
 - **`StatusBar`** — bottom hint strip advertising the above, with the current
   section shown as `$ ~/about`. Desktop only.
 - Konami code — easter egg
