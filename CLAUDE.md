@@ -349,7 +349,7 @@ export const assetPath = (path: string): string => { ... };
 export const Navbar = () => { ... };
 ```
 
-This is enforced by ESLint (`eslint.config.mjs`), so `yarn lint` fails on any
+This is enforced by ESLint (`eslint.config.mjs`), so `pnpm lint` fails on any
 `function` keyword:
 
 - `func-style: ["error", "expression", { allowArrowFunctions: true }]`
@@ -382,21 +382,25 @@ function bodies alike. `@typescript-eslint/no-use-before-define` enforces it.
 
 ## Commands
 
+The package manager is **pnpm**, pinned by the `packageManager` field in
+`package.json`. Run `corepack enable` once and the right version is used
+automatically; CI reads the same field via `pnpm/action-setup`.
+
 ```bash
-yarn dev      # Start development server (runs sync-data first)
-yarn build    # Production build -> static export in out/
-yarn lint     # Run ESLint
+pnpm dev      # Start development server (runs sync-data first)
+pnpm build    # Production build -> static export in out/
+pnpm lint     # Run ESLint
 ```
 
-`yarn start` does **not** work — `next start` is incompatible with
+`pnpm start` does **not** work — `next start` is incompatible with
 `output: "export"`. To preview a production build locally:
 
 ```bash
-yarn build && npx serve out
+pnpm build && pnpm dlx serve out
 ```
 
-`yarn lint` currently reports pre-existing `react-hooks/set-state-in-effect`
-errors. CI does not run lint; the deploy workflow runs `yarn build` only.
+`pnpm lint` currently reports pre-existing `react-hooks/set-state-in-effect`
+errors. CI does not run lint; the deploy workflow runs `pnpm build` only.
 
 ## Deployment
 

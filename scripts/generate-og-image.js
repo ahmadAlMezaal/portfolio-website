@@ -28,7 +28,7 @@ const generateOGImage = async () => {
   } catch (e) {
     console.log('Installing sharp...');
     const { execSync } = require('child_process');
-    execSync('yarn add -D sharp', { stdio: 'inherit' });
+    execSync('pnpm add -D sharp', { stdio: 'inherit' });
     sharp = require('sharp');
   }
 
