@@ -12,7 +12,7 @@ import SectionHeading from "@/components/SectionHeading";
 
 const GLIMPSE_COUNT = 3;
 
-export default function Projects() {
+const Projects = () => {
   const { ref, isInView } = useSectionInView();
 
   const glimpse = useMemo(
@@ -62,4 +62,6 @@ export default function Projects() {
       </div>
     </section>
   );
-}
+};
+
+export default Projects;

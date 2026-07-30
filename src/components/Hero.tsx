@@ -9,7 +9,7 @@ import HeroBackground from "./HeroBackground";
 import DecodeText from "./DecodeText";
 import HeroIntro from "./HeroIntro";
 
-export default function Hero() {
+const Hero = () => {
   const [roleIndex, setRoleIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -106,4 +106,6 @@ export default function Hero() {
       </div>
     </section>
   );
-}
+};
+
+export default Hero;

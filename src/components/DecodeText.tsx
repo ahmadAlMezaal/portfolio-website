@@ -20,13 +20,13 @@ type Props = {
   offsetMs?: number;
 };
 
-export default function DecodeText({
+const DecodeText = ({
   text,
   className,
   style,
   trigger = "hover",
   offsetMs = 0,
-}: Props) {
+}: Props) => {
   const { theme } = useTheme();
   const prefersReducedMotion = usePrefersReducedMotion();
   const [scrambled, setScrambled] = useState<string | null>(null);
@@ -141,4 +141,6 @@ export default function DecodeText({
       </span>
     </span>
   );
-}
+};
+
+export default DecodeText;

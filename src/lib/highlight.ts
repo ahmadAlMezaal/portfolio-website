@@ -6,9 +6,9 @@ const EDITOR_THEME = "github-dark-default";
 
 export type HighlightedCode = Record<LearningLanguage, string>;
 
-export async function highlightLearning(
+export const highlightLearning = async (
   learning: Learning
-): Promise<HighlightedCode> {
+): Promise<HighlightedCode> => {
   const entries = await Promise.all(
     (Object.entries(learning.code) as [LearningLanguage, string][]).map(
       async ([lang, code]) =>
@@ -16,4 +16,4 @@ export async function highlightLearning(
     )
   );
   return Object.fromEntries(entries) as HighlightedCode;
-}
+};

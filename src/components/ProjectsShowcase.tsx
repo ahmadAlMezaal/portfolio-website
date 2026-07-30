@@ -21,7 +21,7 @@ const FILTERS: { label: string; value: FilterOption }[] = [
   { label: "Private", value: "private" },
 ];
 
-export default function ProjectsShowcase() {
+const ProjectsShowcase = () => {
   const [activeFilter, setActiveFilter] = useState<FilterOption>("all");
 
   const allProjectsSorted = useMemo(() => sortProjects(projects), []);
@@ -84,5 +84,6 @@ export default function ProjectsShowcase() {
       </div>
     </section>
   );
-}
+};
 
+export default ProjectsShowcase;

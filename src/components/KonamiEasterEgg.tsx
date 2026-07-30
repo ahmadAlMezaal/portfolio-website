@@ -27,7 +27,7 @@ type Glyph = {
   size: number;
 };
 
-function makeGlyphs(count: number): Glyph[] {
+const makeGlyphs = (count: number): Glyph[] => {
   return Array.from({ length: count }, (_, id) => ({
     id,
     left: Math.random() * 100,
@@ -36,9 +36,9 @@ function makeGlyphs(count: number): Glyph[] {
     char: randomGlyph(),
     size: 14 + Math.random() * 22,
   }));
-}
+};
 
-export default function KonamiEasterEgg() {
+const KonamiEasterEgg = () => {
   const prefersReducedMotion = usePrefersReducedMotion();
   const [active, setActive] = useState(false);
   const [glyphs, setGlyphs] = useState<Glyph[]>([]);
@@ -47,6 +47,17 @@ export default function KonamiEasterEgg() {
   const dismissRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
+    const trigger = () => {
+      const rain = getComputedStyle(document.documentElement)
+        .getPropertyValue("--rain")
+        .trim();
+      setColor(rain || "#00ff9c");
+      setGlyphs(makeGlyphs(prefersReducedMotion ? 0 : 46));
+      setActive(true);
+      if (dismissRef.current) clearTimeout(dismissRef.current);
+      dismissRef.current = setTimeout(() => setActive(false), 4500);
+    };
+
     const onKey = (e: KeyboardEvent) => {
       const key = e.key.length === 1 ? e.key.toLowerCase() : e.key.toLowerCase();
       if (key === SEQUENCE[progress.current]) {
@@ -58,17 +69,6 @@ export default function KonamiEasterEgg() {
       } else {
         progress.current = key === SEQUENCE[0] ? 1 : 0;
       }
-    };
-
-    const trigger = () => {
-      const rain = getComputedStyle(document.documentElement)
-        .getPropertyValue("--rain")
-        .trim();
-      setColor(rain || "#00ff9c");
-      setGlyphs(makeGlyphs(prefersReducedMotion ? 0 : 46));
-      setActive(true);
-      if (dismissRef.current) clearTimeout(dismissRef.current);
-      dismissRef.current = setTimeout(() => setActive(false), 4500);
     };
 
     document.addEventListener("keydown", onKey);
@@ -138,4 +138,6 @@ export default function KonamiEasterEgg() {
       )}
     </AnimatePresence>
   );
-}
+};
+
+export default KonamiEasterEgg;

@@ -73,13 +73,13 @@ const fileSlug = (title: string): string =>
     .replace(/[^a-z0-9]+/g, "_")
     .replace(/^_+|_+$/g, "");
 
-function CodeEditor({
+const CodeEditor = ({
   slug,
   html,
 }: {
   slug: string;
   html: HighlightedCode;
-}) {
+}) => {
   const [lang, setLang] = useState<LearningLanguage>("typescript");
 
   return (
@@ -113,15 +113,15 @@ function CodeEditor({
       />
     </div>
   );
-}
+};
 
-function LearningCard({
+const LearningCard = ({
   item,
   defaultOpen,
 }: {
   item: LearningItem;
   defaultOpen: boolean;
-}) {
+}) => {
   const { learning, html } = item;
   const [open, setOpen] = useState(defaultOpen);
 
@@ -191,15 +191,15 @@ function LearningCard({
       </AnimatePresence>
     </motion.article>
   );
-}
+};
 
-export default function Learnings({
+const Learnings = ({
   items,
   currentlyLearning,
 }: {
   items: LearningItem[];
   currentlyLearning: string[];
-}) {
+}) => {
   const [filter, setFilter] = useState<LearningCategory>("pattern");
 
   const visible = useMemo(
@@ -341,5 +341,6 @@ export default function Learnings({
       </div>
     </section>
   );
-}
+};
 
+export default Learnings;

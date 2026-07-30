@@ -4,7 +4,7 @@ import { useTheme } from "./ThemeProvider";
 import MatrixRain from "./MatrixRain";
 import SynthwaveGrid from "./SynthwaveGrid";
 
-export default function ThemeBackground() {
+const ThemeBackground = () => {
   const { theme } = useTheme();
 
   if (theme === "cyberpunk") {
@@ -21,4 +21,6 @@ export default function ThemeBackground() {
   }
 
   return <MatrixRain />;
-}
+};
+
+export default ThemeBackground;

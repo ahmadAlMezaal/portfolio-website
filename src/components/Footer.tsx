@@ -7,7 +7,7 @@ import NavAnchor from "./NavAnchor";
 import { socialIconMap, socialLabelMap } from "@/lib/social";
 import { useIsMobile } from "@/lib/hooks";
 
-export default function Footer() {
+const Footer = () => {
   const isMobile = useIsMobile();
   const socialLinks = personalInfo.socialLinks.map((link) => ({
     icon: socialIconMap[link.platform],
@@ -99,4 +99,6 @@ export default function Footer() {
       </div>
     </footer>
   );
-}
+};
+
+export default Footer;

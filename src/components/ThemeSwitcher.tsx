@@ -7,11 +7,11 @@ import { THEMES, useTheme } from "./ThemeProvider";
 import { isTyping } from "@/lib/utils";
 import DecodeText from "./DecodeText";
 
-export default function ThemeSwitcher({
+const ThemeSwitcher = ({
   variant = "menu",
 }: {
   variant?: "menu" | "inline" | "floating";
-}) {
+}) => {
   const { theme, setTheme } = useTheme();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -171,4 +171,6 @@ export default function ThemeSwitcher({
       </AnimatePresence>
     </div>
   );
-}
+};
+
+export default ThemeSwitcher;

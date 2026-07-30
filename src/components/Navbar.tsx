@@ -8,7 +8,7 @@ import { useScrollPosition, useIsMobile } from "@/lib/hooks";
 import NavAnchor from "./NavAnchor";
 import DecodeText from "./DecodeText";
 
-export default function Navbar() {
+const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const scrolled = useScrollPosition(20);
@@ -125,4 +125,6 @@ export default function Navbar() {
       </div>
     </motion.nav>
   );
-}
+};
+
+export default Navbar;

@@ -6,7 +6,7 @@ const TARGET = resolve("src/lib/portfolio-data.json");
 const ENV_KEY = "PORTFOLIO_DATA_URL";
 const TOKEN_KEY = "PORTFOLIO_DATA_TOKEN";
 
-function fromEnvOrDotenv(key) {
+const fromEnvOrDotenv = (key) => {
   if (process.env[key] !== undefined) return process.env[key];
   for (const file of [".env.local", ".env"]) {
     const path = resolve(file);
@@ -17,7 +17,7 @@ function fromEnvOrDotenv(key) {
     if (match) return match[1].trim().replace(/^["']|["']$/g, "");
   }
   return undefined;
-}
+};
 
 const REQUIRED = {
   siteMetadata: "object",
@@ -31,7 +31,7 @@ const REQUIRED = {
   certifications: "array",
 };
 
-function validate(data) {
+const validate = (data) => {
   const errors = [];
   if (typeof data !== "object" || data === null || Array.isArray(data)) {
     return ["root is not an object"];
@@ -55,7 +55,7 @@ function validate(data) {
     }
   }
   return errors;
-}
+};
 
 const url = fromEnvOrDotenv(ENV_KEY);
 const token = fromEnvOrDotenv(TOKEN_KEY);

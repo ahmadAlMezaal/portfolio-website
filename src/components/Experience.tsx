@@ -7,20 +7,20 @@ import type { Experience as ExperienceType, ExperienceRole } from "@/types";
 import SectionHeading from "./SectionHeading";
 import { slowSectionContainerVariants, sectionItemVariants, useSectionInView } from "@/lib/motion";
 
-function hasMultipleRoles(exp: ExperienceType): exp is ExperienceType & { roles: ExperienceRole[] } {
+const hasMultipleRoles = (exp: ExperienceType): exp is ExperienceType & { roles: ExperienceRole[] } => {
   return Array.isArray(exp.roles) && exp.roles.length > 0;
-}
+};
 
-function getOverallPeriod(roles: ExperienceRole[]): string {
+const getOverallPeriod = (roles: ExperienceRole[]): string => {
   if (roles.length === 0) return "";
   const lastRole = roles[roles.length - 1];
   const firstRole = roles[0];
   const startYear = lastRole.period.split(" - ")[0];
   const endYear = firstRole.period.split(" - ")[1] || "Present";
   return `${startYear} - ${endYear}`;
-}
+};
 
-function calculateDuration(period: string): string {
+const calculateDuration = (period: string): string => {
   const months: Record<string, number> = {
     Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
     Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11,
@@ -60,9 +60,9 @@ function calculateDuration(period: string): string {
   } else {
     return `${years} yr${years !== 1 ? "s" : ""} ${remainingMonths} mo${remainingMonths !== 1 ? "s" : ""}`;
   }
-}
+};
 
-function CompanyName({ name, url, isMultiRole }: { name: string; url?: string; isMultiRole: boolean }) {
+const CompanyName = ({ name, url, isMultiRole }: { name: string; url?: string; isMultiRole: boolean }) => {
   const baseClasses = isMultiRole
     ? "text-xl font-bold text-purple-600 dark:text-purple-400"
     : "text-purple-600 dark:text-purple-400 font-semibold";
@@ -82,9 +82,9 @@ function CompanyName({ name, url, isMultiRole }: { name: string; url?: string; i
   }
 
   return <span className={baseClasses}>{name}</span>;
-}
+};
 
-export default function Experience() {
+const Experience = () => {
   const { ref, isInView } = useSectionInView();
 
   const renderRoleContent = (
@@ -263,4 +263,6 @@ export default function Experience() {
       </div>
     </section>
   );
-}
+};
+
+export default Experience;
