@@ -182,33 +182,6 @@ export const useClipboard = (resetMs: number = 2000): {
   return { copied, copy };
 };
 
-export const useScrollSurge = ({
-  enabled = true,
-  onSurge,
-}: {
-  enabled?: boolean;
-  onSurge?: (surge: React.RefObject<number>) => void;
-} = {}): React.RefObject<number> => {
-  const surgeRef = useRef(0);
-  const lastScrollYRef = useRef<number | null>(null);
-
-  useThrottledScroll(
-    (scrollY) => {
-      const previous = lastScrollYRef.current;
-      lastScrollYRef.current = scrollY;
-      if (previous === null || !enabled) return;
-      surgeRef.current = Math.min(
-        1,
-        surgeRef.current + Math.abs(scrollY - previous) / 320
-      );
-      onSurge?.(surgeRef);
-    },
-    [enabled, onSurge]
-  );
-
-  return surgeRef;
-};
-
 export const useThrottledScroll = (
   callback: (scrollY: number) => void,
   deps: React.DependencyList = []
@@ -240,4 +213,31 @@ export const useThrottledScroll = (
       }
     };
   }, [stableCallback]);
+};
+
+export const useScrollSurge = ({
+  enabled = true,
+  onSurge,
+}: {
+  enabled?: boolean;
+  onSurge?: (surge: React.RefObject<number>) => void;
+} = {}): React.RefObject<number> => {
+  const surgeRef = useRef(0);
+  const lastScrollYRef = useRef<number | null>(null);
+
+  useThrottledScroll(
+    (scrollY) => {
+      const previous = lastScrollYRef.current;
+      lastScrollYRef.current = scrollY;
+      if (previous === null || !enabled) return;
+      surgeRef.current = Math.min(
+        1,
+        surgeRef.current + Math.abs(scrollY - previous) / 320
+      );
+      onSurge?.(surgeRef);
+    },
+    [enabled, onSurge]
+  );
+
+  return surgeRef;
 };

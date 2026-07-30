@@ -47,6 +47,17 @@ const KonamiEasterEgg = () => {
   const dismissRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
+    const trigger = () => {
+      const rain = getComputedStyle(document.documentElement)
+        .getPropertyValue("--rain")
+        .trim();
+      setColor(rain || "#00ff9c");
+      setGlyphs(makeGlyphs(prefersReducedMotion ? 0 : 46));
+      setActive(true);
+      if (dismissRef.current) clearTimeout(dismissRef.current);
+      dismissRef.current = setTimeout(() => setActive(false), 4500);
+    };
+
     const onKey = (e: KeyboardEvent) => {
       const key = e.key.length === 1 ? e.key.toLowerCase() : e.key.toLowerCase();
       if (key === SEQUENCE[progress.current]) {
@@ -58,17 +69,6 @@ const KonamiEasterEgg = () => {
       } else {
         progress.current = key === SEQUENCE[0] ? 1 : 0;
       }
-    };
-
-    const trigger = () => {
-      const rain = getComputedStyle(document.documentElement)
-        .getPropertyValue("--rain")
-        .trim();
-      setColor(rain || "#00ff9c");
-      setGlyphs(makeGlyphs(prefersReducedMotion ? 0 : 46));
-      setActive(true);
-      if (dismissRef.current) clearTimeout(dismissRef.current);
-      dismissRef.current = setTimeout(() => setActive(false), 4500);
     };
 
     document.addEventListener("keydown", onKey);

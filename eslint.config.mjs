@@ -9,6 +9,17 @@ const eslintConfig = defineConfig([
     rules: {
       "func-style": ["error", "expression", { allowArrowFunctions: true }],
       "prefer-arrow-callback": ["error", { allowNamedFunctions: false }],
+      "no-use-before-define": "off",
+      "@typescript-eslint/no-use-before-define": [
+        "error",
+        {
+          functions: true,
+          variables: true,
+          classes: true,
+          typedefs: false,
+          ignoreTypeReferences: true,
+        },
+      ],
       "no-restricted-syntax": [
         "error",
         {

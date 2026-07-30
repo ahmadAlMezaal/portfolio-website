@@ -260,14 +260,15 @@ This is enforced by ESLint (`eslint.config.mjs`), so `yarn lint` fails on any
 - `prefer-arrow-callback`
 - `no-restricted-syntax` blocking `FunctionDeclaration` and `FunctionExpression`
 
-Two consequences worth remembering:
+### Define before use
 
-- **Never `export default () => {}`.** An anonymous default export loses the
-  component name in DevTools and breaks Fast Refresh. Always name the const
-  and export it on its own line.
-- **No hoisting.** A `const` arrow is in the temporal dead zone until its
-  definition is evaluated, so module-level code (as opposed to code inside
-  another function) can only call helpers declared above it.
+Arrow consts do not hoist, so declarations are ordered dependencies-first:
+a helper always appears above its first caller, in module scope and inside
+function bodies alike. `@typescript-eslint/no-use-before-define` enforces it.
+
+The other thing to remember: **never `export default () => {}`.** An anonymous
+default export loses the component name in DevTools and breaks Fast Refresh.
+Always name the const and export it on its own line.
 
 ## Commands
 
