@@ -27,11 +27,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # No PORTFOLIO_DATA_URL: the build runs against the placeholder in
-      # data.config.example.ts. That keeps the check working on forks, where
-      # secrets are unavailable, and it is the code we are validating here —
-      # deploy.yml is what verifies the real content fetch.
-      - name: Build
+      - name: Build against placeholder content
         run: pnpm build
 
       - name: Lint

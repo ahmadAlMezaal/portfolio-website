@@ -5,13 +5,11 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -19,13 +17,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # Job-level so the postinstall sync sees the data source too, not just the
-    # build step — otherwise install logs a misleading "PORTFOLIO_DATA_URL not
-    # set" before the build fetches the real content.
     env:
-      # Empty for the custom domain; "/portfolio-website" for project pages.
       NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH || '' }}
-      # Content from the private portfolio-data repo; a missing token fails loudly.
       PORTFOLIO_DATA_URL: https://api.github.com/repos/ahmadAlMezaal/portfolio-data/contents/portfolio.json
       PORTFOLIO_DATA_TOKEN: ${{ secrets.PORTFOLIO_DATA_TOKEN }}
     steps:
