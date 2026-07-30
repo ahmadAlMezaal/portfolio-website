@@ -23,7 +23,7 @@ import {
   Search,
   CornerDownLeft,
   BookOpen,
-  Bookmark,
+  Star,
   Folder,
   Maximize2,
   Minimize2,
@@ -80,7 +80,6 @@ const NAV_ICONS: Record<string, ReactNode> = {
   "#skills": <Code2 size={16} />,
   "#projects": <FolderGit2 size={16} />,
   "/learnings": <BookOpen size={16} />,
-  "/bookmarks": <Bookmark size={16} />,
   "#contact": <Mail size={16} />,
 };
 
@@ -141,6 +140,18 @@ export const CommandPalette = () => {
         keywords: link.name,
         perform: () => navigate(link.href),
       })),
+      ...(bookmarks.length > 0
+        ? [
+            {
+              id: "bookmarks-all",
+              label: "All bookmarks",
+              group: "Bookmarks" as const,
+              icon: <Star size={16} />,
+              keywords: "links saved reading list",
+              perform: () => navigate("/bookmarks"),
+            },
+          ]
+        : []),
       ...bookmarks.map((folder) => ({
         id: `bookmarks-${folder.name}`,
         label: `${folder.name}/`,

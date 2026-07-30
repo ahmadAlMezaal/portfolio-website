@@ -31,7 +31,7 @@ const REQUIRED = {
   certifications: "array",
 };
 
-const BOOKMARK_KINDS = ["article", "repo", "package", "docs", "video", "tool"];
+const BOOKMARK_KINDS = ["article", "blog", "repo", "package", "docs", "video", "tool"];
 
 const validate = (data) => {
   const errors = [];

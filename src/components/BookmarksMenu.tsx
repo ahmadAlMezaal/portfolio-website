@@ -83,7 +83,7 @@ export const BookmarksMenu = () => {
   };
 
   return (
-    <div ref={rootRef} className="relative hidden lg:block">
+    <div ref={rootRef} className="relative">
       <motion.button
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
