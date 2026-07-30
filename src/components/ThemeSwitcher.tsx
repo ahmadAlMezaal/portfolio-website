@@ -110,7 +110,11 @@ export default function ThemeSwitcher({
   return (
     <div
       ref={rootRef}
-      className={floating ? "fixed bottom-[5.5rem] right-6 z-50" : "relative"}
+      className={
+        floating
+          ? "fixed bottom-[5.5rem] right-6 z-50 md:bottom-[7.25rem]"
+          : "relative"
+      }
     >
       <motion.button
         onClick={() => setOpen((v) => !v)}

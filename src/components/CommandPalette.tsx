@@ -31,7 +31,7 @@ import { socialLabelMap } from "@/lib/social";
 import { assetPath, isCvAvailable } from "@/lib/utils";
 import { useClipboard, useFullscreen } from "@/lib/hooks";
 import { THEMES, useTheme } from "./ThemeProvider";
-import { openShortcuts } from "./shortcutsBus";
+import { onOpenCommandPalette, openShortcuts } from "./shortcutsBus";
 
 type Group = "Navigation" | "Theme" | "Actions" | "Social";
 const GROUP_ORDER: Group[] = ["Navigation", "Theme", "Actions", "Social"];
@@ -251,6 +251,8 @@ export default function CommandPalette() {
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, []);
+
+  useEffect(() => onOpenCommandPalette(() => setOpen(true)), []);
 
   useEffect(() => {
     if (open) {

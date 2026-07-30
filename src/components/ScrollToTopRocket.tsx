@@ -228,11 +228,8 @@ export default function ScrollToTopRocket() {
     <AnimatePresence mode="wait">
       {isVisible && (
         <motion.div
-          className="fixed z-50"
-          style={{
-            bottom: BUTTON_OFFSET,
-            right: BUTTON_OFFSET,
-          }}
+          className="fixed bottom-6 z-50 md:bottom-[3.25rem]"
+          style={{ right: BUTTON_OFFSET }}
           variants={containerVariants}
           initial="hidden"
           animate="visible"
