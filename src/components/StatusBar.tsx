@@ -21,10 +21,10 @@ function Hint({
   return (
     <button
       onClick={onClick}
-      className="group flex items-center gap-1.5 rounded px-1 py-0.5 outline-none transition-colors hover:bg-white/5 focus-visible:bg-white/5"
+      className="group flex items-center gap-2 rounded px-1.5 py-1 outline-none transition-colors hover:bg-white/5 focus-visible:bg-white/5"
     >
       <kbd
-        className="rounded border border-current/30 px-1 py-px text-[10px] leading-none opacity-80 transition-opacity group-hover:opacity-100"
+        className="rounded border border-current/30 px-1.5 py-0.5 text-[12px] leading-none opacity-80 transition-opacity group-hover:opacity-100"
         style={accent}
       >
         {keys}
@@ -87,8 +87,8 @@ export default function StatusBar() {
           transition={{ duration: 0.2 }}
           className="fixed bottom-0 left-0 right-0 z-40 hidden border-t border-white/5 bg-black/40 backdrop-blur-md md:block"
         >
-          <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-1.5 font-mono text-[11px] sm:px-6 lg:px-8">
-            <div className="flex items-center gap-1">
+          <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2.5 font-mono text-[13px] sm:px-6 lg:px-8">
+            <div className="flex items-center gap-3">
               <Hint keys="⌘K" label="commands" onClick={openCommandPalette} />
               {supported && (
                 <Hint

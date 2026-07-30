@@ -112,7 +112,7 @@ export default function ThemeSwitcher({
       ref={rootRef}
       className={
         floating
-          ? "fixed bottom-[5.5rem] right-6 z-50 md:bottom-[7.25rem]"
+          ? "fixed bottom-[5.5rem] right-6 z-50 md:bottom-[8.25rem]"
           : "relative"
       }
     >
