@@ -6,15 +6,33 @@ Pages.
 
 ## Tech Stack
 
-- **Framework**: Next.js 16.0.10 (App Router, `output: "export"`)
-- **UI**: React 19.2.1
-- **Language**: TypeScript 5
+- **Framework**: Next.js 16.2.12 (App Router, `output: "export"`)
+- **UI**: React 19.2.8
+- **Language**: TypeScript 6
 - **Styling**: Tailwind CSS 4 (via @tailwindcss/postcss)
-- **Animations**: Framer Motion 12
+- **Animations**: Motion 12 (imported from `motion/react`, not `framer-motion`)
 - **Smooth scroll**: Lenis
 - **Syntax highlighting**: shiki (build time only)
-- **Icons**: Lucide React
+- **Icons**: Lucide React (pinned to 0.x — see Dependency Ceilings)
 - **Theming**: custom `ThemeProvider` (see Theme System)
+
+### Dependency Ceilings
+
+Three packages are deliberately held back. Each newer major breaks something
+concrete, so bump them only with the matching fix:
+
+- **lucide-react** stays on `0.577.x`. Version 1.0 deleted every brand icon
+  (`Github`, `Linkedin`, `Twitter`, `Youtube`, `Instagram`, `Facebook`,
+  `Dribbble`, `Codepen`) for trademark reasons. `lib/social.tsx` and the
+  `repo` bookmark icon depend on them, and Simple Icons has since dropped
+  LinkedIn and CodePen too — so moving to 1.x means hand-authoring those
+  marks, not swapping a source.
+- **typescript** stays on `6.x`. TS 7 (the native port) builds fine with
+  `experimental.useTypeScriptCli`, but `typescript-eslint` refuses to load
+  against it, which takes out `pnpm lint` — and lint is what enforces the
+  arrow-function and named-export rules below.
+- **eslint** stays on `9.x`. ESLint 10 crashes `eslint-plugin-react` (pulled
+  in transitively by `eslint-config-next`) inside `detectReactVersion`.
 
 ## Project Structure
 
@@ -26,6 +44,7 @@ src/
 │   ├── projects/page.tsx # /projects — full project collection
 │   ├── learnings/page.tsx# /learnings — Field Notes (build-time shiki)
 │   ├── bookmarks/page.tsx# /bookmarks — browser-style bookmark manager
+│   ├── not-found.tsx     # 404 — terminal window, exported as 404.html
 │   ├── robots.ts         # robots.txt
 │   ├── sitemap.ts        # sitemap.xml
 │   ├── icon.svg          # Favicon served by the app router
@@ -70,7 +89,8 @@ src/
 │   ├── data.config.example.ts # Placeholder content (fallback)
 │   ├── highlight.ts      # Build-time shiki highlighting for learnings
 │   ├── hooks.ts          # Shared hooks (scroll, mobile, clipboard, fullscreen)
-│   ├── motion.ts         # Shared Framer Motion variants
+│   ├── metadata.ts       # pageMetadata() — per-route title/canonical/OG/Twitter
+│   ├── motion.ts         # Shared Motion variants
 │   ├── projects.ts       # Project filtering/sorting helpers
 │   ├── bookmarks.ts      # Folder slugs, URL labels, search filtering
 │   ├── social.tsx        # Social platform icons + labels
@@ -406,6 +426,36 @@ Floating controls stack bottom-right and must not overlap: status bar (0–50px)
 scroll-to-top rocket (68px), theme gear (132px) on desktop; the bar is hidden
 below `md`, where the rocket and gear sit at 24px and 88px.
 
+## SEO & Metadata
+
+`trailingSlash: true` means every canonical URL ends in a slash. Three things
+have to agree or the site contradicts itself: the canonical tag, the `og:url`,
+and the entry in `sitemap.ts`. Write paths as `/projects/`, never `/projects`.
+
+Sub-page metadata goes through `pageMetadata()` in `lib/metadata.ts`. Do not
+hand-write a bare `{ title, description }` object on a page: Next inherits the
+root `openGraph` block wholesale when a route doesn't define its own, so a page
+that sets only `title` still ships the *homepage* title in `og:title` — the
+link preview is wrong everywhere it's shared. `pageMetadata()` fills the
+canonical, OG and Twitter blocks from one title/description/path.
+
+Every route needs exactly one `<h1>`. The hero renders a different component
+per palette (`MatrixIntro` / `CyberpunkIntro` / `AmberIntro`), so a heading
+added to one variant is missing from the other two — and the prerendered HTML
+only ever contains the default matrix variant. Change all three together.
+
+`sitemap.ts` lists real routes only. Fragment URLs (`/#about`) are collapsed
+into `/` by crawlers and earn nothing.
+
+`JsonLd` is a **server** component. It has no hooks, and its `dateModified`
+resolves at build time; making it a client component reintroduces a hydration
+mismatch that changes every day after deploy.
+
+The font is loaded as a variable font — `JetBrains_Mono({ subsets, display })`
+with no `weight` array. Listing explicit weights emits five static files and
+preloads one the page may not use; the variable file is a single 40 KB request
+covering 100–800.
+
 ## Code Style
 
 ### Arrow functions only
@@ -460,15 +510,18 @@ automatically; CI reads the same field via `pnpm/action-setup`.
 ```bash
 pnpm dev      # Start development server (runs sync-data first)
 pnpm build    # Production build -> static export in out/
+pnpm preview  # Build, then serve out/ locally
 pnpm lint     # Run ESLint
 ```
 
-`pnpm start` does **not** work — `next start` is incompatible with
-`output: "export"`. To preview a production build locally:
+There is no `pnpm start` — `next start` is incompatible with
+`output: "export"`, so `preview` (`next build && pnpm dlx serve out`) is how
+you look at a production build locally.
 
-```bash
-pnpm build && pnpm dlx serve out
-```
+Turbopack is the default bundler for both `dev` and `build` in Next.js 16; no
+flag is needed. `turbopack.root` is pinned to the project directory in
+`next.config.ts` because a stray lockfile above the repo can otherwise make
+Next infer the wrong workspace root.
 
 `pnpm lint` currently reports pre-existing `react-hooks/set-state-in-effect`
 errors. CI does not run lint; the deploy workflow runs `pnpm build` only.
