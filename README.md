@@ -58,7 +58,7 @@ There is no `pnpm start` — `next start` cannot serve a static export.
 ## Content
 
 Everything the site renders comes from a single `portfolio.json`, fetched at
-build time by `scripts/sync-data.mjs` from wherever `PORTFOLIO_DATA_URL`
+build time by `scripts/sync-data.ts` from wherever `PORTFOLIO_DATA_URL`
 points. The site itself contains no personal content — without a data source
 it renders the placeholder in `src/lib/data.config.example.ts`, so a fresh
 clone builds and runs as a template out of the box.
@@ -97,7 +97,7 @@ a public repo, a gist, object storage, or a headless CMS endpoint.
 4. Replace the deployment-specific assets: `public/CNAME` (your domain, or
    delete it), `public/cv.pdf`, project images in `public/projects/` and
    `public/assets/`, and regenerate `public/og-image.png` with
-   `node scripts/generate-og-image.js` after a sync.
+   `node scripts/generate-og-image.cjs` after a sync.
 
 The sync script validates the JSON shape and fails the build loudly on a bad
 fetch, so a broken source never deploys silently.

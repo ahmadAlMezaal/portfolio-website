@@ -111,12 +111,29 @@ public and contains no personal data beyond deployment infrastructure
 
 ### How content is fetched
 
-- `scripts/sync-data.mjs` runs before `next dev`/`next build` (npm pre-hooks)
+- `scripts/sync-data.ts` runs before `next dev`/`next build` (npm pre-hooks)
   and on `postinstall`. When `PORTFOLIO_DATA_URL` is set (env or `.env.local`),
   it fetches the JSON — with `PORTFOLIO_DATA_TOKEN` as a Bearer token for the
-  private repo — validates the shape, and writes the gitignored
-  `src/lib/portfolio-data.json`. On fetch or validation failure the build
-  fails loudly.
+  private repo — validates it against `scripts/portfolio-schema.ts`, and
+  writes the gitignored `src/lib/portfolio-data.json`. On fetch or validation
+  failure the build fails loudly.
+- Validation is a **zod** schema covering the whole of `PortfolioConfig`, not
+  just the fields someone remembered to check. It is deliberately kept beside
+  the script rather than in `src/`: nothing in the app imports it, so zod
+  never reaches the client bundle.
+- The schema and the `PortfolioConfig` interface are separate declarations, so
+  `SchemaMatchesPortfolioConfig` at the foot of the schema asserts that the
+  inferred type still satisfies the interface. Let them drift and `pnpm build`
+  fails with a type error rather than shipping a schema that validates the
+  wrong shape.
+- The parsed result is used for logging only — `writeFileSync` receives the
+  **raw** fetched data. Writing `result.data` would silently strip any key the
+  schema does not model.
+- The scripts are TypeScript run directly by Node 24's type stripping
+  (`node scripts/sync-data.ts`), which is why imports between them carry an
+  explicit `.ts` extension and `allowImportingTsExtensions` is set in
+  `tsconfig.json`. `package.json` declares `"type": "module"`; the one
+  CommonJS script is `generate-og-image.cjs`.
 - `data.ts` uses that file when present (non-null), otherwise falls back to
   the placeholder `data.config.example.ts`, so clones build out of the box
   with template content.
@@ -326,7 +343,7 @@ Conventions:
   anchor (`/bookmarks#react-native`) that the ⌘K palette links to.
 - `note` is the reason the link earned its place — the part a browser export
   cannot give you. `description` and `added` are optional.
-- `sync-data.mjs` validates every folder and link, so a malformed `kind` or a
+- `sync-data.ts` validates every folder and link, so a malformed `kind` or a
   non-absolute URL fails the build rather than shipping a broken row.
 
 Folder selection comes from the URL hash first, then the first folder; the
