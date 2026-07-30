@@ -35,9 +35,9 @@ function MatrixIntro({ roleText }: Props) {
       className="terminal-window max-w-2xl mx-auto mb-10 text-left rounded-xl border border-gray-700 bg-gray-900/80 backdrop-blur-sm shadow-2xl shadow-purple-500/10 overflow-hidden"
     >
       <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-700 bg-gray-800/60">
-        <span className="w-3 h-3 rounded-full bg-red-500/80" />
-        <span className="w-3 h-3 rounded-full bg-amber-500/80" />
-        <span className="w-3 h-3 rounded-full bg-green-500/80" />
+        <span className="w-3 h-3 rounded-full bg-[#ff5f57]/80" />
+        <span className="w-3 h-3 rounded-full bg-[#febc2e]/80" />
+        <span className="w-3 h-3 rounded-full bg-[#28c840]/80" />
         <span className="ml-2 text-xs text-gray-400">ahmad@portfolio: ~</span>
       </div>
 
