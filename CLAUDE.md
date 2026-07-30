@@ -140,8 +140,12 @@ public and contains no personal data beyond deployment infrastructure
 
 **Config includes:**
 
-- `siteMetadata`: SEO title, description, keywords, locale
-- `personalInfo`: Name, title, bio, email, status, social links
+- `siteMetadata`: SEO title, description, keywords, locale; optional
+  `launched` (`YYYY-MM-DD`) becomes `dateCreated` on the home page's
+  ProfilePage schema, and is omitted when absent
+- `personalInfo`: Name, title, bio, email, status, social links; optional
+  `knowsAbout` (array of strings) becomes the Person schema's `knowsAbout`,
+  and is omitted when absent
 - `roles`: Typing animation roles
 - `stats`: Career statistics
 - `skills`: Categorized skills (displayed as tags, no percentages)
@@ -450,6 +454,16 @@ into `/` by crawlers and earn nothing.
 `JsonLd` is a **server** component. It has no hooks, and its `dateModified`
 resolves at build time; making it a client component reintroduces a hydration
 mismatch that changes every day after deploy.
+
+Structured data is scoped by route. `JsonLd` sits in the layout and emits
+Person + WebSite on every page; `ProfileJsonLd` is rendered by `app/page.tsx`
+alone, because a ProfilePage on `/projects/` asserts that the projects page is
+a profile of the person, which is false. Anything route-specific belongs on
+its page, not in the layout.
+
+Nothing personal is hardcoded in the schemas — `knowsAbout`, `launched` and
+the address are read from config and omitted when missing, so a fresh clone
+emits valid schema without inheriting someone else's biography.
 
 The font is loaded as a variable font — `JetBrains_Mono({ subsets, display })`
 with no `weight` array. Listing explicit weights emits five static files and

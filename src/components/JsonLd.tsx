@@ -2,9 +2,26 @@ import { personalInfo, siteMetadata } from "@/lib/data";
 
 const buildDate = new Date().toISOString().split("T")[0];
 
+const [locality, country] = personalInfo.location
+  .split(",")
+  .map((part) => part.trim());
+
+const address = {
+  "@type": "PostalAddress",
+  ...(locality ? { addressLocality: locality } : {}),
+  ...(country ? { addressCountry: country } : {}),
+};
+
 interface JsonLdProps {
   url: string;
 }
+
+const LdScript = ({ schema }: { schema: object }) => (
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+  />
+);
 
 export const JsonLd = ({ url }: JsonLdProps) => {
   const personSchema = {
@@ -14,27 +31,11 @@ export const JsonLd = ({ url }: JsonLdProps) => {
     jobTitle: personalInfo.title,
     description: siteMetadata.description,
     url: url,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: personalInfo.location.split(",")[0]?.trim(),
-      addressCountry: personalInfo.location.split(",")[1]?.trim() || "UK",
-    },
+    address,
     sameAs: personalInfo.socialLinks.map((link) => link.url),
-    knowsAbout: [
-      "Artificial Intelligence",
-      "AI Agents",
-      "Large Language Models",
-      "Model Context Protocol (MCP)",
-      "Product Engineering",
-      "Software Engineering",
-      "Backend Development",
-      "Fintech",
-      "Open Banking",
-      "TypeScript",
-      "Node.js",
-      "AWS",
-      "Cloud-Native Systems",
-    ],
+    ...(personalInfo.knowsAbout?.length
+      ? { knowsAbout: personalInfo.knowsAbout }
+      : {}),
   };
 
   const websiteSchema = {
@@ -49,6 +50,15 @@ export const JsonLd = ({ url }: JsonLdProps) => {
     },
   };
 
+  return (
+    <>
+      <LdScript schema={personSchema} />
+      <LdScript schema={websiteSchema} />
+    </>
+  );
+};
+
+export const ProfileJsonLd = ({ url }: JsonLdProps) => {
   const profilePageSchema = {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
@@ -59,30 +69,9 @@ export const JsonLd = ({ url }: JsonLdProps) => {
       description: personalInfo.bio,
       url: url,
     },
-    dateCreated: "2024-01-01",
+    ...(siteMetadata.launched ? { dateCreated: siteMetadata.launched } : {}),
     dateModified: buildDate,
   };
 
-  return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(personSchema),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(websiteSchema),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(profilePageSchema),
-        }}
-      />
-    </>
-  );
+  return <LdScript schema={profilePageSchema} />;
 };

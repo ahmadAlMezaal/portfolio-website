@@ -35,6 +35,7 @@ export interface PersonalInfo {
   resumeUrl: string;
   bookingUrl?: string;
   socialLinks: SocialLink[];
+  knowsAbout?: string[];
 }
 
 export interface SiteMetadata {
@@ -44,6 +45,7 @@ export interface SiteMetadata {
   locale: string;
   siteUrl: string;
   twitterHandle?: string;
+  launched?: string;
 }
 
 export interface Stat {

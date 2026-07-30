@@ -6,10 +6,13 @@ import { Projects } from "@/components/Projects";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { ProfileJsonLd } from "@/components/JsonLd";
+import { siteMetadata } from "@/lib/data";
 
 const Home = () => {
   return (
     <main className="min-h-screen">
+      <ProfileJsonLd url={siteMetadata.siteUrl} />
       <Navbar />
       <Hero />
       <About />

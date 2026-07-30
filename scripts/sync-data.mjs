@@ -49,6 +49,14 @@ const validate = (data) => {
   if (data.focusAreas !== undefined && (!Array.isArray(data.focusAreas) || data.focusAreas.some((a) => typeof a !== "string"))) {
     errors.push('"focusAreas" must be an array of strings when present');
   }
+  const knowsAbout = data.personalInfo?.knowsAbout;
+  if (knowsAbout !== undefined && (!Array.isArray(knowsAbout) || knowsAbout.some((t) => typeof t !== "string"))) {
+    errors.push('"personalInfo.knowsAbout" must be an array of strings when present');
+  }
+  const launched = data.siteMetadata?.launched;
+  if (launched !== undefined && !/^\d{4}-\d{2}-\d{2}$/.test(launched)) {
+    errors.push('"siteMetadata.launched" must be a YYYY-MM-DD date when present');
+  }
   for (const [i, folder] of (data.bookmarks ?? []).entries()) {
     if (typeof folder?.name !== "string" || folder.name.length === 0) {
       errors.push(`bookmarks[${i}] is missing a "name"`);
