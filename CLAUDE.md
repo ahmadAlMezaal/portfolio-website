@@ -1,45 +1,79 @@
 # Portfolio Website
 
-A modern, responsive portfolio website built with Next.js 16, React 19, TypeScript, and Tailwind CSS 4.
+A terminal-styled personal portfolio built with Next.js 16, React 19,
+TypeScript, and Tailwind CSS 4. Statically exported and deployed to GitHub
+Pages.
 
 ## Tech Stack
 
-- **Framework**: Next.js 16.0.10 (App Router)
+- **Framework**: Next.js 16.0.10 (App Router, `output: "export"`)
 - **UI**: React 19.2.1
 - **Language**: TypeScript 5
 - **Styling**: Tailwind CSS 4 (via @tailwindcss/postcss)
 - **Animations**: Framer Motion 12
+- **Smooth scroll**: Lenis
+- **Syntax highlighting**: shiki (build time only)
 - **Icons**: Lucide React
-- **Theming**: next-themes (light/dark mode)
+- **Theming**: custom `ThemeProvider` (see Theme System)
 
 ## Project Structure
 
 ```
 src/
 ├── app/
-│   ├── layout.tsx      # Root layout with metadata (imports from config)
-│   ├── page.tsx        # Main page composing all sections
-│   ├── learnings/
-│   │   └── page.tsx    # /learnings — Field Notes page (build-time shiki highlighting)
-│   └── globals.css     # Global styles + theme variables
+│   ├── layout.tsx        # Root layout: metadata, providers, global chrome
+│   ├── page.tsx          # Home — composes Hero/About/Skills/Projects/Contact
+│   ├── projects/page.tsx # /projects — full project collection
+│   ├── learnings/page.tsx# /learnings — Field Notes (build-time shiki)
+│   ├── robots.ts         # robots.txt
+│   ├── sitemap.ts        # sitemap.xml
+│   ├── icon.svg          # Favicon served by the app router
+│   └── globals.css       # Tailwind entry, theme palettes, motifs, keyframes
 ├── components/
-│   ├── Navbar.tsx      # Navigation with theme toggle
-│   ├── NavAnchor.tsx   # Path-aware nav link (hash links work from any route)
-│   ├── Hero.tsx        # Hero section with typing animation
-│   ├── About.tsx       # About section with stats
-│   ├── Skills.tsx      # Skills displayed as tags
-│   ├── Experience.tsx  # Work experience timeline
-│   ├── Projects.tsx    # Featured projects grid
-│   ├── Learnings.tsx   # Field Notes cards with tabbed code editor
-│   ├── Contact.tsx     # Contact form and info
-│   ├── Footer.tsx      # Footer with links
-│   └── ThemeProvider.tsx
+│   ├── Navbar.tsx        # Top nav + status pill + mobile menu
+│   ├── NavAnchor.tsx     # Path-aware nav link (hash links work from any route)
+│   ├── Hero.tsx          # Hero section
+│   ├── HeroIntro.tsx     # Hero copy, per-theme nameplate treatments
+│   ├── HeroBackground.tsx# Hero-only background accents
+│   ├── About.tsx         # About + stats or focus chips
+│   ├── Skills.tsx        # Skills as tags
+│   ├── Experience.tsx    # Work timeline (single role or promotions)
+│   ├── Projects.tsx      # Featured projects on the home page
+│   ├── ProjectsShowcase.tsx # Full grid + filtering on /projects
+│   ├── ProjectCard.tsx   # Shared project card
+│   ├── FilterPill.tsx    # Shared filter pill
+│   ├── Learnings.tsx     # Field Notes cards with tabbed code editor
+│   ├── Contact.tsx       # Contact form and info
+│   ├── Footer.tsx        # Footer with links
+│   ├── SectionHeading.tsx# Shared section title (glitch cycles)
+│   ├── SectionBackground.tsx # Per-section background accents
+│   ├── ThemeBackground.tsx   # Per-theme global background layer
+│   ├── MatrixRain.tsx    # Matrix code-rain canvas
+│   ├── SynthwaveGrid.tsx # Cyberpunk perspective grid
+│   ├── DecodeText.tsx    # Scramble/decode text effect
+│   ├── ThemeProvider.tsx # Palette state + localStorage
+│   ├── ThemeSwitcher.tsx # Gear menu (floating) / inline list
+│   ├── StatusBar.tsx     # Bottom hint bar; owns the F fullscreen shortcut
+│   ├── CommandPalette.tsx# ⌘K palette
+│   ├── ShortcutsOverlay.tsx  # "?" cheatsheet
+│   ├── shortcutsBus.ts   # Window-event bus for opening palette/cheatsheet
+│   ├── ScrollToTopRocket.tsx # Floating scroll-to-top
+│   ├── ScrollReset.tsx   # Resets scroll on route change
+│   ├── SmoothScroll.tsx  # Lenis wrapper
+│   ├── KonamiEasterEgg.tsx
+│   └── JsonLd.tsx        # Structured data
 ├── lib/
-│   ├── data.ts              # Re-exports config data + nav links
-│   ├── data.config.example.ts # Placeholder content (fallback when no remote data)
-│   └── highlight.ts         # Build-time shiki highlighting for learnings
+│   ├── data.ts           # Re-exports config data + nav links
+│   ├── data.config.example.ts # Placeholder content (fallback)
+│   ├── highlight.ts      # Build-time shiki highlighting for learnings
+│   ├── hooks.ts          # Shared hooks (scroll, mobile, clipboard, fullscreen)
+│   ├── motion.ts         # Shared Framer Motion variants
+│   ├── projects.ts       # Project filtering/sorting helpers
+│   ├── social.tsx        # Social platform icons + labels
+│   ├── glyphs.ts         # Character sets for decode/rain effects
+│   └── utils.ts          # assetPath, getBasePath, isTyping, isCvAvailable
 └── types/
-    └── index.ts             # Shared TypeScript interfaces (import from "@/types")
+    └── index.ts          # Shared interfaces (import from "@/types")
 ```
 
 ## Configuration System
@@ -93,6 +127,10 @@ public and contains no personal data beyond deployment infrastructure
 - `certifications`: Professional certifications
 - `learnings` (optional): Field Notes entries for the /learnings page
 - `currentlyLearning` (optional): "currently exploring" chips on /learnings
+- `focusAreas` (optional): qualitative chips in About; replace the numeric stats
+
+The canonical shape is `PortfolioConfig` in `src/types/index.ts` — read that
+first, and `data.config.example.ts` for a filled-in example.
 
 ### Status Options
 
@@ -105,7 +143,7 @@ The `status` field in personalInfo accepts one of these predefined values:
 
 ### Social Links
 
-Social links are now fully configurable. Only include the platforms you use:
+Social links are fully configurable. Only include the platforms you use:
 
 ```typescript
 socialLinks: [
@@ -140,13 +178,13 @@ The Experience section supports two formats:
   location: "City, Country",
   roles: [
     {
-      title: "Lead Engineer",        // Most recent role first
+      title: "Lead Engineer",
       period: "2023 - Present",
       description: "Current role description",
       achievements: ["Achievement 1"],
     },
     {
-      title: "Software Engineer",    // Previous role
+      title: "Software Engineer",
       period: "2021 - 2023",
       description: "Previous role description",
       achievements: ["Achievement 1"],
@@ -155,7 +193,7 @@ The Experience section supports two formats:
 }
 ```
 
-When using multiple roles, the component displays:
+Most recent role first. When using multiple roles, the component displays:
 - Company name prominently with a "Career progression" indicator
 - A TrendingUp icon instead of Briefcase
 - Each role as a sub-item with its own timeline dot
@@ -169,13 +207,15 @@ Projects use a flexible `links` array instead of fixed `liveUrl`/`githubUrl` fie
 {
   title: "Project Name",
   description: "Project description",
-  image: "/projects/image.jpg",  // Optional - shows placeholder if null/missing
+  image: "/projects/image.jpg",
+  imageFit: "contain",
   tags: ["Tech1", "Tech2"],
   links: [
     { type: "website", label: "Live Demo", url: "https://example.com" },
     { type: "github", label: "Source Code", url: "https://github.com/..." },
   ],
   featured: true,
+  status: "live",
 }
 ```
 
@@ -189,8 +229,11 @@ Projects use a flexible `links` array instead of fixed `liveUrl`/`githubUrl` fie
 - `case-study` -> FileText icon
 
 **Special cases:**
+- `status` is `live` (default, no badge), `in_progress` (amber badge), or
+  `private` (grey badge, links hidden)
 - Empty `links: []` array shows "Private / available on request" badge
 - `image: null` or missing image shows a gradient placeholder with folder icon
+- `imageFit: "contain"` suits logos; `"cover"` is the default
 
 ### Learnings / Field Notes
 
@@ -201,7 +244,7 @@ code-editor block. Each entry requires code in all three languages —
 ```typescript
 {
   title: "Singleton",
-  category: "pattern", // "pattern" | "law" | "paradigm" | "principle"
+  category: "pattern",
   oneLiner: "The concept in a single sentence.",
   code: {
     typescript: `...`,
@@ -212,6 +255,8 @@ code-editor block. Each entry requires code in all three languages —
   verdict: "One honest line of judgement.",
 }
 ```
+
+`category` is `"pattern" | "law" | "paradigm" | "principle"`.
 
 Highlighting happens at build time via shiki (`src/lib/highlight.ts`), so no
 highlighter ships to the client. `currentlyLearning` renders as chips in the
@@ -226,11 +271,69 @@ The portfolio uses SVG favicon by default (`public/icon.svg`). To customize:
 
 ## Theme System
 
-Colors are defined as CSS variables in `globals.css`:
+The site is **dark only**. There is no light mode and no `next-themes`; the
+palette is chosen by a custom `ThemeProvider`.
 
-- Light theme: Warm off-white background (`#faf8f5`), soft dark text
-- Dark theme: Near-black background (`#0a0a0a`), light text
-- Both themes share accent colors (purple/pink/blue gradient)
+Three terminal palettes, selected via `data-theme` on `<html>`:
+
+| id | motif |
+| --- | --- |
+| `matrix` (default) | green on near-black, code-rain canvas |
+| `cyberpunk` | cyan/blue on blue-black, synthwave grid, neon HUD |
+| `amber` | amber/gold on warm-black, CRT scanlines and flicker |
+
+How it works:
+
+- `ThemeProvider` holds the active id, writes `document.documentElement.dataset.theme`,
+  and persists to `localStorage` under the key `theme`.
+- An inline script in `layout.tsx` applies the stored theme before paint, so
+  there is no flash of the default palette. It must stay in `<head>`.
+- Each palette is a block of CSS variables in `globals.css`
+  (`--background`, `--foreground`, `--card-bg`, `--accent-*`, `--accent-rgb`, …).
+  `--accent-rgb` and friends are space-separated channels so they can be used
+  as `rgb(var(--accent-rgb) / 0.4)`.
+- Each palette block also remaps Tailwind colour tokens — the whole `gray-*`
+  ramp plus the `purple`, `pink`, `blue`, `cyan`, `green` and `emerald` shades
+  the components actually use. That is why `text-purple-400` renders green in
+  matrix and gold in amber. These remaps belong **inside** each
+  `[data-theme]` block, never in a shared `.dark` block: a shared one applies
+  to every palette and is how the matrix greens previously leaked everywhere.
+- Per-theme motifs (grid, scanlines, nameplates) are keyed off
+  `[data-theme="…"]` selectors in `globals.css`.
+
+**When adding themed UI:** use a remapped token, a CSS variable, or the active
+theme's `swatch` (from `THEMES` in `ThemeProvider`). Reaching for a colour
+family that is *not* remapped — `red`, `orange`, `amber`, `yellow`, `lime`,
+`teal` — pins that element to one colour in all three palettes. That is only
+correct when the colour is semantic rather than decorative: form-validation
+red, the amber "in progress" badge, the rocket flame, and the macOS
+traffic-light dots (pinned to literal `#ff5f57 / #febc2e / #28c840` so the
+remap cannot reach them).
+
+**When adding a palette:** copy a complete existing block. Every variable must
+be defined in every block — a value silently inherited from `matrix` is a bug,
+not a default.
+
+## Interaction Layer
+
+Global chrome lives in `layout.tsx` and is present on every route:
+
+- **`⌘K` / `Ctrl+K`** — command palette (navigation, theme, actions, social)
+- **`F`** or **`⌘/Ctrl+Shift+F`** — toggle fullscreen
+- **`T`** — cycle palette
+- **`?`** — keyboard cheatsheet
+- **`StatusBar`** — bottom hint strip advertising the above, with the current
+  section shown as `$ ~/about`. Desktop only.
+- Konami code — easter egg
+
+Convention: whichever component advertises a shortcut owns its key listener
+(`ThemeSwitcher` owns `T`, `ShortcutsOverlay` owns `?`, `StatusBar` owns `F`).
+Components that need to open another one do it through `shortcutsBus.ts`
+rather than synthesising keystrokes.
+
+Floating controls stack bottom-right and must not overlap: status bar (0–50px),
+scroll-to-top rocket (68px), theme gear (132px) on desktop; the bar is hidden
+below `md`, where the rocket and gear sit at 24px and 88px.
 
 ## Code Style
 
@@ -273,15 +376,29 @@ Always name the const and export it on its own line.
 ## Commands
 
 ```bash
-yarn dev      # Start development server
-yarn build    # Production build
-yarn start    # Start production server
+yarn dev      # Start development server (runs sync-data first)
+yarn build    # Production build -> static export in out/
 yarn lint     # Run ESLint
 ```
 
-## Public Assets
+`yarn start` does **not** work — `next start` is incompatible with
+`output: "export"`. To preview a production build locally:
 
-The `public/` folder structure for assets:
+```bash
+yarn build && npx serve out
+```
+
+`yarn lint` currently reports pre-existing `react-hooks/set-state-in-effect`
+errors. CI does not run lint; the deploy workflow runs `yarn build` only.
+
+## Deployment
+
+GitHub Pages via `.github/workflows/deploy.yml`, triggered on push to `main`.
+The build is a static export (`out/`). `NEXT_PUBLIC_BASE_PATH` supports project
+pages; leave it unset for a custom domain. Use `assetPath()` from `lib/utils`
+for asset URLs so they respect the base path.
+
+## Public Assets
 
 ```
 public/
@@ -291,8 +408,7 @@ public/
 ├── cv.pdf                # Your CV/Resume (not tracked in git)
 ├── CV_README.md          # Instructions for CV setup
 └── projects/             # Project images
-    ├── .gitkeep          # Instructions for project images
-    ├── project1.jpg      # Your project images (not tracked in git)
+    ├── .gitkeep
     └── ...
 ```
 
@@ -310,20 +426,40 @@ public/
 
 ## Notes for AI Assistants
 
-- Do NOT add banner/section-divider comments like:
-  ```
-  // ---------------------------------------------------------------------------
-  // SECTION NAME
-  // ---------------------------------------------------------------------------
-  ```
-  Pre-existing banners may stay, but new sections get no banner — at most a
-  short single-line comment when something genuinely needs explaining.
+### No comments
+
+This codebase is deliberately comment-free. **Do not write comments.** Not
+banner dividers, not section headers, not explanatory one-liners, not JSDoc,
+not trailing notes on a line of code, not `{/* … */}` in JSX, not `/* … */`
+in CSS. If you are tempted to explain something in a comment, rename the thing
+or restructure it so the code says it instead.
+
+The only exceptions are comments that *do* something rather than explain
+something:
+
+- lint and compiler directives (`eslint-disable-*`, `@ts-expect-error`)
+- a shebang line
+- licence headers required by a third party
+
+This applies to every file you touch: `.ts`, `.tsx`, `.css`, `.mjs`, `.js`.
+Removing a comment while editing nearby code is fine and welcome. Prose belongs
+in this file, the README, or a PR description — not in the source.
+
+Markdown, JSON content, and the code samples inside `learnings` entries are
+content, not code: comments there are fine and should be left alone.
+
+### Everything else
 
 - Arrow functions only — never write a `function` declaration or expression.
   See "Code Style" above; ESLint rejects them.
 
 - All content flows through `portfolio-data.json` (or the example fallback) →
   `data.ts` → components; never hardcode personal data in components
+- Never hardcode a themed colour; use the CSS variables or `THEMES` swatches
+  (see Theme System)
 - The Skills component displays skills as tags (no progress bars/percentages)
 - Metadata in layout.tsx imports from config, not hardcoded
-- Check `data.config.example.ts` for the expected config structure
+- Shared hooks live in `lib/hooks.ts` and shared motion variants in
+  `lib/motion.ts` — reach for those before writing a local copy
+- Prose (chat, commits, PRs, UI copy) is British English; code identifiers and
+  CSS properties keep their required spelling
