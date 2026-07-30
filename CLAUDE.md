@@ -533,6 +533,22 @@ The build is a static export (`out/`). `NEXT_PUBLIC_BASE_PATH` supports project
 pages; leave it unset for a custom domain. Use `assetPath()` from `lib/utils`
 for asset URLs so they respect the base path.
 
+Two things about `deploy.yml` that its shape does not show:
+
+- The data env vars are declared at **job** level, not on the build step. The
+  `postinstall` sync runs during `pnpm install`, so a step-level `env` would
+  make install log a misleading "PORTFOLIO_DATA_URL not set" before the build
+  fetched the real content.
+- `NEXT_PUBLIC_BASE_PATH` is empty for the custom domain; it only takes a
+  value (`/portfolio-website`) for project pages.
+
+`.github/workflows/ci.yml` runs on every pull request. It builds **without**
+`PORTFOLIO_DATA_URL`, so it exercises the placeholder path in
+`data.config.example.ts` — that keeps the check working on forks, where
+secrets are unavailable, and the code is what it gates. `deploy.yml` is what
+verifies the real content fetch. Lint runs `continue-on-error` until the
+standing `react-hooks` baseline is cleared; it cannot gate before then.
+
 ## Public Assets
 
 ```
@@ -576,7 +592,10 @@ something:
 - a shebang line
 - licence headers required by a third party
 
-This applies to every file you touch: `.ts`, `.tsx`, `.css`, `.mjs`, `.js`.
+This applies to every file you touch: `.ts`, `.tsx`, `.css`, `.mjs`, `.js`,
+and the GitHub Actions workflows in `.github/workflows/`. A `#` comment in a
+YAML step is the same thing as a `//` comment in a component — if a step needs
+explaining, name the step so it explains itself and put the reasoning here.
 Removing a comment while editing nearby code is fine and welcome. Prose belongs
 in this file, the README, or a PR description — not in the source.
 
