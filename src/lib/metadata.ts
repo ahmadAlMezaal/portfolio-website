@@ -5,16 +5,21 @@ type PageMetadataInput = {
   title: string;
   description: string;
   path: string;
+  image?: string;
 };
 
-export const ogImageUrl = `${siteMetadata.siteUrl}/og-image.png`;
+const DEFAULT_OG_IMAGE = "og-image.png";
+
+export const ogImageUrl = `${siteMetadata.siteUrl}/${DEFAULT_OG_IMAGE}`;
 
 export const pageMetadata = ({
   title,
   description,
   path,
+  image = DEFAULT_OG_IMAGE,
 }: PageMetadataInput): Metadata => {
   const url = `${siteMetadata.siteUrl}${path}`;
+  const imageUrl = `${siteMetadata.siteUrl}/${image}`;
 
   return {
     title,
@@ -31,7 +36,7 @@ export const pageMetadata = ({
       siteName: personalInfo.name,
       images: [
         {
-          url: ogImageUrl,
+          url: imageUrl,
           width: 1200,
           height: 630,
           alt: title,
@@ -43,7 +48,7 @@ export const pageMetadata = ({
       title,
       description,
       creator: siteMetadata.twitterHandle,
-      images: [ogImageUrl],
+      images: [imageUrl],
     },
   };
 };
