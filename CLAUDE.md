@@ -27,6 +27,7 @@ src/
 │   ├── learnings/page.tsx# /learnings — Field Notes (build-time shiki)
 │   ├── robots.ts         # robots.txt
 │   ├── sitemap.ts        # sitemap.xml
+│   ├── icon.svg          # Favicon served by the app router
 │   └── globals.css       # Tailwind entry, theme palettes, motifs, keyframes
 ├── components/
 │   ├── Navbar.tsx        # Top nav + status pill + mobile menu
@@ -291,15 +292,27 @@ How it works:
   (`--background`, `--foreground`, `--card-bg`, `--accent-*`, `--accent-rgb`, …).
   `--accent-rgb` and friends are space-separated channels so they can be used
   as `rgb(var(--accent-rgb) / 0.4)`.
-- `globals.css` also remaps Tailwind's `gray-*` scale and some named colours
-  under `.dark`, so utility classes pick up themed surfaces.
+- Each palette block also remaps Tailwind colour tokens — the whole `gray-*`
+  ramp plus the `purple`, `pink`, `blue`, `cyan`, `green` and `emerald` shades
+  the components actually use. That is why `text-purple-400` renders green in
+  matrix and gold in amber. These remaps belong **inside** each
+  `[data-theme]` block, never in a shared `.dark` block: a shared one applies
+  to every palette and is how the matrix greens previously leaked everywhere.
 - Per-theme motifs (grid, scanlines, nameplates) are keyed off
   `[data-theme="…"]` selectors in `globals.css`.
 
-**When adding themed UI:** drive colour from the CSS variables or the active
-theme's `swatch` (from `THEMES` in `ThemeProvider`). Do not hardcode a Tailwind
-palette colour like `green-500` or `purple-400` for anything themed — it will
-stay that colour in all three palettes.
+**When adding themed UI:** use a remapped token, a CSS variable, or the active
+theme's `swatch` (from `THEMES` in `ThemeProvider`). Reaching for a colour
+family that is *not* remapped — `red`, `orange`, `amber`, `yellow`, `lime`,
+`teal` — pins that element to one colour in all three palettes. That is only
+correct when the colour is semantic rather than decorative: form-validation
+red, the amber "in progress" badge, the rocket flame, and the macOS
+traffic-light dots (pinned to literal `#ff5f57 / #febc2e / #28c840` so the
+remap cannot reach them).
+
+**When adding a palette:** copy a complete existing block. Every variable must
+be defined in every block — a value silently inherited from `matrix` is a bug,
+not a default.
 
 ## Interaction Layer
 
