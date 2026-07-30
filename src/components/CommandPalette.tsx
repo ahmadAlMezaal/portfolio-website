@@ -23,18 +23,27 @@ import {
   Search,
   CornerDownLeft,
   BookOpen,
+  Bookmark,
+  Folder,
   Maximize2,
   Minimize2,
 } from "lucide-react";
-import { navLinks, personalInfo } from "@/lib/data";
+import { bookmarks, navLinks, personalInfo } from "@/lib/data";
+import { folderSlug } from "@/lib/bookmarks";
 import { socialLabelMap } from "@/lib/social";
 import { assetPath, isCvAvailable } from "@/lib/utils";
 import { useClipboard, useFullscreen } from "@/lib/hooks";
 import { THEMES, useTheme } from "./ThemeProvider";
 import { onOpenCommandPalette, openShortcuts } from "./shortcutsBus";
 
-type Group = "Navigation" | "Theme" | "Actions" | "Social";
-const GROUP_ORDER: Group[] = ["Navigation", "Theme", "Actions", "Social"];
+type Group = "Navigation" | "Bookmarks" | "Theme" | "Actions" | "Social";
+const GROUP_ORDER: Group[] = [
+  "Navigation",
+  "Bookmarks",
+  "Theme",
+  "Actions",
+  "Social",
+];
 
 type Command = {
   id: string;
@@ -71,6 +80,7 @@ const NAV_ICONS: Record<string, ReactNode> = {
   "#skills": <Code2 size={16} />,
   "#projects": <FolderGit2 size={16} />,
   "/learnings": <BookOpen size={16} />,
+  "/bookmarks": <Bookmark size={16} />,
   "#contact": <Mail size={16} />,
 };
 
@@ -130,6 +140,15 @@ export const CommandPalette = () => {
         icon: NAV_ICONS[link.href] ?? <Home size={16} />,
         keywords: link.name,
         perform: () => navigate(link.href),
+      })),
+      ...bookmarks.map((folder) => ({
+        id: `bookmarks-${folder.name}`,
+        label: `${folder.name}/`,
+        group: "Bookmarks" as const,
+        icon: <Folder size={16} />,
+        keywords: `bookmarks links ${folder.description ?? ""}`,
+        hint: `${folder.bookmarks.length}`,
+        perform: () => navigate(`/bookmarks#${folderSlug(folder.name)}`),
       })),
       ...THEMES.map((t) => ({
         id: `theme-${t.id}`,

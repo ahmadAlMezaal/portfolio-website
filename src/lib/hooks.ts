@@ -92,6 +92,18 @@ export const useFullscreen = (): {
   return { isFullscreen, supported, toggle };
 };
 
+const subscribeHash = (onChange: () => void): () => void => {
+  window.addEventListener("hashchange", onChange);
+  return () => window.removeEventListener("hashchange", onChange);
+};
+
+export const useHash = (): string =>
+  useSyncExternalStore(
+    subscribeHash,
+    () => decodeURIComponent(window.location.hash.slice(1)),
+    () => ""
+  );
+
 export const useScrollPosition = (threshold: number = 0): boolean => {
   const [isPastThreshold, setIsPastThreshold] = useState(false);
   const rafRef = useRef<number | null>(null);

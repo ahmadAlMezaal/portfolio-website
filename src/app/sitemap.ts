@@ -13,6 +13,7 @@ const sitemap = (): MetadataRoute.Sitemap => {
     { url: `${siteUrl}/#projects`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${siteUrl}/projects`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${siteUrl}/learnings`, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${siteUrl}/bookmarks`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${siteUrl}/#contact`, changeFrequency: "monthly", priority: 0.7 },
   ];
 };

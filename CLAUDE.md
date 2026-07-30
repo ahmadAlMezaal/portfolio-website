@@ -25,6 +25,7 @@ src/
 │   ├── page.tsx          # Home — composes Hero/About/Skills/Projects/Contact
 │   ├── projects/page.tsx # /projects — full project collection
 │   ├── learnings/page.tsx# /learnings — Field Notes (build-time shiki)
+│   ├── bookmarks/page.tsx# /bookmarks — browser-style bookmark manager
 │   ├── robots.ts         # robots.txt
 │   ├── sitemap.ts        # sitemap.xml
 │   ├── icon.svg          # Favicon served by the app router
@@ -43,6 +44,7 @@ src/
 │   ├── ProjectCard.tsx   # Shared project card
 │   ├── FilterPill.tsx    # Shared filter pill
 │   ├── Learnings.tsx     # Field Notes cards with tabbed code editor
+│   ├── Bookmarks.tsx     # Bookmark manager: folder sidebar + link rows
 │   ├── Contact.tsx       # Contact form and info
 │   ├── Footer.tsx        # Footer with links
 │   ├── SectionHeading.tsx# Shared section title (glitch cycles)
@@ -69,6 +71,7 @@ src/
 │   ├── hooks.ts          # Shared hooks (scroll, mobile, clipboard, fullscreen)
 │   ├── motion.ts         # Shared Framer Motion variants
 │   ├── projects.ts       # Project filtering/sorting helpers
+│   ├── bookmarks.ts      # Folder slugs, URL labels, search filtering
 │   ├── social.tsx        # Social platform icons + labels
 │   ├── glyphs.ts         # Character sets for decode/rain effects
 │   └── utils.ts          # assetPath, getBasePath, isTyping, isCvAvailable
@@ -128,6 +131,7 @@ public and contains no personal data beyond deployment infrastructure
 - `learnings` (optional): Field Notes entries for the /learnings page
 - `currentlyLearning` (optional): "currently exploring" chips on /learnings
 - `focusAreas` (optional): qualitative chips in About; replace the numeric stats
+- `bookmarks` (optional): folders of shared links for the /bookmarks page
 
 The canonical shape is `PortfolioConfig` in `src/types/index.ts` — read that
 first, and `data.config.example.ts` for a filled-in example.
@@ -263,6 +267,47 @@ highlighter ships to the client. `currentlyLearning` renders as chips in the
 page header. Both fields are optional; the page shows an empty state without
 them.
 
+### Bookmarks
+
+The `/bookmarks` page is a fake browser bookmark manager: a window frame with
+traffic lights and a `bookmarks://<name>/<folder>` address bar, a folder
+sidebar, and rows of links. `bookmarks` is an array of folders:
+
+```typescript
+{
+  name: "react-native",
+  description: "Things that changed how I ship mobile.",
+  bookmarks: [
+    {
+      title: "mrousavy/react-native-mmkv",
+      url: "https://github.com/mrousavy/react-native-mmkv",
+      kind: "repo",
+      note: "Replaced AsyncStorage and a whole class of race conditions.",
+      added: "2026-07",
+    },
+  ],
+}
+```
+
+`kind` is `"article" | "blog" | "repo" | "package" | "docs" | "video" | "tool"`
+and selects the row icon — it is never rendered as text. Pick it from what the
+URL points at, not what the thing conceptually is: a github.com link is a
+`repo` even when the project ships as a package.
+
+Conventions:
+
+- **One level of folders.** There is no nesting, by design.
+- `name` is lowercase-kebab so it reads as a directory; it also becomes the
+  anchor (`/bookmarks#react-native`) that the ⌘K palette links to.
+- `note` is the reason the link earned its place — the part a browser export
+  cannot give you. `description` and `added` are optional.
+- `sync-data.mjs` validates every folder and link, so a malformed `kind` or a
+  non-absolute URL fails the build rather than shipping a broken row.
+
+Folder selection comes from the URL hash first, then the first folder; the
+search box filters across every folder at once and shows which folder each hit
+came from.
+
 ### Favicon
 
 The portfolio uses SVG favicon by default (`public/icon.svg`). To customize:
@@ -318,7 +363,8 @@ not a default.
 
 Global chrome lives in `layout.tsx` and is present on every route:
 
-- **`⌘K` / `Ctrl+K`** — command palette (navigation, theme, actions, social)
+- **`⌘K` / `Ctrl+K`** — command palette (navigation, bookmark folders, theme,
+  actions, social)
 - **`F`** or **`⌘/Ctrl+Shift+F`** — toggle fullscreen
 - **`T`** — cycle palette
 - **`?`** — keyboard cheatsheet
