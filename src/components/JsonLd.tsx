@@ -1,6 +1,6 @@
-"use client";
-
 import { personalInfo, siteMetadata } from "@/lib/data";
+
+const buildDate = new Date().toISOString().split("T")[0];
 
 interface JsonLdProps {
   url: string;
@@ -60,7 +60,7 @@ export const JsonLd = ({ url }: JsonLdProps) => {
       url: url,
     },
     dateCreated: "2024-01-01",
-    dateModified: new Date().toISOString().split("T")[0],
+    dateModified: buildDate,
   };
 
   return (

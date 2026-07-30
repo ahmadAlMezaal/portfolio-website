@@ -3,15 +3,14 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { ProjectsShowcase } from "@/components/ProjectsShowcase";
-import { personalInfo, siteMetadata } from "@/lib/data";
+import { personalInfo } from "@/lib/data";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: `Projects | ${personalInfo.name}`,
   description: `A complete collection of ${personalInfo.name}'s work — live products, in-progress builds, and private engagements.`,
-  alternates: {
-    canonical: `${siteMetadata.siteUrl}/projects`,
-  },
-};
+  path: "/projects/",
+});
 
 const ProjectsPage = () => {
   return (
