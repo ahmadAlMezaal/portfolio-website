@@ -465,6 +465,13 @@ Nothing personal is hardcoded in the schemas — `knowsAbout`, `launched` and
 the address are read from config and omitted when missing, so a fresh clone
 emits valid schema without inheriting someone else's biography.
 
+`/learnings` adds `LearningsJsonLd`: a CollectionPage whose `hasPart` is one
+TechArticle per entry. Entries carry no `url`, deliberately — the cards have
+no `id` anchors, and pointing each article at `#some-slug` would assert a
+fragment that does not exist. Give the cards real anchors first if you want
+per-entry URLs. The component returns `null` when `learnings` is empty rather
+than emitting an empty collection.
+
 The font is loaded as a variable font — `JetBrains_Mono({ subsets, display })`
 with no `weight` array. Listing explicit weights emits five static files and
 preloads one the page may not use; the variable file is a single 40 KB request
