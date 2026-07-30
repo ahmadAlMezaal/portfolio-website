@@ -19,21 +19,24 @@ A modern, animated portfolio built with Next.js 16, React 19, and Three.js.
 |----------|------|
 | Framework | Next.js 16 (App Router) |
 | UI | React 19, Tailwind CSS 4 |
-| 3D | Three.js, React Three Fiber |
+| Syntax highlighting | shiki (build time only) |
 | Animations | Framer Motion |
-| Theming | next-themes |
+| Theming | Custom `ThemeProvider` (three terminal palettes) |
 
 ## Quick Start
 
+Requires Node 24+ and [pnpm](https://pnpm.io). The `packageManager` field pins
+the exact pnpm version, so `corepack enable` is enough to get the right one.
+
 ```bash
 # Install
-yarn install
+pnpm install
 
 # Develop
-yarn dev
+pnpm dev
 
 # Build
-yarn build
+pnpm build
 ```
 
 ## Content
