@@ -20,7 +20,6 @@ function getOverallPeriod(roles: ExperienceRole[]): string {
   return `${startYear} - ${endYear}`;
 }
 
-// Duration from a period string like "Apr 2022 - Aug 2024".
 function calculateDuration(period: string): string {
   const months: Record<string, number> = {
     Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
@@ -48,7 +47,7 @@ function calculateDuration(period: string): string {
 
   let totalMonths = (endDate.getFullYear() - startDate.getFullYear()) * 12;
   totalMonths += endDate.getMonth() - startDate.getMonth();
-  totalMonths += 1; // Include the start month (LinkedIn-style)
+  totalMonths += 1;
   totalMonths = Math.max(1, totalMonths);
 
   const years = Math.floor(totalMonths / 12);
@@ -254,7 +253,6 @@ export default function Experience() {
                       </motion.div>
                     </div>
 
-                    {/* Spacer for alternating layout */}
                     <div className="hidden md:block md:w-1/2" />
                   </motion.div>
                 );

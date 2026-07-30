@@ -8,8 +8,6 @@ const GLOW_TRAVEL = 300;
 const ADVANCE_PER_FRAME = 4;
 const SURGE_DECAY = 0.93;
 
-// Cyberpunk backdrop: synthwave grid + horizon glow, both reacting to the
-// pointer and to scroll velocity.
 export default function SynthwaveGrid() {
   const glowRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -17,7 +15,6 @@ export default function SynthwaveGrid() {
   const rafRef = useRef(0);
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  // Runs only while a surge is decaying; the grid's idle drift stays in CSS.
   const startSurge = useCallback((surgeRef: React.RefObject<number>) => {
     if (rafRef.current) return;
 

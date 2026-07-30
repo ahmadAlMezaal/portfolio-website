@@ -20,8 +20,6 @@ import DecodeText from "./DecodeText";
 import SectionHeading from "./SectionHeading";
 import { sectionContainerVariants, sectionItemVariants, useSectionInView } from "@/lib/motion";
 
-// Obfuscate the address so scrapers only ever see the mask in the rendered HTML.
-// The real value stays out of the DOM until a human clicks to reveal it.
 function maskEmail(email: string): string {
   const [local, domain] = email.split("@");
   if (!domain) return "•••••••";
@@ -62,7 +60,6 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative py-20 section-tint overflow-hidden">
-      {/* Animated CSS background - skipped on mobile / reduced-motion */}
       {!shouldReduceMotion && <SectionBackground type="wave" />}
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -98,8 +95,6 @@ export default function Contact() {
                   </div>
                 </motion.div>
 
-                {/* Email is masked until clicked — bots only ever see the mask
-                    in the HTML. First click reveals, second click copies. */}
                 <motion.button
                   type="button"
                   onClick={() => (revealed ? copy(personalInfo.email) : setRevealed(true))}

@@ -1,4 +1,3 @@
-// Katakana + binary + a few operators read as "code".
 export const MATRIX_GLYPHS =
   "01ｱｦｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾊﾋﾌﾍﾎ{}[]<>=+*/".split("");
 

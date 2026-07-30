@@ -67,7 +67,6 @@ const CATEGORY_META: Record<LearningCategory, CategoryMeta> = {
 
 const FILTERS: LearningCategory[] = ["pattern", "law", "paradigm", "principle"];
 
-// "Hyrum's Law" -> "hyrums_law"
 const fileSlug = (title: string): string =>
   title
     .toLowerCase()

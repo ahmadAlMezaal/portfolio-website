@@ -13,7 +13,6 @@ const enter = {
   transition: { duration: 0.6 },
 };
 
-// Accent-colored blinking caret (height tracks the line's font-size).
 function Caret({ className = "" }: { className?: string }) {
   return (
     <span

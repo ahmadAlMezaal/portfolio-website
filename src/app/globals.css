@@ -1,10 +1,8 @@
 @import "tailwindcss";
 
-/* Configure dark mode to use .dark class instead of prefers-color-scheme */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* Single terminal monospace; --font-mono-next is set by next/font on <html>. */
   --font-mono: var(--font-mono-next), ui-monospace, "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
   --font-sans: var(--font-mono);
   --font-display: var(--font-mono);
@@ -15,8 +13,6 @@ html {
   font-family: var(--font-sans);
 }
 
-/* Tailwind 4's preflight sets `cursor: default` on buttons — restore the
-   pointer for everything clickable. */
 @layer base {
   button:not(:disabled),
   [role="button"]:not(:disabled),
@@ -28,8 +24,6 @@ html {
   }
 }
 
-/* Lenis smooth scroll — Lenis owns easing when active, so disable the
-   native CSS smooth-scroll only while its classes are present. */
 html.lenis,
 html.lenis body {
   height: auto;
@@ -47,7 +41,6 @@ html.lenis body {
   pointer-events: none;
 }
 
-/* Terminal themes: one dark mode, three palettes via html[data-theme]; default = matrix */
 :root,
 [data-theme="matrix"] {
   --background: #050806;
@@ -60,7 +53,6 @@ html.lenis body {
   --accent-pink: #39ff14;
   --accent-blue: #00b86b;
 
-  /* Ambient accent channels (space-separated RGB for rgb( / a ) glows) */
   --accent-rgb: 0 255 156;
   --accent2-rgb: 57 255 20;
   --accent3-rgb: 0 184 107;
@@ -88,7 +80,6 @@ html.lenis body {
   --color-cyan-500: #00d9a0;
 }
 
-/* Cyberpunk — green → electric cyan → blue, on blue-black */
 [data-theme="cyberpunk"] {
   --background: #03060c;
   --foreground: #c8f7ff;
@@ -127,7 +118,6 @@ html.lenis body {
   --color-cyan-500: #22d3ee;
 }
 
-/* Amber — warm amber → gold → green, on warm-black */
 [data-theme="amber"] {
   --glitch-a: 255 62 52;
   --glitch-b: 90 226 255;
@@ -175,8 +165,6 @@ body {
   line-height: 1.6;
 }
 
-/* Subtle per-theme section alternation — recolours with the active palette
-   instead of a fixed hex, so About/Experience/Contact stay consistent. */
 .section-tint {
   background-color: color-mix(in oklab, var(--muted-bg) 55%, transparent);
 }
@@ -192,8 +180,6 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.025em;
 }
 
-/* Remap Tailwind gray tokens to a green-tinted near-black ramp.
-   Lighter steps read as text, darker steps as surfaces/borders. */
 .dark {
   --color-gray-50: #d8ffe6;
   --color-gray-100: #b9f7cf;
@@ -208,9 +194,6 @@ h1, h2, h3, h4, h5, h6 {
   --color-gray-950: #040805;
 }
 
-/* Surfaces and borders follow the active theme's palette (--card-bg /
-   --background / --muted-bg / --card-border) instead of a fixed green ramp,
-   so cards and inputs recolour on cyberpunk and amber, not just matrix. */
 .dark .bg-gray-50 { background-color: var(--muted-bg); }
 .dark .bg-gray-100 { background-color: var(--card-bg); }
 .dark .bg-gray-200 { background-color: color-mix(in oklab, var(--card-bg), white 7%); }
@@ -289,8 +272,6 @@ h1, h2, h3, h4, h5, h6 {
   transition-duration: 150ms;
 }
 
-/* Background accents layered over the MatrixRain canvas (see HeroBackground / SectionBackground) */
-
 @keyframes glow-pulse {
   0%, 100% { opacity: 0.45; transform: scale(1); }
   50%      { opacity: 0.75; transform: scale(1.08); }
@@ -348,7 +329,6 @@ h1, h2, h3, h4, h5, h6 {
   will-change: opacity, transform;
 }
 
-/* Respect reduced-motion: keep the visuals, drop the animation */
 @media (prefers-reduced-motion: reduce) {
   .hero-glow,
   .section-glow,
@@ -357,9 +337,6 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* Per-theme treatments — each theme gets its own motif, not just a recolor */
-
-/* Cyberpunk: synthwave perspective grid + horizon glow */
 .synthwave-glow {
   position: fixed;
   left: 50%;
@@ -409,7 +386,6 @@ h1, h2, h3, h4, h5, h6 {
   to   { background-position: 0 44px; }
 }
 
-/* Amber: CRT scanlines + flicker + vignette */
 .amber-vignette {
   position: fixed;
   inset: 0;
@@ -437,7 +413,6 @@ h1, h2, h3, h4, h5, h6 {
     radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.4) 100%);
   animation: crt-flicker 4s steps(40) infinite;
 }
-/* Lighter scanline veil for cyberpunk */
 .crt-overlay-soft {
   background:
     repeating-linear-gradient(
@@ -457,7 +432,6 @@ h1, h2, h3, h4, h5, h6 {
   80% { opacity: 0.97; }
 }
 
-/* Headline effects (hero name via .theme-headline) */
 [data-theme="cyberpunk"] .theme-headline {
   filter: drop-shadow(0 0 10px rgb(var(--accent-rgb) / 0.5));
   animation: glitch-jitter 4.5s steps(1) infinite;
@@ -488,7 +462,6 @@ h1, h2, h3, h4, h5, h6 {
   78% { opacity: 0.93; }
 }
 
-/* Cyberpunk: sharp corners + neon terminal window */
 [data-theme="cyberpunk"] .rounded-full { border-radius: 0.375rem; }
 [data-theme="cyberpunk"] .rounded-2xl,
 [data-theme="cyberpunk"] .rounded-xl { border-radius: 0.25rem; }
@@ -502,7 +475,6 @@ h1, h2, h3, h4, h5, h6 {
     inset 0 0 40px rgb(var(--accent-rgb) / 0.05);
 }
 
-/* Amber: double-bordered, beveled terminal window */
 [data-theme="amber"] .terminal-window {
   border-radius: 0.25rem;
   border-style: double;
@@ -522,7 +494,6 @@ h1, h2, h3, h4, h5, h6 {
   animation: caret-blink 1s steps(1) infinite;
 }
 
-/* Cyberpunk hero: neon HUD nameplate */
 .hud-panel {
   position: relative;
   padding: 1.75rem 2rem;
@@ -580,7 +551,6 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 0.85;
 }
 
-/* Amber hero: retro CRT boot screen */
 .crt-boot {
   padding: 1.5rem 1.75rem;
   border: 1px solid rgb(var(--accent-rgb) / 0.3);

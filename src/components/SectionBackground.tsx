@@ -1,4 +1,3 @@
-// The `type` prop is kept for call-site compatibility; the terminal motif is uniform site-wide.
 type SceneType = "particles" | "nodes" | "wave";
 
 interface SectionBackgroundProps {

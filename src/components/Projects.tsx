@@ -10,7 +10,6 @@ import { gridContainerVariants, cardVariants, useSectionInView } from "@/lib/mot
 import ProjectCard from "@/components/ProjectCard";
 import SectionHeading from "@/components/SectionHeading";
 
-// The home section shows only a glimpse; the full list lives at /projects.
 const GLIMPSE_COUNT = 3;
 
 export default function Projects() {

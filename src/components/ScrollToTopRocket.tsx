@@ -6,11 +6,11 @@ import { useLenis } from "lenis/react";
 import { Rocket } from "lucide-react";
 import { useThrottledScroll, useIsMobile } from "@/lib/hooks";
 
-const SCROLL_THRESHOLD = 300; // px before button appears
-const ANIMATION_DURATION = 800; // ms for rocket launch
-const ROCKET_EXIT_DISTANCE = -200; // vh units to fly off screen
-const BUTTON_SIZE = 48; // px
-const BUTTON_OFFSET = 24; // px from edges
+const SCROLL_THRESHOLD = 300;
+const ANIMATION_DURATION = 800;
+const ROCKET_EXIT_DISTANCE = -200;
+const BUTTON_SIZE = 48;
+const BUTTON_OFFSET = 24;
 
 type RocketState = "idle" | "launching" | "launched";
 
@@ -31,7 +31,6 @@ function playRocketSound() {
     filter.frequency.exponentialRampToValueAtTime(800, now + duration);
     filter.Q.value = 2;
 
-    // Frequency sweep for rocket launch feel
     oscillator.type = "sawtooth";
     oscillator.frequency.setValueAtTime(150, now);
     oscillator.frequency.exponentialRampToValueAtTime(600, now + duration * 0.2);
@@ -46,7 +45,6 @@ function playRocketSound() {
     filter.connect(gainNode);
     gainNode.connect(audioContext.destination);
 
-    // Add a subtle high-frequency hiss
     const noiseOsc = audioContext.createOscillator();
     const noiseGain = audioContext.createGain();
     const noiseFilter = audioContext.createBiquadFilter();
@@ -75,7 +73,6 @@ function playRocketSound() {
       audioContext.close();
     }, duration * 1000 + 100);
   } catch {
-    // Audio not supported or blocked - fail silently
   }
 }
 
@@ -85,7 +82,6 @@ export default function ScrollToTopRocket() {
   const prefersReducedMotion = useReducedMotion();
   const isLaunchingRef = useRef(false);
   const isMobile = useIsMobile();
-  // undefined when smooth scroll is disabled (reduced motion) — we fall back.
   const lenis = useLenis();
 
   useThrottledScroll((scrollY) => {
@@ -109,8 +105,6 @@ export default function ScrollToTopRocket() {
       playRocketSound();
     }
 
-    // Route through Lenis when active so it doesn't fight the smooth-scroll
-    // rAF loop; otherwise fall back to the native API.
     const scrollToTop = () => {
       if (lenis && !prefersReducedMotion) {
         lenis.scrollTo(0, { duration: 1.1 });
@@ -123,7 +117,6 @@ export default function ScrollToTopRocket() {
     };
 
     if (prefersReducedMotion) {
-      // Reduced motion: instant scroll, simple fade
       scrollToTop();
       setIsVisible(false);
       setRocketState("launched");
@@ -131,7 +124,6 @@ export default function ScrollToTopRocket() {
       return;
     }
 
-    // Start scroll with slight delay to sync with animation
     setTimeout(scrollToTop, 50);
 
     setTimeout(() => {
@@ -236,11 +228,8 @@ export default function ScrollToTopRocket() {
     <AnimatePresence mode="wait">
       {isVisible && (
         <motion.div
-          className="fixed z-50"
-          style={{
-            bottom: BUTTON_OFFSET,
-            right: BUTTON_OFFSET,
-          }}
+          className="fixed bottom-6 z-50 md:bottom-[4.25rem]"
+          style={{ right: BUTTON_OFFSET }}
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -275,7 +264,6 @@ export default function ScrollToTopRocket() {
             whileTap={rocketState === "idle" ? { scale: 0.95 } : undefined}
             aria-label="Scroll to top"
           >
-            {/* Glow ring static on mobile for performance */}
             {isMobile ? (
               <div
                 className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400 opacity-50"

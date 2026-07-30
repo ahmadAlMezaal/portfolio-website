@@ -1,6 +1,5 @@
 import type { Project, ProjectStatus } from "@/types";
 
-// Sort projects by: featured > live > in_progress > private (stable sort)
 export const sortProjects = (projectList: Project[]): Project[] => {
   const statusOrder: Record<ProjectStatus | "undefined", number> = {
     live: 1,

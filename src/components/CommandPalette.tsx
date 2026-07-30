@@ -23,13 +23,15 @@ import {
   Search,
   CornerDownLeft,
   BookOpen,
+  Maximize2,
+  Minimize2,
 } from "lucide-react";
 import { navLinks, personalInfo } from "@/lib/data";
 import { socialLabelMap } from "@/lib/social";
 import { assetPath, isCvAvailable } from "@/lib/utils";
-import { useClipboard } from "@/lib/hooks";
+import { useClipboard, useFullscreen } from "@/lib/hooks";
 import { THEMES, useTheme } from "./ThemeProvider";
-import { openShortcuts } from "./shortcutsBus";
+import { onOpenCommandPalette, openShortcuts } from "./shortcutsBus";
 
 type Group = "Navigation" | "Theme" | "Actions" | "Social";
 const GROUP_ORDER: Group[] = ["Navigation", "Theme", "Actions", "Social"];
@@ -42,10 +44,9 @@ type Command = {
   keywords?: string;
   hint?: string;
   perform: () => void;
-  feedback?: string; // brief confirmation shown before closing
+  feedback?: string;
 };
 
-// Subsequence fuzzy score. Returns 0 when not all query chars are present.
 function fuzzyScore(query: string, text: string): number {
   const q = query.toLowerCase();
   const t = text.toLowerCase();
@@ -84,6 +85,11 @@ function scrollToHash(hash: string) {
 export default function CommandPalette() {
   const { theme, setTheme } = useTheme();
   const { copy } = useClipboard();
+  const {
+    isFullscreen,
+    supported: fullscreenSupported,
+    toggle: toggleFullscreen,
+  } = useFullscreen();
   const router = useRouter();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -94,7 +100,6 @@ export default function CommandPalette() {
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
-  // Hash links scroll in place on the home page, navigate home elsewhere.
   const navigate = useCallback(
     (href: string) => {
       if (!href.startsWith("#")) {
@@ -165,6 +170,18 @@ export default function CommandPalette() {
       },
     ];
 
+    if (fullscreenSupported) {
+      cmds.push({
+        id: "action-fullscreen",
+        label: isFullscreen ? "Exit fullscreen" : "Go fullscreen",
+        group: "Actions",
+        icon: isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />,
+        keywords: "full screen immersive presentation zen expand",
+        hint: "F",
+        perform: toggleFullscreen,
+      });
+    }
+
     if (isCvAvailable()) {
       cmds.push({
         id: "action-cv",
@@ -195,9 +212,16 @@ export default function CommandPalette() {
     }
 
     return cmds;
-  }, [theme, setTheme, copy, navigate]);
+  }, [
+    theme,
+    setTheme,
+    copy,
+    navigate,
+    isFullscreen,
+    fullscreenSupported,
+    toggleFullscreen,
+  ]);
 
-  // Sections in fixed group order, each fuzzy-filtered and ranked.
   const { sections, flat } = useMemo(() => {
     const scored = commands
       .map((c) => ({
@@ -227,6 +251,8 @@ export default function CommandPalette() {
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, []);
+
+  useEffect(() => onOpenCommandPalette(() => setOpen(true)), []);
 
   useEffect(() => {
     if (open) {

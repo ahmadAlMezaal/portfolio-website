@@ -1,6 +1,11 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  useSyncExternalStore,
+} from "react";
 
-// Detects mobile via media query + touch; returns false during SSR to avoid hydration mismatch.
 export function useIsMobile(breakpoint: number = 768): boolean {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -40,7 +45,6 @@ export function usePrefersReducedMotion(): boolean {
   return prefersReducedMotion;
 }
 
-// True on mobile or when the user prefers reduced motion.
 export function useShouldReduceMotion(): boolean {
   const isMobile = useIsMobile();
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -48,7 +52,46 @@ export function useShouldReduceMotion(): boolean {
   return isMobile || prefersReducedMotion;
 }
 
-// rAF-throttled "scrolled past threshold" flag.
+function subscribeFullscreen(onChange: () => void): () => void {
+  document.addEventListener("fullscreenchange", onChange);
+  return () => document.removeEventListener("fullscreenchange", onChange);
+}
+
+function subscribeNever(): () => void {
+  return () => {};
+}
+
+export function useFullscreen(): {
+  isFullscreen: boolean;
+  supported: boolean;
+  toggle: () => void;
+} {
+  const isFullscreen = useSyncExternalStore(
+    subscribeFullscreen,
+    () => document.fullscreenElement !== null,
+    () => false
+  );
+
+  const supported = useSyncExternalStore(
+    subscribeNever,
+    () => typeof document.documentElement.requestFullscreen === "function",
+    () => false
+  );
+
+  const toggle = useCallback(() => {
+    const root = document.documentElement;
+    if (typeof root.requestFullscreen !== "function") return;
+
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    } else {
+      root.requestFullscreen().catch(() => {});
+    }
+  }, []);
+
+  return { isFullscreen, supported, toggle };
+}
+
 export function useScrollPosition(threshold: number = 0): boolean {
   const [isPastThreshold, setIsPastThreshold] = useState(false);
   const rafRef = useRef<number | null>(null);
@@ -91,7 +134,6 @@ export function useScrollPosition(threshold: number = 0): boolean {
   return isPastThreshold;
 }
 
-// Clipboard copy with transient "copied" flag; falls back to textarea + execCommand on insecure contexts.
 export function useClipboard(resetMs: number = 2000): {
   copied: boolean;
   copy: (text: string) => Promise<boolean>;

@@ -4,7 +4,6 @@ import { useTheme } from "./ThemeProvider";
 import MatrixRain from "./MatrixRain";
 import SynthwaveGrid from "./SynthwaveGrid";
 
-// Swaps the whole background motif per theme, not just the palette.
 export default function ThemeBackground() {
   const { theme } = useTheme();
 
@@ -21,6 +20,5 @@ export default function ThemeBackground() {
     );
   }
 
-  // matrix (default)
   return <MatrixRain />;
 }

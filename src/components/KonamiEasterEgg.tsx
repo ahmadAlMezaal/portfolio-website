@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { usePrefersReducedMotion } from "@/lib/hooks";
 import { randomGlyph } from "@/lib/glyphs";
 
-// ↑ ↑ ↓ ↓ ← → ← → B A
 const SEQUENCE = [
   "arrowup",
   "arrowup",
@@ -57,7 +56,6 @@ export default function KonamiEasterEgg() {
           trigger();
         }
       } else {
-        // Allow a mistake to restart cleanly if it matches the first key.
         progress.current = key === SEQUENCE[0] ? 1 : 0;
       }
     };

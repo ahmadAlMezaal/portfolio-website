@@ -1,5 +1,3 @@
-// Build-time syntax highlighting — runs in server components during
-// `next build`, so shiki never ships to the client.
 
 import { codeToHtml } from "shiki";
 import type { Learning, LearningLanguage } from "@/types";

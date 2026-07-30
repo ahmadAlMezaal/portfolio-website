@@ -1,4 +1,3 @@
-// CSS-only accents over the MatrixRain canvas; motion auto-disabled under prefers-reduced-motion via globals.css.
 export default function HeroBackground() {
   return (
     <div

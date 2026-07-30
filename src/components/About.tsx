@@ -43,7 +43,6 @@ export default function About() {
 
   return (
     <section id="about" className="relative py-20 section-tint overflow-hidden">
-      {/* Animated CSS background - skipped on mobile / reduced-motion */}
       {!shouldReduceMotion && <SectionBackground type="particles" />}
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -62,7 +61,6 @@ export default function About() {
           </motion.div>
 
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Initials Section - simplified on mobile for performance */}
             <motion.div variants={sectionItemVariants} className="relative">
               <div className="relative w-80 h-80 mx-auto">
                 {shouldReduceMotion ? (

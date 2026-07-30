@@ -6,6 +6,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import ScrollReset from "@/components/ScrollReset";
 import ThemeBackground from "@/components/ThemeBackground";
 import ScrollToTopRocket from "@/components/ScrollToTopRocket";
+import StatusBar from "@/components/StatusBar";
 import CommandPalette from "@/components/CommandPalette";
 import ShortcutsOverlay from "@/components/ShortcutsOverlay";
 import KonamiEasterEgg from "@/components/KonamiEasterEgg";
@@ -15,7 +16,6 @@ import { getBasePath } from "@/lib/utils";
 
 const siteUrl = siteMetadata.siteUrl;
 
-// Single typeface for the whole site — a developer/terminal monospace.
 const jetBrainsMono = JetBrains_Mono({
   variable: "--font-mono-next",
   subsets: ["latin"],
@@ -79,8 +79,6 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    // Add your Google Search Console verification code here after setup
-    // google: "your-google-verification-code",
   },
 };
 
@@ -93,11 +91,9 @@ export default function RootLayout({
     <html
       lang="en"
       className={`dark ${jetBrainsMono.variable}`}
-      // The anti-flash script below sets data-theme before hydration.
       suppressHydrationWarning
     >
       <head>
-        {/* Apply the saved theme before paint to avoid a flash of the default. */}
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}})();`,
@@ -112,6 +108,7 @@ export default function RootLayout({
             <JsonLd url={siteUrl} />
             {children}
             <ScrollToTopRocket />
+            <StatusBar />
             <CommandPalette />
             <ShortcutsOverlay />
             <KonamiEasterEgg />
