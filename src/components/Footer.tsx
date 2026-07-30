@@ -3,11 +3,11 @@
 import { motion } from "framer-motion";
 import { Heart } from "lucide-react";
 import { personalInfo, navLinks } from "@/lib/data";
-import NavAnchor from "./NavAnchor";
+import { NavAnchor } from "./NavAnchor";
 import { socialIconMap, socialLabelMap } from "@/lib/social";
 import { useIsMobile } from "@/lib/hooks";
 
-const Footer = () => {
+export const Footer = () => {
   const isMobile = useIsMobile();
   const socialLinks = personalInfo.socialLinks.map((link) => ({
     icon: socialIconMap[link.platform],
@@ -100,5 +100,3 @@ const Footer = () => {
     </footer>
   );
 };
-
-export default Footer;

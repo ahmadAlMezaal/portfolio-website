@@ -82,7 +82,7 @@ const scrollToHash = (hash: string) => {
   document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
 };
 
-const CommandPalette = () => {
+export const CommandPalette = () => {
   const { theme, setTheme } = useTheme();
   const { copy } = useClipboard();
   const {
@@ -406,5 +406,3 @@ const CommandPalette = () => {
     </AnimatePresence>
   );
 };
-
-export default CommandPalette;

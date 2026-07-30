@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Briefcase, MapPin, Calendar, CheckCircle2, TrendingUp, ExternalLink } from "lucide-react";
 import { experiences } from "@/lib/data";
 import type { Experience as ExperienceType, ExperienceRole } from "@/types";
-import SectionHeading from "./SectionHeading";
+import { SectionHeading } from "./SectionHeading";
 import { slowSectionContainerVariants, sectionItemVariants, useSectionInView } from "@/lib/motion";
 
 const hasMultipleRoles = (exp: ExperienceType): exp is ExperienceType & { roles: ExperienceRole[] } => {
@@ -84,7 +84,7 @@ const CompanyName = ({ name, url, isMultiRole }: { name: string; url?: string; i
   return <span className={baseClasses}>{name}</span>;
 };
 
-const Experience = () => {
+export const Experience = () => {
   const { ref, isInView } = useSectionInView();
 
   const renderRoleContent = (
@@ -264,5 +264,3 @@ const Experience = () => {
     </section>
   );
 };
-
-export default Experience;

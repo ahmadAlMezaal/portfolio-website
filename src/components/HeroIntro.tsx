@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { personalInfo } from "@/lib/data";
-import DecodeText from "./DecodeText";
+import { DecodeText } from "./DecodeText";
 import { useTheme } from "./ThemeProvider";
 
 type Props = { roleText: string };
@@ -137,11 +137,9 @@ const AmberIntro = ({ roleText }: Props) => {
   );
 };
 
-const HeroIntro = ({ roleText }: Props) => {
+export const HeroIntro = ({ roleText }: Props) => {
   const { theme } = useTheme();
   if (theme === "cyberpunk") return <CyberpunkIntro roleText={roleText} />;
   if (theme === "amber") return <AmberIntro roleText={roleText} />;
   return <MatrixIntro roleText={roleText} />;
 };
-
-export default HeroIntro;

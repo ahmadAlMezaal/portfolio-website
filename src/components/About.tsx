@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 import { MapPin, Briefcase, GraduationCap, Heart, Code2, Database, Cloud, Terminal } from "lucide-react";
 import { personalInfo, stats, focusAreas } from "@/lib/data";
 import { useShouldReduceMotion } from "@/lib/hooks";
-import SectionBackground from "./SectionBackground";
-import SectionHeading from "./SectionHeading";
+import { SectionBackground } from "./SectionBackground";
+import { SectionHeading } from "./SectionHeading";
 import { sectionContainerVariants, sectionItemVariants, useSectionInView } from "@/lib/motion";
 
-const About = () => {
+export const About = () => {
   const { ref, isInView } = useSectionInView();
   const shouldReduceMotion = useShouldReduceMotion();
 
@@ -274,5 +274,3 @@ const About = () => {
     </section>
   );
 };
-
-export default About;

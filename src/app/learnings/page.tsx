@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import ThemeSwitcher from "@/components/ThemeSwitcher";
-import Learnings from "@/components/Learnings";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { Learnings } from "@/components/Learnings";
 import { learnings, currentlyLearning, personalInfo, siteMetadata } from "@/lib/data";
 import { highlightLearning } from "@/lib/highlight";
 

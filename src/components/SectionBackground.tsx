@@ -5,7 +5,7 @@ interface SectionBackgroundProps {
   className?: string;
 }
 
-const SectionBackground = ({
+export const SectionBackground = ({
   className = "",
 }: SectionBackgroundProps) => {
   return (
@@ -18,5 +18,3 @@ const SectionBackground = ({
     </div>
   );
 };
-
-export default SectionBackground;

@@ -1,6 +1,6 @@
 "use client";
 
-import DecodeText from "./DecodeText";
+import { DecodeText } from "./DecodeText";
 
 type Props = {
   title: string;
@@ -9,7 +9,7 @@ type Props = {
   cycle?: 1 | 2 | 3;
 };
 
-const SectionHeading = ({
+export const SectionHeading = ({
   title,
   subtitle,
   as: Tag = "h2",
@@ -32,5 +32,3 @@ const SectionHeading = ({
     </>
   );
 };
-
-export default SectionHeading;

@@ -4,7 +4,7 @@ import { ReactLenis } from "lenis/react";
 import type { ReactNode } from "react";
 import { usePrefersReducedMotion } from "@/lib/hooks";
 
-const SmoothScroll = ({ children }: { children: ReactNode }) => {
+export const SmoothScroll = ({ children }: { children: ReactNode }) => {
   const prefersReducedMotion = usePrefersReducedMotion();
 
   if (prefersReducedMotion) return <>{children}</>;
@@ -22,5 +22,3 @@ const SmoothScroll = ({ children }: { children: ReactNode }) => {
     </ReactLenis>
   );
 };
-
-export default SmoothScroll;

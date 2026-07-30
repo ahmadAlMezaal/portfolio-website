@@ -7,12 +7,12 @@ import { ArrowRight } from "lucide-react";
 import { projects } from "@/lib/data";
 import { sortProjects } from "@/lib/projects";
 import { gridContainerVariants, cardVariants, useSectionInView } from "@/lib/motion";
-import ProjectCard from "@/components/ProjectCard";
-import SectionHeading from "@/components/SectionHeading";
+import { ProjectCard } from "@/components/ProjectCard";
+import { SectionHeading } from "@/components/SectionHeading";
 
 const GLIMPSE_COUNT = 3;
 
-const Projects = () => {
+export const Projects = () => {
   const { ref, isInView } = useSectionInView();
 
   const glimpse = useMemo(
@@ -63,5 +63,3 @@ const Projects = () => {
     </section>
   );
 };
-
-export default Projects;

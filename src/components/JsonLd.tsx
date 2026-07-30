@@ -6,7 +6,7 @@ interface JsonLdProps {
   url: string;
 }
 
-const JsonLd = ({ url }: JsonLdProps) => {
+export const JsonLd = ({ url }: JsonLdProps) => {
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -86,5 +86,3 @@ const JsonLd = ({ url }: JsonLdProps) => {
     </>
   );
 };
-
-export default JsonLd;
