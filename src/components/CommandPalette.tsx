@@ -285,6 +285,18 @@ export const CommandPalette = () => {
   useEffect(() => onOpenCommandPalette(() => setOpen(true)), []);
 
   useEffect(() => {
+    if (!open) return;
+
+    const onWheel = (event: WheelEvent) => {
+      if (listRef.current?.contains(event.target as Node)) return;
+      event.preventDefault();
+    };
+
+    document.addEventListener("wheel", onWheel, { passive: false });
+    return () => document.removeEventListener("wheel", onWheel);
+  }, [open]);
+
+  useEffect(() => {
     if (open) {
       setQuery("");
       setActiveIndex(0);
@@ -332,6 +344,7 @@ export const CommandPalette = () => {
     <AnimatePresence>
       {open && (
         <motion.div
+          data-lenis-prevent
           className="fixed inset-0 z-[60] flex items-start justify-center px-4 pt-[15vh]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -372,7 +385,10 @@ export const CommandPalette = () => {
               </kbd>
             </div>
 
-            <div ref={listRef} className="max-h-[50vh] overflow-y-auto p-2">
+            <div
+              ref={listRef}
+              className="max-h-[50vh] overflow-y-auto overscroll-contain p-2"
+            >
               {flat.length === 0 ? (
                 <p className="px-3 py-8 text-center text-sm font-mono text-gray-400">
                   {"// no matching command"}

@@ -40,10 +40,20 @@ export const ShortcutsOverlay = () => {
 
   useEffect(() => onOpenShortcuts(() => setOpen(true)), []);
 
+  useEffect(() => {
+    if (!open) return;
+
+    const onWheel = (event: WheelEvent) => event.preventDefault();
+
+    document.addEventListener("wheel", onWheel, { passive: false });
+    return () => document.removeEventListener("wheel", onWheel);
+  }, [open]);
+
   return (
     <AnimatePresence>
       {open && (
         <motion.div
+          data-lenis-prevent
           className="fixed inset-0 z-[60] flex items-center justify-center px-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
