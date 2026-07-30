@@ -106,7 +106,7 @@ ALL personal content lives outside this repo, in the private
 [`portfolio-data`](https://github.com/ahmadAlMezaal/portfolio-data) repo as
 `portfolio.json` (shaped as `PortfolioConfig` from `@/types`). This repo is
 public and contains no personal data beyond deployment infrastructure
-(`public/CNAME`, the committed `public/og-image.png`, and project logos in
+(`public/CNAME`, the committed `public/og-*.png` cards, and project logos in
 `public/assets/`).
 
 ### How content is fetched
@@ -132,8 +132,7 @@ public and contains no personal data beyond deployment infrastructure
 - The scripts are TypeScript run directly by Node 24's type stripping
   (`node scripts/sync-data.ts`), which is why imports between them carry an
   explicit `.ts` extension and `allowImportingTsExtensions` is set in
-  `tsconfig.json`. `package.json` declares `"type": "module"`; the one
-  CommonJS script is `generate-og-image.cjs`.
+  `tsconfig.json`, and why `package.json` declares `"type": "module"`.
 - `data.ts` uses that file when present (non-null), otherwise falls back to
   the placeholder `data.config.example.ts`, so clones build out of the box
   with template content.
@@ -488,6 +487,25 @@ no `id` anchors, and pointing each article at `#some-slug` would assert a
 fragment that does not exist. Give the cards real anchors first if you want
 per-entry URLs. The component returns `null` when `learnings` is empty rather
 than emitting an empty collection.
+
+Each route ships its own Open Graph card. `pageMetadata()` takes an optional
+`image` (a filename in `public/`) and defaults to `og-image.png`.
+
+`public/og-image.png` is **hand-made** and is not produced by any script —
+`scripts/generate-og-images.ts` writes the three sub-page cards only. The
+repo previously carried a `generate-og-image.js` that claimed to produce the
+home card but rendered a purple gradient in system-ui: it predated the
+terminal redesign and had never been re-run, so running it silently replaced
+the real card with an off-brand one. Never regenerate an asset you have not
+looked at first.
+
+The sub-page cards are rendered with satori and `@resvg/resvg-js`, with
+JetBrains Mono supplied from `@fontsource/jetbrains-mono` as a font buffer.
+That is deliberate: an SVG-to-PNG path relies on the font being installed
+system-wide, and it is not on a clean machine, so the text silently falls
+back to whatever monospace exists. Chips are derived from the config
+(featured project tags, learning categories, bookmark folder names) and the
+row is omitted when the source is empty.
 
 The font is loaded as a variable font — `JetBrains_Mono({ subsets, display })`
 with no `weight` array. Listing explicit weights emits five static files and

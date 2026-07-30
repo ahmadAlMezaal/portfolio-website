@@ -13,6 +13,7 @@ export const metadata: Metadata = pageMetadata({
   description:
     "Patterns, laws, and paradigms collected in production — with code examples in TypeScript, Go, and Python.",
   path: "/learnings/",
+  image: "og-learnings.png",
 });
 
 const LearningsPage = async () => {
