@@ -3,18 +3,35 @@ import { siteMetadata } from "@/lib/data";
 
 export const dynamic = "force-static";
 
+const lastModified = new Date();
+
 const sitemap = (): MetadataRoute.Sitemap => {
   const { siteUrl } = siteMetadata;
   return [
-    { url: siteUrl, changeFrequency: "monthly", priority: 1 },
-    { url: `${siteUrl}/#about`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${siteUrl}/#skills`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${siteUrl}/#experience`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${siteUrl}/#projects`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${siteUrl}/projects`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${siteUrl}/learnings`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${siteUrl}/bookmarks`, changeFrequency: "weekly", priority: 0.7 },
-    { url: `${siteUrl}/#contact`, changeFrequency: "monthly", priority: 0.7 },
+    {
+      url: `${siteUrl}/`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 1,
+    },
+    {
+      url: `${siteUrl}/projects/`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${siteUrl}/learnings/`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${siteUrl}/bookmarks/`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
   ];
 };
 

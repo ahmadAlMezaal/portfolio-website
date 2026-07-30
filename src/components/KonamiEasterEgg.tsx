@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { usePrefersReducedMotion } from "@/lib/hooks";
 import { randomGlyph } from "@/lib/glyphs";
 

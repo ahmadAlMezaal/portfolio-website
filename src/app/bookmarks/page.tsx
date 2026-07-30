@@ -3,16 +3,15 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { Bookmarks } from "@/components/Bookmarks";
-import { bookmarks, personalInfo, siteMetadata } from "@/lib/data";
+import { bookmarks, personalInfo } from "@/lib/data";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: `Bookmarks | ${personalInfo.name}`,
   description:
     "A filed collection of articles, repositories, packages and tools worth keeping — grouped by topic.",
-  alternates: {
-    canonical: `${siteMetadata.siteUrl}/bookmarks`,
-  },
-};
+  path: "/bookmarks/",
+});
 
 const BookmarksPage = () => (
   <main className="min-h-screen">

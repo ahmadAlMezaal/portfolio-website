@@ -1,27 +1,38 @@
 # Portfolio Website
 
-A modern, animated portfolio built with Next.js 16, React 19, and Three.js.
+A terminal-styled personal portfolio built with Next.js 16 and React 19,
+statically exported to GitHub Pages.
 
 **Live:** [theaam.dev](https://theaam.dev)
 
 ## Features
 
-- **3D Animated Hero** - Interactive Three.js background with floating particles
-- **Pull-Cord Theme Toggle** - UK bathroom-style light bulb with string animation and click sound
-- **Bubble Theme Transition** - Colored bubble expands from click point when switching themes
-- **Mobile-First Projects** - Hover overlay on desktop, tap-friendly buttons on mobile
-- **SEO Optimized** - JSON-LD structured data, sitemap, Open Graph images
-- **Smooth Animations** - Framer Motion throughout with reduced motion support
+- **Three terminal palettes** - matrix code-rain, cyberpunk synthwave grid, and
+  amber CRT, each with its own hero treatment and background motif
+- **Keyboard-first** - `⌘K` command palette, `T` to cycle palette, `F` for
+  fullscreen, `?` for the cheatsheet
+- **Field Notes** - `/learnings` renders patterns and principles with a tabbed
+  code editor, highlighted at build time so no highlighter ships to the client
+- **Bookmarks** - `/bookmarks` is a browser-style bookmark manager with folder
+  sidebar, ranked search, and a navbar star menu
+- **Content out of the repo** - everything renders from a single
+  `portfolio.json` fetched at build time; the repo holds no personal data
+- **SEO** - per-route canonicals, Open Graph and Twitter cards, JSON-LD, and a
+  sitemap that matches the canonicals
+- **Smooth animations** - Motion throughout, with reduced-motion support
 
 ## Tech Stack
 
 | Category | Tech |
 |----------|------|
-| Framework | Next.js 16 (App Router) |
+| Framework | Next.js 16 (App Router, `output: "export"`) |
 | UI | React 19, Tailwind CSS 4 |
+| Language | TypeScript |
+| Animations | Motion (imported from `motion/react`) |
+| Smooth scroll | Lenis |
 | Syntax highlighting | shiki (build time only) |
-| Animations | Framer Motion |
-| Theming | Custom `ThemeProvider` (three terminal palettes) |
+| Icons | Lucide React |
+| Theming | Custom `ThemeProvider` (three terminal palettes, dark only) |
 
 ## Quick Start
 
@@ -37,7 +48,12 @@ pnpm dev
 
 # Build
 pnpm build
+
+# Build, then serve the static export locally
+pnpm preview
 ```
+
+There is no `pnpm start` — `next start` cannot serve a static export.
 
 ## Content
 
@@ -92,13 +108,15 @@ See [CLAUDE.md](./CLAUDE.md) for detailed configuration options.
 
 ```
 src/
-├── app/           # Next.js app router pages
+├── app/           # Routes: /, /projects, /learnings, /bookmarks, 404, robots, sitemap
 ├── components/    # React components
-│   ├── Hero.tsx           # Hero with 3D background
-│   ├── LightSwitch.tsx    # Pull-cord theme toggle
-│   ├── ThemeTransition.tsx # Bubble animation
+│   ├── Hero.tsx           # Hero section
+│   ├── HeroIntro.tsx      # Per-palette nameplate treatments
+│   ├── ThemeProvider.tsx  # Palette state + localStorage
+│   ├── CommandPalette.tsx # ⌘K palette
 │   └── ...
-└── lib/           # Data config & utilities
+├── lib/           # Data, metadata, hooks, motion variants, utilities
+└── types/         # Shared interfaces (PortfolioConfig lives here)
 ```
 
 ## License

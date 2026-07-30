@@ -3,17 +3,16 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { Learnings } from "@/components/Learnings";
-import { learnings, currentlyLearning, personalInfo, siteMetadata } from "@/lib/data";
+import { learnings, currentlyLearning, personalInfo } from "@/lib/data";
 import { highlightLearning } from "@/lib/highlight";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: `Field Notes | ${personalInfo.name}`,
   description:
     "Patterns, laws, and paradigms collected in production — with code examples in TypeScript, Go, and Python.",
-  alternates: {
-    canonical: `${siteMetadata.siteUrl}/learnings`,
-  },
-};
+  path: "/learnings/",
+});
 
 const LearningsPage = async () => {
   const items = await Promise.all(

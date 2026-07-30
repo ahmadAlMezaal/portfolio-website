@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { useLenis } from "lenis/react";
 import { Rocket } from "lucide-react";
 import { useThrottledScroll, useIsMobile } from "@/lib/hooks";

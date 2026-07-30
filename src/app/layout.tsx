@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -20,7 +20,6 @@ const jetBrainsMono = JetBrains_Mono({
   variable: "--font-mono-next",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
 });
 
 const basePath = getBasePath();
@@ -78,8 +77,11 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  verification: {
-  },
+};
+
+export const viewport: Viewport = {
+  colorScheme: "dark",
+  themeColor: "#050806",
 };
 
 const RootLayout = ({

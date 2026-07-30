@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { Settings } from "lucide-react";
 import { THEMES, useTheme } from "./ThemeProvider";
 import { isTyping } from "@/lib/utils";
