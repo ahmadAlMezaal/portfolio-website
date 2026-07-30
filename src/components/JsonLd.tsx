@@ -1,4 +1,4 @@
-import { personalInfo, siteMetadata } from "@/lib/data";
+import { learnings, personalInfo, siteMetadata } from "@/lib/data";
 
 const buildDate = new Date().toISOString().split("T")[0];
 
@@ -74,4 +74,34 @@ export const ProfileJsonLd = ({ url }: JsonLdProps) => {
   };
 
   return <LdScript schema={profilePageSchema} />;
+};
+
+export const LearningsJsonLd = ({ url }: JsonLdProps) => {
+  if (learnings.length === 0) return null;
+
+  const author = {
+    "@type": "Person",
+    name: personalInfo.name,
+    url: siteMetadata.siteUrl,
+  };
+
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Field Notes",
+    url,
+    author,
+    hasPart: learnings.map((learning) => ({
+      "@type": "TechArticle",
+      headline: learning.title,
+      abstract: learning.oneLiner,
+      articleSection: learning.category,
+      author,
+      inLanguage: "en",
+      isAccessibleForFree: true,
+      programmingLanguage: Object.keys(learning.code),
+    })),
+  };
+
+  return <LdScript schema={collectionSchema} />;
 };

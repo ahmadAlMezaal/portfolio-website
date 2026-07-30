@@ -3,7 +3,8 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { Learnings } from "@/components/Learnings";
-import { learnings, currentlyLearning, personalInfo } from "@/lib/data";
+import { LearningsJsonLd } from "@/components/JsonLd";
+import { learnings, currentlyLearning, personalInfo, siteMetadata } from "@/lib/data";
 import { highlightLearning } from "@/lib/highlight";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -24,6 +25,7 @@ const LearningsPage = async () => {
 
   return (
     <main className="min-h-screen">
+      <LearningsJsonLd url={`${siteMetadata.siteUrl}/learnings/`} />
       <Navbar />
       <Learnings items={items} currentlyLearning={currentlyLearning} />
       <Footer />
