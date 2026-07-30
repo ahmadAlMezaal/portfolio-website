@@ -17,7 +17,7 @@ const categoryIcons: Record<string, React.ReactNode> = {
   "Frontend & Mobile": <Code2 className="w-6 h-6" />,
 };
 
-export default function Skills() {
+const Skills = () => {
   const { ref, isInView } = useSectionInView();
   const shouldReduceMotion = useShouldReduceMotion();
 
@@ -84,4 +84,6 @@ export default function Skills() {
       </div>
     </section>
   );
-}
+};
+
+export default Skills;

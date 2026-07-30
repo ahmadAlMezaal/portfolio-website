@@ -9,12 +9,12 @@ type Props = {
   cycle?: 1 | 2 | 3;
 };
 
-export default function SectionHeading({
+const SectionHeading = ({
   title,
   subtitle,
   as: Tag = "h2",
   cycle = 1,
-}: Props) {
+}: Props) => {
   return (
     <>
       <Tag className="text-4xl sm:text-5xl font-bold mb-4">
@@ -31,4 +31,6 @@ export default function SectionHeading({
       )}
     </>
   );
-}
+};
+
+export default SectionHeading;

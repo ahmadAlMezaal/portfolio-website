@@ -8,7 +8,7 @@ import SectionBackground from "./SectionBackground";
 import SectionHeading from "./SectionHeading";
 import { sectionContainerVariants, sectionItemVariants, useSectionInView } from "@/lib/motion";
 
-export default function About() {
+const About = () => {
   const { ref, isInView } = useSectionInView();
   const shouldReduceMotion = useShouldReduceMotion();
 
@@ -273,4 +273,6 @@ export default function About() {
       </div>
     </section>
   );
-}
+};
+
+export default About;

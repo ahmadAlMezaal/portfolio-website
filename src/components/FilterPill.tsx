@@ -10,7 +10,7 @@ type Props = {
   badge?: ReactNode;
 };
 
-export default function FilterPill({ label, isActive, onClick, badge }: Props) {
+const FilterPill = ({ label, isActive, onClick, badge }: Props) => {
   return (
     <button
       onClick={onClick}
@@ -26,4 +26,6 @@ export default function FilterPill({ label, isActive, onClick, badge }: Props) {
       )}
     </button>
   );
-}
+};
+
+export default FilterPill;

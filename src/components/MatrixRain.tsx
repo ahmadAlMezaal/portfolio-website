@@ -9,7 +9,7 @@ const GLOW_RADIUS = 240;
 const REST_INTERVAL = 55;
 const SURGE_INTERVAL = 26;
 
-export default function MatrixRain() {
+const MatrixRain = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const surgeRef = useScrollSurge();
 
@@ -188,4 +188,6 @@ export default function MatrixRain() {
       className="fixed inset-0 -z-10 h-full w-full pointer-events-none opacity-40"
     />
   );
-}
+};
+
+export default MatrixRain;

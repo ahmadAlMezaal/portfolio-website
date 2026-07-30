@@ -6,7 +6,7 @@ import {
   useSyncExternalStore,
 } from "react";
 
-export function useIsMobile(breakpoint: number = 768): boolean {
+export const useIsMobile = (breakpoint: number = 768): boolean => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -24,9 +24,9 @@ export function useIsMobile(breakpoint: number = 768): boolean {
   }, [breakpoint]);
 
   return isMobile;
-}
+};
 
-export function usePrefersReducedMotion(): boolean {
+export const usePrefersReducedMotion = (): boolean => {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
@@ -43,29 +43,29 @@ export function usePrefersReducedMotion(): boolean {
   }, []);
 
   return prefersReducedMotion;
-}
+};
 
-export function useShouldReduceMotion(): boolean {
+export const useShouldReduceMotion = (): boolean => {
   const isMobile = useIsMobile();
   const prefersReducedMotion = usePrefersReducedMotion();
 
   return isMobile || prefersReducedMotion;
-}
+};
 
-function subscribeFullscreen(onChange: () => void): () => void {
+const subscribeFullscreen = (onChange: () => void): () => void => {
   document.addEventListener("fullscreenchange", onChange);
   return () => document.removeEventListener("fullscreenchange", onChange);
-}
+};
 
-function subscribeNever(): () => void {
+const subscribeNever = (): () => void => {
   return () => {};
-}
+};
 
-export function useFullscreen(): {
+export const useFullscreen = (): {
   isFullscreen: boolean;
   supported: boolean;
   toggle: () => void;
-} {
+} => {
   const isFullscreen = useSyncExternalStore(
     subscribeFullscreen,
     () => document.fullscreenElement !== null,
@@ -90,9 +90,9 @@ export function useFullscreen(): {
   }, []);
 
   return { isFullscreen, supported, toggle };
-}
+};
 
-export function useScrollPosition(threshold: number = 0): boolean {
+export const useScrollPosition = (threshold: number = 0): boolean => {
   const [isPastThreshold, setIsPastThreshold] = useState(false);
   const rafRef = useRef<number | null>(null);
   const lastScrollY = useRef(0);
@@ -132,12 +132,12 @@ export function useScrollPosition(threshold: number = 0): boolean {
   }, [threshold]);
 
   return isPastThreshold;
-}
+};
 
-export function useClipboard(resetMs: number = 2000): {
+export const useClipboard = (resetMs: number = 2000): {
   copied: boolean;
   copy: (text: string) => Promise<boolean>;
-} {
+} => {
   const [copied, setCopied] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -180,15 +180,15 @@ export function useClipboard(resetMs: number = 2000): {
   );
 
   return { copied, copy };
-}
+};
 
-export function useScrollSurge({
+export const useScrollSurge = ({
   enabled = true,
   onSurge,
 }: {
   enabled?: boolean;
   onSurge?: (surge: React.RefObject<number>) => void;
-} = {}): React.RefObject<number> {
+} = {}): React.RefObject<number> => {
   const surgeRef = useRef(0);
   const lastScrollYRef = useRef<number | null>(null);
 
@@ -207,12 +207,12 @@ export function useScrollSurge({
   );
 
   return surgeRef;
-}
+};
 
-export function useThrottledScroll(
+export const useThrottledScroll = (
   callback: (scrollY: number) => void,
   deps: React.DependencyList = []
-): void {
+): void => {
   const rafRef = useRef<number | null>(null);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const stableCallback = useCallback(callback, deps);
@@ -240,4 +240,4 @@ export function useThrottledScroll(
       }
     };
   }, [stableCallback]);
-}
+};

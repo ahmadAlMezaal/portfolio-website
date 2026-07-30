@@ -30,11 +30,11 @@ const ThemeContext = createContext<ThemeContextValue>({
   setTheme: () => {},
 });
 
-export function useTheme() {
+export const useTheme = () => {
   return useContext(ThemeContext);
-}
+};
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
+export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setThemeState] = useState<Theme>(DEFAULT_THEME);
   const switchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -79,4 +79,4 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       {children}
     </ThemeContext.Provider>
   );
-}
+};

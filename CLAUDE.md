@@ -232,6 +232,43 @@ Colors are defined as CSS variables in `globals.css`:
 - Dark theme: Near-black background (`#0a0a0a`), light text
 - Both themes share accent colors (purple/pink/blue gradient)
 
+## Code Style
+
+### Arrow functions only
+
+Every function in `src/` and `scripts/` is an arrow function assigned to a
+`const`. There are no `function` declarations and no `function` expressions
+anywhere in the codebase — components, hooks, helpers, callbacks and build
+scripts alike.
+
+```typescript
+export const assetPath = (path: string): string => { ... };
+export const useScrollPosition = (threshold: number = 0): boolean => { ... };
+
+const Navbar = () => { ... };
+
+export default Navbar;
+```
+
+Components declare the const first and `export default` it on a separate line,
+so the component keeps its name for React DevTools and Fast Refresh.
+
+This is enforced by ESLint (`eslint.config.mjs`), so `yarn lint` fails on any
+`function` keyword:
+
+- `func-style: ["error", "expression", { allowArrowFunctions: true }]`
+- `prefer-arrow-callback`
+- `no-restricted-syntax` blocking `FunctionDeclaration` and `FunctionExpression`
+
+Two consequences worth remembering:
+
+- **Never `export default () => {}`.** An anonymous default export loses the
+  component name in DevTools and breaks Fast Refresh. Always name the const
+  and export it on its own line.
+- **No hoisting.** A `const` arrow is in the temporal dead zone until its
+  definition is evaluated, so module-level code (as opposed to code inside
+  another function) can only call helpers declared above it.
+
 ## Commands
 
 ```bash
@@ -280,6 +317,9 @@ public/
   ```
   Pre-existing banners may stay, but new sections get no banner — at most a
   short single-line comment when something genuinely needs explaining.
+
+- Arrow functions only — never write a `function` declaration or expression.
+  See "Code Style" above; ESLint rejects them.
 
 - All content flows through `portfolio-data.json` (or the example fallback) →
   `data.ts` → components; never hardcode personal data in components

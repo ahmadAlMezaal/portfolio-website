@@ -21,7 +21,7 @@ const title = escapeXml(data.personalInfo.title);
 const tagline = escapeXml(data.personalInfo.tagline);
 const domain = escapeXml(data.siteMetadata.siteUrl.replace(/^https?:\/\//, ''));
 
-async function generateOGImage() {
+const generateOGImage = async () => {
   let sharp;
   try {
     sharp = require('sharp');
@@ -111,6 +111,6 @@ async function generateOGImage() {
     .toFile(outputPath);
 
   console.log(`✓ OG image generated at: ${outputPath}`);
-}
+};
 
 generateOGImage().catch(console.error);

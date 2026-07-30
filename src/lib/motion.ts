@@ -27,8 +27,8 @@ export const cardVariants: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
-export function useSectionInView() {
+export const useSectionInView = () => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   return { ref, isInView };
-}
+};

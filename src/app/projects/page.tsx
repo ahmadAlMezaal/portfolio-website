@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ProjectsPage() {
+const ProjectsPage = () => {
   return (
     <main className="min-h-screen">
       <Navbar />
@@ -22,4 +22,6 @@ export default function ProjectsPage() {
       <ThemeSwitcher variant="floating" />
     </main>
   );
-}
+};
+
+export default ProjectsPage;

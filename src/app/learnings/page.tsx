@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function LearningsPage() {
+const LearningsPage = async () => {
   const items = await Promise.all(
     learnings.map(async (learning) => ({
       learning,
@@ -31,4 +31,6 @@ export default async function LearningsPage() {
       <ThemeSwitcher variant="floating" />
     </main>
   );
-}
+};
+
+export default LearningsPage;

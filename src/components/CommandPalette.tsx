@@ -47,7 +47,7 @@ type Command = {
   feedback?: string;
 };
 
-function fuzzyScore(query: string, text: string): number {
+const fuzzyScore = (query: string, text: string): number => {
   const q = query.toLowerCase();
   const t = text.toLowerCase();
   if (!q) return 1;
@@ -64,7 +64,7 @@ function fuzzyScore(query: string, text: string): number {
     }
   }
   return qi === q.length ? score : 0;
-}
+};
 
 const NAV_ICONS: Record<string, ReactNode> = {
   "#about": <User size={16} />,
@@ -74,15 +74,15 @@ const NAV_ICONS: Record<string, ReactNode> = {
   "#contact": <Mail size={16} />,
 };
 
-function scrollToHash(hash: string) {
+const scrollToHash = (hash: string) => {
   if (hash === "#top") {
     window.scrollTo({ top: 0, behavior: "smooth" });
     return;
   }
   document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
-}
+};
 
-export default function CommandPalette() {
+const CommandPalette = () => {
   const { theme, setTheme } = useTheme();
   const { copy } = useClipboard();
   const {
@@ -405,4 +405,6 @@ export default function CommandPalette() {
       )}
     </AnimatePresence>
   );
-}
+};
+
+export default CommandPalette;

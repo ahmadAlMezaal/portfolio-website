@@ -27,7 +27,7 @@ type Glyph = {
   size: number;
 };
 
-function makeGlyphs(count: number): Glyph[] {
+const makeGlyphs = (count: number): Glyph[] => {
   return Array.from({ length: count }, (_, id) => ({
     id,
     left: Math.random() * 100,
@@ -36,9 +36,9 @@ function makeGlyphs(count: number): Glyph[] {
     char: randomGlyph(),
     size: 14 + Math.random() * 22,
   }));
-}
+};
 
-export default function KonamiEasterEgg() {
+const KonamiEasterEgg = () => {
   const prefersReducedMotion = usePrefersReducedMotion();
   const [active, setActive] = useState(false);
   const [glyphs, setGlyphs] = useState<Glyph[]>([]);
@@ -138,4 +138,6 @@ export default function KonamiEasterEgg() {
       )}
     </AnimatePresence>
   );
-}
+};
+
+export default KonamiEasterEgg;

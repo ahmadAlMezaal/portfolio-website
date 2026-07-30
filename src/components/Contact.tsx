@@ -20,7 +20,7 @@ import DecodeText from "./DecodeText";
 import SectionHeading from "./SectionHeading";
 import { sectionContainerVariants, sectionItemVariants, useSectionInView } from "@/lib/motion";
 
-function maskEmail(email: string): string {
+const maskEmail = (email: string): string => {
   const [local, domain] = email.split("@");
   if (!domain) return "•••••••";
   const maskedLocal = (local[0] ?? "") + "•".repeat(Math.max(4, local.length - 1));
@@ -28,9 +28,9 @@ function maskEmail(email: string): string {
   const tld = dot >= 0 ? domain.slice(dot) : "";
   const maskedDomain = "•".repeat(Math.max(4, dot >= 0 ? dot : domain.length)) + tld;
   return `${maskedLocal}@${maskedDomain}`;
-}
+};
 
-export default function Contact() {
+const Contact = () => {
   const { ref, isInView } = useSectionInView();
   const shouldReduceMotion = useShouldReduceMotion();
   const { copied, copy } = useClipboard();
@@ -280,5 +280,6 @@ export default function Contact() {
       </div>
     </section>
   );
-}
+};
 
+export default Contact;

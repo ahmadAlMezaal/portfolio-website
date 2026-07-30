@@ -13,7 +13,7 @@ const enter = {
   transition: { duration: 0.6 },
 };
 
-function Caret({ className = "" }: { className?: string }) {
+const Caret = ({ className = "" }: { className?: string }) => {
   return (
     <span
       aria-hidden="true"
@@ -26,9 +26,9 @@ function Caret({ className = "" }: { className?: string }) {
       }}
     />
   );
-}
+};
 
-function MatrixIntro({ roleText }: Props) {
+const MatrixIntro = ({ roleText }: Props) => {
   return (
     <motion.div
       {...enter}
@@ -73,9 +73,9 @@ function MatrixIntro({ roleText }: Props) {
       </div>
     </motion.div>
   );
-}
+};
 
-function CyberpunkIntro({ roleText }: Props) {
+const CyberpunkIntro = ({ roleText }: Props) => {
   return (
     <motion.div
       {...enter}
@@ -95,9 +95,9 @@ function CyberpunkIntro({ roleText }: Props) {
       <p className="hud-mission">{personalInfo.tagline}</p>
     </motion.div>
   );
-}
+};
 
-function AmberIntro({ roleText }: Props) {
+const AmberIntro = ({ roleText }: Props) => {
   return (
     <motion.div
       {...enter}
@@ -135,11 +135,13 @@ function AmberIntro({ roleText }: Props) {
       </p>
     </motion.div>
   );
-}
+};
 
-export default function HeroIntro({ roleText }: Props) {
+const HeroIntro = ({ roleText }: Props) => {
   const { theme } = useTheme();
   if (theme === "cyberpunk") return <CyberpunkIntro roleText={roleText} />;
   if (theme === "amber") return <AmberIntro roleText={roleText} />;
   return <MatrixIntro roleText={roleText} />;
-}
+};
+
+export default HeroIntro;

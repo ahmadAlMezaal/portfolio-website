@@ -8,7 +8,7 @@ const GLOW_TRAVEL = 300;
 const ADVANCE_PER_FRAME = 4;
 const SURGE_DECAY = 0.93;
 
-export default function SynthwaveGrid() {
+const SynthwaveGrid = () => {
   const glowRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const advanceRef = useRef(0);
@@ -18,7 +18,7 @@ export default function SynthwaveGrid() {
   const startSurge = useCallback((surgeRef: React.RefObject<number>) => {
     if (rafRef.current) return;
 
-    function step() {
+    const step = () => {
       const grid = gridRef.current;
       surgeRef.current *= SURGE_DECAY;
       if (!grid || surgeRef.current < 0.01) {
@@ -33,7 +33,7 @@ export default function SynthwaveGrid() {
         `${advanceRef.current.toFixed(2)}px`
       );
       rafRef.current = requestAnimationFrame(step);
-    }
+    };
 
     rafRef.current = requestAnimationFrame(step);
   }, []);
@@ -70,4 +70,6 @@ export default function SynthwaveGrid() {
       <div className="crt-overlay crt-overlay-soft" aria-hidden="true" />
     </>
   );
-}
+};
+
+export default SynthwaveGrid;

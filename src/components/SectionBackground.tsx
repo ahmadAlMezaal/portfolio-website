@@ -5,9 +5,9 @@ interface SectionBackgroundProps {
   className?: string;
 }
 
-export default function SectionBackground({
+const SectionBackground = ({
   className = "",
-}: SectionBackgroundProps) {
+}: SectionBackgroundProps) => {
   return (
     <div
       className={`absolute inset-0 -z-10 overflow-hidden pointer-events-none ${className}`}
@@ -17,4 +17,6 @@ export default function SectionBackground({
       <div className="scanlines scanlines-faint" />
     </div>
   );
-}
+};
+
+export default SectionBackground;

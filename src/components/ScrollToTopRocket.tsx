@@ -14,7 +14,7 @@ const BUTTON_OFFSET = 24;
 
 type RocketState = "idle" | "launching" | "launched";
 
-function playRocketSound() {
+const playRocketSound = () => {
   try {
     const audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
 
@@ -74,9 +74,9 @@ function playRocketSound() {
     }, duration * 1000 + 100);
   } catch {
   }
-}
+};
 
-export default function ScrollToTopRocket() {
+const ScrollToTopRocket = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [rocketState, setRocketState] = useState<RocketState>("idle");
   const prefersReducedMotion = useReducedMotion();
@@ -335,4 +335,6 @@ export default function ScrollToTopRocket() {
       )}
     </AnimatePresence>
   );
-}
+};
+
+export default ScrollToTopRocket;

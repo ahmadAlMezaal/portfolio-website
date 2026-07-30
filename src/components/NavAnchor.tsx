@@ -8,7 +8,7 @@ const MotionLink = motion.create(Link);
 
 type NavAnchorProps = Omit<HTMLMotionProps<"a">, "href"> & { href: string };
 
-export default function NavAnchor({ href, ...props }: NavAnchorProps) {
+const NavAnchor = ({ href, ...props }: NavAnchorProps) => {
   const pathname = usePathname();
 
   if (href.startsWith("#") && pathname === "/") {
@@ -17,4 +17,6 @@ export default function NavAnchor({ href, ...props }: NavAnchorProps) {
 
   const target = href.startsWith("#") ? `/${href}` : href;
   return <MotionLink href={target} {...props} />;
-}
+};
+
+export default NavAnchor;

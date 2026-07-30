@@ -1,4 +1,4 @@
-export default function HeroBackground() {
+const HeroBackground = () => {
   return (
     <div
       className="absolute inset-0 -z-10 overflow-hidden pointer-events-none"
@@ -8,4 +8,6 @@ export default function HeroBackground() {
       <div className="scanlines" />
     </div>
   );
-}
+};
+
+export default HeroBackground;

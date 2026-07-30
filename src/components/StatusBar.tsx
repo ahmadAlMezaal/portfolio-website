@@ -9,7 +9,7 @@ import { openCommandPalette, openShortcuts } from "./shortcutsBus";
 
 const accent = { color: "rgb(var(--accent-rgb))" };
 
-function Hint({
+const Hint = ({
   keys,
   label,
   onClick,
@@ -17,7 +17,7 @@ function Hint({
   keys: string;
   label: ReactNode;
   onClick: () => void;
-}) {
+}) => {
   return (
     <button
       onClick={onClick}
@@ -34,9 +34,9 @@ function Hint({
       </span>
     </button>
   );
-}
+};
 
-export default function StatusBar() {
+const StatusBar = () => {
   const { isFullscreen, supported, toggle } = useFullscreen();
   const scrolled = useScrollPosition(220);
   const pathname = usePathname();
@@ -109,4 +109,6 @@ export default function StatusBar() {
       )}
     </AnimatePresence>
   );
-}
+};
+
+export default StatusBar;

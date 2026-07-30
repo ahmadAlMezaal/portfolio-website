@@ -22,7 +22,7 @@ const SHORTCUTS: Shortcut[] = [
   },
 ];
 
-export default function ShortcutsOverlay() {
+const ShortcutsOverlay = () => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -111,4 +111,6 @@ export default function ShortcutsOverlay() {
       )}
     </AnimatePresence>
   );
-}
+};
+
+export default ShortcutsOverlay;
