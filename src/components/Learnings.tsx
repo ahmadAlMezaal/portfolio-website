@@ -86,9 +86,9 @@ const CodeEditor = ({
     <div className="overflow-hidden rounded-xl border border-[var(--card-border)] bg-[var(--background)]">
       <div className="flex items-center gap-3 border-b border-[var(--card-border)] bg-[var(--muted-bg)] px-4 py-2">
         <div className="flex items-center gap-1.5 shrink-0">
-          <span className="h-3 w-3 rounded-full bg-red-500/80" />
-          <span className="h-3 w-3 rounded-full bg-amber-400/80" />
-          <span className="h-3 w-3 rounded-full bg-green-500/80" />
+          <span className="h-3 w-3 rounded-full bg-[#ff5f57]/80" />
+          <span className="h-3 w-3 rounded-full bg-[#febc2e]/80" />
+          <span className="h-3 w-3 rounded-full bg-[#28c840]/80" />
         </div>
         <div className="relative">
           <select
