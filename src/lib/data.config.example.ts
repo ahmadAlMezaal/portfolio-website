@@ -14,6 +14,7 @@ export const exampleConfig: PortfolioConfig = {
     locale: "en_GB",
     siteUrl: "https://example.com",
     twitterHandle: "@yourhandle",
+    launched: "2024-01-01",
   },
 
   personalInfo: {
@@ -30,6 +31,11 @@ export const exampleConfig: PortfolioConfig = {
     socialLinks: [
       { platform: "github", url: "https://github.com/yourusername" },
       { platform: "linkedin", url: "https://linkedin.com/in/yourusername" },
+    ],
+    knowsAbout: [
+      "Software Engineering",
+      "A Domain You Work In",
+      "A Technology You Know Well",
     ],
   },
 
