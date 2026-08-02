@@ -9,6 +9,7 @@ import { ScrollToTopRocket } from "@/components/ScrollToTopRocket";
 import { StatusBar } from "@/components/StatusBar";
 import { CommandPalette } from "@/components/CommandPalette";
 import { ShortcutsOverlay } from "@/components/ShortcutsOverlay";
+import { ContactModal } from "@/components/ContactModal";
 import { KonamiEasterEgg } from "@/components/KonamiEasterEgg";
 import { JsonLd } from "@/components/JsonLd";
 import { siteMetadata, personalInfo } from "@/lib/data";
@@ -113,6 +114,7 @@ const RootLayout = ({
             <StatusBar />
             <CommandPalette />
             <ShortcutsOverlay />
+            <ContactModal />
             <KonamiEasterEgg />
           </SmoothScroll>
         </ThemeProvider>

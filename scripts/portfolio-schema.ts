@@ -48,11 +48,13 @@ const personalInfo = z.object({
   status: statusOption,
   email: z.string(),
   location: z.string(),
+  timezone: z.string().optional(),
   bio: z.string(),
   resumeUrl: z.string(),
   bookingUrl: z.string().optional(),
   socialLinks: z.array(socialLink),
   knowsAbout: z.array(z.string()).optional(),
+  helpWith: z.array(z.string()).optional(),
 });
 
 const stat = z.object({
