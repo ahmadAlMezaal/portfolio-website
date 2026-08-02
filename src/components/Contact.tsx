@@ -166,6 +166,24 @@ export const Contact = () => {
                 </div>
               </div>
 
+              {personalInfo.knowsAbout && personalInfo.knowsAbout.length > 0 && (
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+                    What I can help with
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {personalInfo.knowsAbout.map((topic) => (
+                      <span
+                        key={topic}
+                        className="px-3 py-1.5 rounded-lg font-mono text-sm border border-[rgb(var(--accent-rgb)/0.3)] bg-[rgb(var(--accent-rgb)/0.1)] text-[rgb(var(--accent-rgb))]"
+                      >
+                        {topic}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <AvailabilityPanel />
             </motion.div>
 
