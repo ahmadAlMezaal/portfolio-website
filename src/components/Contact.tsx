@@ -1,19 +1,10 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useState } from "react";
-import {
-  Mail,
-  Copy,
-  Check,
-  Eye,
-  MapPin,
-  MessageSquare,
-  Calendar,
-} from "lucide-react";
+import { Mail, MessageSquare, Calendar } from "lucide-react";
 import { personalInfo } from "@/lib/data";
 import { socialIconMap, socialLabelMap } from "@/lib/social";
-import { useShouldReduceMotion, useClipboard } from "@/lib/hooks";
+import { useShouldReduceMotion } from "@/lib/hooks";
 import { AvailabilityPanel } from "./AvailabilityPanel";
 import { SectionBackground } from "./SectionBackground";
 import { DecodeText } from "./DecodeText";
@@ -21,21 +12,9 @@ import { SectionHeading } from "./SectionHeading";
 import { openContactModal } from "./shortcutsBus";
 import { sectionContainerVariants, sectionItemVariants, useSectionInView } from "@/lib/motion";
 
-const maskEmail = (email: string): string => {
-  const [local, domain] = email.split("@");
-  if (!domain) return "•••••••";
-  const maskedLocal = (local[0] ?? "") + "•".repeat(Math.max(4, local.length - 1));
-  const dot = domain.lastIndexOf(".");
-  const tld = dot >= 0 ? domain.slice(dot) : "";
-  const maskedDomain = "•".repeat(Math.max(4, dot >= 0 ? dot : domain.length)) + tld;
-  return `${maskedLocal}@${maskedDomain}`;
-};
-
 export const Contact = () => {
   const { ref, isInView } = useSectionInView();
   const shouldReduceMotion = useShouldReduceMotion();
-  const { copied, copy } = useClipboard();
-  const [revealed, setRevealed] = useState(false);
 
   const socialLinks = personalInfo.socialLinks.map((link) => ({
     icon: socialIconMap[link.platform],
@@ -62,71 +41,9 @@ export const Contact = () => {
             />
           </motion.div>
 
-          <div className="grid lg:grid-cols-2 gap-12">
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
             <motion.div variants={sectionItemVariants} className="space-y-8">
-              <div className="space-y-4">
-                <motion.div
-                  className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700"
-                  whileHover={{ y: -5 }}
-                >
-                  <div className="p-3 rounded-xl bg-gradient-to-r from-pink-500 to-blue-500 text-white">
-                    <MapPin className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Location</p>
-                    <p className="text-gray-800 dark:text-white font-medium">
-                      {personalInfo.location}
-                    </p>
-                  </div>
-                </motion.div>
-
-                <motion.button
-                  type="button"
-                  onClick={() => (revealed ? copy(personalInfo.email) : setRevealed(true))}
-                  className="w-full flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 text-left transition-colors hover:border-purple-500 dark:hover:border-purple-500 outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
-                  whileHover={{ y: -5 }}
-                  whileTap={{ scale: 0.98 }}
-                  aria-label={
-                    copied
-                      ? "Email copied to clipboard"
-                      : revealed
-                        ? "Copy email address"
-                        : "Reveal email address"
-                  }
-                >
-                  <div className="p-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 text-white">
-                    {copied ? (
-                      <Check className="w-6 h-6" />
-                    ) : revealed ? (
-                      <Copy className="w-6 h-6" />
-                    ) : (
-                      <Eye className="w-6 h-6" />
-                    )}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {copied
-                        ? "Email"
-                        : revealed
-                          ? "Email · click to copy"
-                          : "Email · click to reveal"}
-                    </p>
-                    <p
-                      className={`font-mono truncate transition-colors ${
-                        copied
-                          ? "text-green-600 dark:text-green-400"
-                          : "text-gray-800 dark:text-white"
-                      }`}
-                    >
-                      {copied
-                        ? "$ copied to clipboard ✓"
-                        : revealed
-                          ? personalInfo.email
-                          : maskEmail(personalInfo.email)}
-                    </p>
-                  </div>
-                </motion.button>
-              </div>
+              <AvailabilityPanel />
 
               <div>
                 <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
@@ -150,13 +67,13 @@ export const Contact = () => {
                 </div>
               </div>
 
-              {personalInfo.knowsAbout && personalInfo.knowsAbout.length > 0 && (
+              {personalInfo.helpWith && personalInfo.helpWith.length > 0 && (
                 <div>
                   <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
                     What I can help with
                   </h3>
                   <div className="flex flex-wrap gap-2">
-                    {personalInfo.knowsAbout.map((topic) => (
+                    {personalInfo.helpWith.map((topic) => (
                       <span
                         key={topic}
                         className="px-3 py-1.5 rounded-lg font-mono text-sm border border-[rgb(var(--accent-rgb)/0.3)] bg-[rgb(var(--accent-rgb)/0.1)] text-[rgb(var(--accent-rgb))]"
@@ -167,12 +84,10 @@ export const Contact = () => {
                   </div>
                 </div>
               )}
-
-              <AvailabilityPanel />
             </motion.div>
 
             <motion.div variants={sectionItemVariants}>
-              <div className="h-full flex flex-col bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl border border-gray-200 dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl border border-gray-200 dark:border-gray-700">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-3 rounded-xl bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900">
                     <MessageSquare className="w-6 h-6" />
@@ -214,7 +129,7 @@ export const Contact = () => {
                   )}
                 </div>
 
-                <div className="mt-auto pt-8 font-mono text-xs text-gray-500 dark:text-gray-400">
+                <div className="mt-6 font-mono text-xs text-gray-500 dark:text-gray-400">
                   <span className="text-[rgb(var(--accent-rgb))]">$</span> awaiting input
                   <span className="ml-1 inline-block h-3.5 w-2 align-middle bg-[rgb(var(--accent-rgb))] motion-safe:animate-pulse" />
                 </div>

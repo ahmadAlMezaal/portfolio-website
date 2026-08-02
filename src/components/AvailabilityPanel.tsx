@@ -1,5 +1,6 @@
 "use client";
 
+import { MapPin } from "lucide-react";
 import { personalInfo } from "@/lib/data";
 import { useLocalTime } from "@/lib/hooks";
 
@@ -9,7 +10,7 @@ export const AvailabilityPanel = () => {
   return (
     <div className="p-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
       <p className="font-mono text-xs text-gray-500 dark:text-gray-400">
-        <span className="text-[rgb(var(--accent-rgb))]">$</span> status --now
+        <span className="text-[rgb(var(--accent-rgb))]">$</span> whereami
       </p>
 
       <div className="mt-3 flex items-start gap-3">
@@ -19,13 +20,15 @@ export const AvailabilityPanel = () => {
         </span>
 
         <div className="min-w-0">
-          <p className="font-medium text-gray-800 dark:text-white">
-            {personalInfo.status}
-          </p>
-          <p className="font-mono text-sm text-gray-500 dark:text-gray-400">
+          <p className="flex items-center gap-2 font-medium text-gray-800 dark:text-white">
+            <MapPin className="w-4 h-4 shrink-0 text-[rgb(var(--accent-rgb))]" />
             {personalInfo.location}
-            {localTime && ` · ${localTime.time} local · ${localTime.offset}`}
           </p>
+          {localTime && (
+            <p className="mt-1 font-mono text-sm text-gray-500 dark:text-gray-400">
+              {localTime.time} local · {localTime.offset}
+            </p>
+          )}
         </div>
       </div>
     </div>

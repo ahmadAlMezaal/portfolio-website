@@ -37,6 +37,7 @@ export interface PersonalInfo {
   bookingUrl?: string;
   socialLinks: SocialLink[];
   knowsAbout?: string[];
+  helpWith?: string[];
 }
 
 export interface SiteMetadata {

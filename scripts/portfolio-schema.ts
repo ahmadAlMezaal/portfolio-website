@@ -54,6 +54,7 @@ const personalInfo = z.object({
   bookingUrl: z.string().optional(),
   socialLinks: z.array(socialLink),
   knowsAbout: z.array(z.string()).optional(),
+  helpWith: z.array(z.string()).optional(),
 });
 
 const stat = z.object({

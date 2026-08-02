@@ -38,6 +38,11 @@ export const exampleConfig: PortfolioConfig = {
       "A Domain You Work In",
       "A Technology You Know Well",
     ],
+    helpWith: [
+      "Mobile Apps",
+      "Websites",
+      "A Service You Offer",
+    ],
   },
 
   roles: [
