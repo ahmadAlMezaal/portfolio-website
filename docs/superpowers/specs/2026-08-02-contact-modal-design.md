@@ -184,6 +184,27 @@ blue into the amber and cyberpunk palettes.
   `prefers-reduced-motion`, via the existing `useShouldReduceMotion` hook
 - The CTA is a `<button>` with `aria-haspopup="dialog"`
 
+## Revision, after review
+
+The design above shipped, then four changes came out of looking at it:
+
+- **The location and email cards are gone.** The availability panel already
+  states the location, and the command palette already copies the email, so
+  both cards duplicated something else on the same page. The panel takes
+  their place at the top of the left column.
+- **The panel is now `$ whereami`, not `$ status --now`.** It shows a map
+  marker, the location and the local clock. The status line was dropped
+  because the navbar pill already carries `personalInfo.status` — the same
+  words twice on one screen.
+- **The chips read a new `personalInfo.helpWith?: string[]`**, not
+  `knowsAbout`. The chips want plain-language services ("Mobile Apps",
+  "Websites"); the Person schema wants technical terms. One field could not
+  serve both without making the structured data vaguer. `knowsAbout` stays
+  as it was, feeding the schema alone.
+- **The CTA card no longer stretches.** `h-full` plus `mt-auto` matched it to
+  the taller left column and left a large dead gap under "Book a Chat". The
+  card now sizes to its content and the grid uses `items-start`.
+
 ## Out of scope
 
 - Replacing `mailto:` with a form service. It would need a third-party
