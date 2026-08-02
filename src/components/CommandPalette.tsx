@@ -27,6 +27,7 @@ import {
   Folder,
   Maximize2,
   Minimize2,
+  MessageSquare,
 } from "lucide-react";
 import { bookmarks, navLinks, personalInfo } from "@/lib/data";
 import { folderSlug } from "@/lib/bookmarks";
@@ -34,7 +35,11 @@ import { socialLabelMap } from "@/lib/social";
 import { assetPath, isCvAvailable } from "@/lib/utils";
 import { useClipboard, useFullscreen } from "@/lib/hooks";
 import { THEMES, useTheme } from "./ThemeProvider";
-import { onOpenCommandPalette, openShortcuts } from "./shortcutsBus";
+import {
+  onOpenCommandPalette,
+  openShortcuts,
+  openContactModal,
+} from "./shortcutsBus";
 
 type Group = "Navigation" | "Bookmarks" | "Theme" | "Actions" | "Social";
 const GROUP_ORDER: Group[] = [
@@ -180,6 +185,14 @@ export const CommandPalette = () => {
         hint: t.id === theme ? "active" : undefined,
         perform: () => setTheme(t.id),
       })),
+      {
+        id: "action-message",
+        label: "Send a message",
+        group: "Actions",
+        icon: <MessageSquare size={16} />,
+        keywords: "contact email compose write get in touch",
+        perform: () => openContactModal(),
+      },
       {
         id: "action-copy-email",
         label: "Copy email address",
