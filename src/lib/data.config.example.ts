@@ -24,6 +24,7 @@ export const exampleConfig: PortfolioConfig = {
     status: "Open to Opportunities",
     email: "your.email@example.com",
     location: "City, Country",
+    timezone: "Europe/London",
     bio: `Write a brief bio about yourself here. This can span multiple lines.
     Talk about your passion, what drives you, and what makes you unique.
     Keep it professional but personable.`,

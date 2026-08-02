@@ -31,6 +31,7 @@ export interface PersonalInfo {
   status: StatusOption;
   email: string;
   location: string;
+  timezone?: string;
   bio: string;
   resumeUrl: string;
   bookingUrl?: string;

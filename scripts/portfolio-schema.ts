@@ -48,6 +48,7 @@ const personalInfo = z.object({
   status: statusOption,
   email: z.string(),
   location: z.string(),
+  timezone: z.string().optional(),
   bio: z.string(),
   resumeUrl: z.string(),
   bookingUrl: z.string().optional(),
