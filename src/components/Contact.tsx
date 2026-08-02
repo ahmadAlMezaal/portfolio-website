@@ -7,7 +7,6 @@ import {
   Copy,
   Check,
   Eye,
-  Send,
   MapPin,
   MessageSquare,
   Calendar,
@@ -19,6 +18,7 @@ import { AvailabilityPanel } from "./AvailabilityPanel";
 import { SectionBackground } from "./SectionBackground";
 import { DecodeText } from "./DecodeText";
 import { SectionHeading } from "./SectionHeading";
+import { openContactModal } from "./shortcutsBus";
 import { sectionContainerVariants, sectionItemVariants, useSectionInView } from "@/lib/motion";
 
 const maskEmail = (email: string): string => {
@@ -36,22 +36,6 @@ export const Contact = () => {
   const shouldReduceMotion = useShouldReduceMotion();
   const { copied, copy } = useClipboard();
   const [revealed, setRevealed] = useState(false);
-  const [formState, setFormState] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const subject = encodeURIComponent("Portfolio Enquiry");
-    const body = encodeURIComponent(
-      `Hi ${personalInfo.name.split(" ")[0]},\n\n${formState.message}\n\n---\nFrom: ${formState.name}\nEmail: ${formState.email}`
-    );
-
-    window.location.href = `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
-  };
 
   const socialLinks = personalInfo.socialLinks.map((link) => ({
     icon: socialIconMap[link.platform],
@@ -188,113 +172,53 @@ export const Contact = () => {
             </motion.div>
 
             <motion.div variants={sectionItemVariants}>
-              <form
-                onSubmit={handleSubmit}
-                className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl border border-gray-200 dark:border-gray-700"
-              >
+              <div className="h-full flex flex-col bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl border border-gray-200 dark:border-gray-700">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-3 rounded-xl bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900">
                     <MessageSquare className="w-6 h-6" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-800 dark:text-white">
-                    Send me a message
+                    Start a conversation
                   </h3>
                 </div>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
-                  Fill in the details below and click to open your email client
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">
+                  Tell me what you&apos;re building. The form fills in your email
+                  client &mdash; nothing is sent through this site.
                 </p>
 
-                <div className="space-y-5">
-                  <div>
-                    <label
-                      htmlFor="name"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                    >
-                      Your Name
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      value={formState.name}
-                      onChange={(e) =>
-                        setFormState({ ...formState, name: e.target.value })
-                      }
-                      required
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all outline-none"
-                      placeholder="John Doe"
-                    />
-                  </div>
+                <div className="space-y-3">
+                  <motion.button
+                    type="button"
+                    onClick={openContactModal}
+                    aria-haspopup="dialog"
+                    className="glitch-box w-full py-4 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900 font-bold rounded-xl shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transition-all flex items-center justify-center gap-2"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Mail className="w-5 h-5" />
+                    <DecodeText className="glitch-text" text="Send me a Message" />
+                  </motion.button>
 
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                    >
-                      Your Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      value={formState.email}
-                      onChange={(e) =>
-                        setFormState({ ...formState, email: e.target.value })
-                      }
-                      required
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all outline-none"
-                      placeholder="john@example.com"
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="message"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                    >
-                      Your Message
-                    </label>
-                    <textarea
-                      id="message"
-                      rows={5}
-                      value={formState.message}
-                      onChange={(e) =>
-                        setFormState({ ...formState, message: e.target.value })
-                      }
-                      required
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all outline-none resize-none"
-                      placeholder="Hi, I'd like to discuss a project..."
-                    />
-                  </div>
-
-                  <div className="space-y-3">
-                    <motion.button
-                      type="submit"
-                      className="glitch-box w-full py-4 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900 font-bold rounded-xl shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transition-all flex items-center justify-center gap-2"
+                  {personalInfo.bookingUrl && (
+                    <motion.a
+                      href={personalInfo.bookingUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-4 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white font-semibold rounded-xl border border-gray-300 dark:border-gray-600 hover:border-purple-500 dark:hover:border-purple-500 transition-all flex items-center justify-center gap-2"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      <Mail className="w-5 h-5" />
-                      <DecodeText
-                        className="glitch-text"
-                        text="Open Email Client"
-                      />
-                    </motion.button>
-
-                    {personalInfo.bookingUrl && (
-                      <motion.a
-                        href={personalInfo.bookingUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full py-4 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white font-semibold rounded-xl border border-gray-300 dark:border-gray-600 hover:border-purple-500 dark:hover:border-purple-500 transition-all flex items-center justify-center gap-2"
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                      >
-                        <Calendar className="w-5 h-5" />
-                        Book a Chat
-                      </motion.a>
-                    )}
-                  </div>
+                      <Calendar className="w-5 h-5" />
+                      Book a Chat
+                    </motion.a>
+                  )}
                 </div>
-              </form>
+
+                <div className="mt-auto pt-8 font-mono text-xs text-gray-500 dark:text-gray-400">
+                  <span className="text-[rgb(var(--accent-rgb))]">$</span> awaiting input
+                  <span className="ml-1 inline-block h-3.5 w-2 align-middle bg-[rgb(var(--accent-rgb))] motion-safe:animate-pulse" />
+                </div>
+              </div>
             </motion.div>
           </div>
         </motion.div>
