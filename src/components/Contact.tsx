@@ -15,6 +15,7 @@ import {
 import { personalInfo } from "@/lib/data";
 import { socialIconMap, socialLabelMap } from "@/lib/social";
 import { useShouldReduceMotion, useClipboard } from "@/lib/hooks";
+import { AvailabilityPanel } from "./AvailabilityPanel";
 import { SectionBackground } from "./SectionBackground";
 import { DecodeText } from "./DecodeText";
 import { SectionHeading } from "./SectionHeading";
@@ -164,6 +165,8 @@ export const Contact = () => {
                   ))}
                 </div>
               </div>
+
+              <AvailabilityPanel />
             </motion.div>
 
             <motion.div variants={sectionItemVariants}>

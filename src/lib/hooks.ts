@@ -253,3 +253,43 @@ export const useScrollSurge = ({
 
   return surgeRef;
 };
+
+const formatLocalTime = (
+  timeZone: string
+): { time: string; offset: string } | null => {
+  try {
+    const now = new Date();
+    const time = new Intl.DateTimeFormat("en-GB", {
+      timeZone,
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).format(now);
+    const offset =
+      new Intl.DateTimeFormat("en-GB", { timeZone, timeZoneName: "shortOffset" })
+        .formatToParts(now)
+        .find((part) => part.type === "timeZoneName")?.value ?? "";
+    return { time, offset };
+  } catch {
+    return null;
+  }
+};
+
+export const useLocalTime = (
+  timeZone?: string
+): { time: string; offset: string } | null => {
+  const subscribe = useCallback((onChange: () => void) => {
+    const id = window.setInterval(onChange, 1000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  const getSnapshot = useCallback(
+    () => (timeZone ? Math.floor(Date.now() / 60000) : null),
+    [timeZone]
+  );
+
+  const minute = useSyncExternalStore(subscribe, getSnapshot, () => null);
+
+  if (minute === null || !timeZone) return null;
+  return formatLocalTime(timeZone);
+};
