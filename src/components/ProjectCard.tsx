@@ -111,7 +111,7 @@ export const ProjectCard = ({
   return (
     <motion.div
       variants={cardVariants}
-      className="group relative"
+      className="group relative h-full"
       whileHover={{ y: -10 }}
       transition={{ duration: 0.3 }}
     >

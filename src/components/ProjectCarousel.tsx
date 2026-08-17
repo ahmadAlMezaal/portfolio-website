@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Project } from "@/types";
-import { cardVariants, gridContainerVariants } from "@/lib/motion";
+import { cardVariants } from "@/lib/motion";
 import { usePrefersReducedMotion } from "@/lib/hooks";
 import { ProjectCard } from "@/components/ProjectCard";
 
@@ -59,7 +59,7 @@ export const ProjectCarousel = ({
     const rail = railRef.current;
     if (!rail) return;
 
-    const onScroll = () => {
+    const schedule = () => {
       if (frameRef.current !== null) return;
       frameRef.current = requestAnimationFrame(() => {
         frameRef.current = null;
@@ -67,14 +67,17 @@ export const ProjectCarousel = ({
       });
     };
 
-    onScroll();
-    rail.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    const observer = new ResizeObserver(schedule);
+    observer.observe(rail);
+    rail.addEventListener("scroll", schedule, { passive: true });
 
     return () => {
-      rail.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+      observer.disconnect();
+      rail.removeEventListener("scroll", schedule);
+      if (frameRef.current !== null) {
+        cancelAnimationFrame(frameRef.current);
+        frameRef.current = null;
+      }
     };
   }, [sync]);
 
@@ -92,12 +95,11 @@ export const ProjectCarousel = ({
 
   return (
     <div>
-      <motion.div
+      <div
         ref={railRef}
         role="region"
         aria-label="Featured projects"
         className="flex gap-6 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-2"
-        variants={gridContainerVariants}
       >
         {projects.map((project, index) => (
           <motion.div
@@ -118,7 +120,7 @@ export const ProjectCarousel = ({
             <SeeAllCard count={remainingCount} />
           </motion.div>
         )}
-      </motion.div>
+      </div>
 
       {pageCount > 1 && (
         <div className="flex items-center justify-center gap-4 mt-6">
