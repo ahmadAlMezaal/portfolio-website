@@ -1,25 +1,37 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useMemo } from "react";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { useMemo, useState } from "react";
 import { projects } from "@/lib/data";
-import { sortProjects } from "@/lib/projects";
-import { gridContainerVariants, cardVariants, useSectionInView } from "@/lib/motion";
+import { searchProjects, sortProjects } from "@/lib/projects";
+import {
+  gridContainerVariants,
+  cardVariants,
+  useSectionInView,
+} from "@/lib/motion";
 import { ProjectCard } from "@/components/ProjectCard";
+import { ProjectCarousel } from "@/components/ProjectCarousel";
+import { ProjectSearch } from "@/components/ProjectSearch";
 import { SectionHeading } from "@/components/SectionHeading";
-
-const GLIMPSE_COUNT = 3;
 
 export const Projects = () => {
   const { ref, isInView } = useSectionInView();
+  const [query, setQuery] = useState("");
 
-  const glimpse = useMemo(
-    () => sortProjects(projects).slice(0, GLIMPSE_COUNT),
-    []
+  const sorted = useMemo(() => sortProjects(projects), []);
+  const featured = useMemo(
+    () => sorted.filter((project) => project.featured),
+    [sorted]
   );
-  const hasMore = projects.length > glimpse.length;
+
+  const trimmed = query.trim();
+  const results = useMemo(
+    () => (trimmed ? searchProjects(sorted, trimmed) : []),
+    [sorted, trimmed]
+  );
+
+  const isSearching = trimmed.length > 0;
+  const railProjects = featured.length > 0 ? featured : sorted;
 
   return (
     <section id="projects" className="py-20">
@@ -30,7 +42,7 @@ export const Projects = () => {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          <motion.div variants={cardVariants} className="text-center mb-12">
+          <motion.div variants={cardVariants} className="text-center mb-8">
             <SectionHeading
               title="Featured Projects"
               subtitle="Some of my recent work that I'm proud of"
@@ -38,25 +50,44 @@ export const Projects = () => {
             />
           </motion.div>
 
-          <motion.div
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-            variants={gridContainerVariants}
-          >
-            {glimpse.map((project) => (
-              <ProjectCard key={project.title} project={project} />
-            ))}
+          <motion.div variants={cardVariants}>
+            <ProjectSearch
+              value={query}
+              onChange={setQuery}
+              resultCount={isSearching ? results.length : null}
+              totalCount={projects.length}
+            />
           </motion.div>
 
-          {hasMore && (
-            <motion.div variants={cardVariants} className="text-center mt-12">
-              <Link
-                href="/projects"
-                className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900 font-bold rounded-full shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-105 active:scale-95 transition-all"
+          {isSearching ? (
+            results.length > 0 ? (
+              <motion.div
+                key="results"
+                className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+                variants={gridContainerVariants}
+                initial="hidden"
+                animate="visible"
               >
-                View all projects
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </motion.div>
+                {results.map((project) => (
+                  <ProjectCard
+                    key={project.title}
+                    project={project}
+                    variant="compact"
+                  />
+                ))}
+              </motion.div>
+            ) : (
+              <p className="text-center text-gray-500 dark:text-gray-400 py-16 text-sm">
+                No project matches{" "}
+                <span className="text-[rgb(var(--accent-rgb))]">{trimmed}</span>
+                .
+              </p>
+            )
+          ) : (
+            <ProjectCarousel
+              projects={railProjects}
+              remainingCount={projects.length - railProjects.length}
+            />
           )}
         </motion.div>
       </div>

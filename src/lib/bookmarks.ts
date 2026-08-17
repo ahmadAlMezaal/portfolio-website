@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { Bookmark, BookmarkFolder, BookmarkKind } from "@/types";
+import { fieldScore, queryTokens, wordsOf } from "@/lib/search";
 
 export const KIND_ICONS: Record<BookmarkKind, LucideIcon> = {
   article: FileText,
@@ -40,27 +41,13 @@ export const bookmarkUrlLabel = (url: string): string =>
 export const countBookmarks = (folders: BookmarkFolder[]): number =>
   folders.reduce((total, folder) => total + folder.bookmarks.length, 0);
 
-export const queryTokens = (query: string): string[] =>
-  query.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
-
-const wordsOf = (value: string): string[] =>
-  value.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+export { queryTokens } from "@/lib/search";
 
 const TITLE = 4;
 const FOLDER = 3;
 const HOST = 2;
 const KIND = 2;
 const NOTE = 1;
-
-const fieldScore = (token: string, words: string[], weight: number): number => {
-  let best = 0;
-  for (const word of words) {
-    if (word === token) best = Math.max(best, weight * 3);
-    else if (word.startsWith(token)) best = Math.max(best, weight * 2);
-    else if (word.includes(token)) best = Math.max(best, weight);
-  }
-  return best;
-};
 
 export type BookmarkHit = {
   folder: string;

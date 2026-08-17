@@ -49,3 +49,6 @@ next-env.d.ts
 
 # legacy local config
 src/lib/data.config.ts
+
+# brainstorming session scratch
+.superpowers/
