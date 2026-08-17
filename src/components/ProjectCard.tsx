@@ -88,10 +88,25 @@ const ProjectPlaceholder = ({ status }: { status: ProjectStatus }) => {
   );
 };
 
-export const ProjectCard = ({ project }: { project: Project }) => {
+const COMPACT_TAG_LIMIT = 3;
+
+export const ProjectCard = ({
+  project,
+  variant = "full",
+  priority,
+}: {
+  project: Project;
+  variant?: "full" | "compact";
+  priority?: boolean;
+}) => {
   const isMobile = useIsMobile();
   const hideLinks = shouldHideLinks(project);
   const imageFit = project.imageFit || "cover";
+  const isCompact = variant === "compact";
+  const visibleTags = isCompact
+    ? project.tags.slice(0, COMPACT_TAG_LIMIT)
+    : project.tags;
+  const hiddenTagCount = project.tags.length - visibleTags.length;
 
   return (
     <motion.div
@@ -103,7 +118,11 @@ export const ProjectCard = ({ project }: { project: Project }) => {
       <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
 
       <div className="relative bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700 h-full flex flex-col">
-        <div className="relative h-48 bg-gradient-to-br from-purple-600/10 via-pink-500/10 to-blue-500/10 overflow-hidden">
+        <div
+          className={`relative ${
+            isCompact ? "h-32" : "h-48"
+          } bg-gradient-to-br from-purple-600/10 via-pink-500/10 to-blue-500/10 overflow-hidden`}
+        >
           {project.image ? (
             <>
               <Image
@@ -113,8 +132,12 @@ export const ProjectCard = ({ project }: { project: Project }) => {
                 className={
                   imageFit === "contain" ? "object-contain p-6" : "object-cover"
                 }
-                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                priority={project.featured}
+                sizes={
+                  isCompact
+                    ? "(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 86vw"
+                    : "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                }
+                priority={priority ?? project.featured}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/45 to-black/15" />
             </>
@@ -177,23 +200,43 @@ export const ProjectCard = ({ project }: { project: Project }) => {
           )}
         </div>
 
-        <div className="p-6 flex-1 flex flex-col">
-          <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
+        <div className={`${isCompact ? "p-4" : "p-6"} flex-1 flex flex-col`}>
+          <h3
+            className={`${
+              isCompact ? "text-base" : "text-xl"
+            } font-bold text-gray-800 dark:text-white mb-2`}
+          >
             {project.title}
           </h3>
-          <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 flex-1">
-            {project.description}
-          </p>
+
+          {isCompact ? (
+            <div className="flex-1 mb-3">
+              <p className="text-gray-600 dark:text-gray-400 text-xs line-clamp-3">
+                {project.description}
+              </p>
+            </div>
+          ) : (
+            <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 flex-1">
+              {project.description}
+            </p>
+          )}
 
           <div className="flex flex-wrap gap-2">
-            {project.tags.map((tag) => (
+            {visibleTags.map((tag) => (
               <span
                 key={tag}
-                className="px-3 py-1 text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-full"
+                className={`${
+                  isCompact ? "px-2 py-0.5 text-[10px]" : "px-3 py-1 text-xs"
+                } font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-full`}
               >
                 {tag}
               </span>
             ))}
+            {hiddenTagCount > 0 && (
+              <span className="px-2 py-0.5 text-[10px] font-medium border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 rounded-full">
+                +{hiddenTagCount}
+              </span>
+            )}
           </div>
 
           {isMobile && !hideLinks && project.links.length > 0 && (
