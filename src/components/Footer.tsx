@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { Heart } from "lucide-react";
 import { personalInfo, navLinks } from "@/lib/data";
 import { NavAnchor } from "./NavAnchor";
+import { MakeItYours } from "./MakeItYours";
 import { socialIconMap, socialLabelMap } from "@/lib/social";
 import { useIsMobile } from "@/lib/hooks";
 
@@ -84,7 +85,9 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent mb-8" />
+        <MakeItYours />
+
+        <div className="h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent my-8" />
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <p className="text-gray-400 text-sm flex items-center gap-1">

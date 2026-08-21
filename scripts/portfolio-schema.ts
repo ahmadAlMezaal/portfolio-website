@@ -39,6 +39,7 @@ const siteMetadata = z.object({
   siteUrl: absoluteUrl,
   twitterHandle: z.string().optional(),
   launched: z.iso.date().optional(),
+  repoUrl: absoluteUrl.optional(),
 });
 
 const personalInfo = z.object({
@@ -100,6 +101,7 @@ const project = z.object({
   links: z.array(projectLink),
   featured: z.boolean(),
   status: z.enum(["live", "in_progress", "private"]).optional(),
+  platform: z.enum(["mobile", "web", "tools"]).optional(),
 });
 
 const education = z.object({

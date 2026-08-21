@@ -15,6 +15,7 @@ export const exampleConfig: PortfolioConfig = {
     siteUrl: "https://example.com",
     twitterHandle: "@yourhandle",
     launched: "2024-01-01",
+    repoUrl: "https://github.com/ahmadAlMezaal/portfolio-website",
   },
 
   personalInfo: {

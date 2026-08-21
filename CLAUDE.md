@@ -158,7 +158,9 @@ public and contains no personal data beyond deployment infrastructure
 
 - `siteMetadata`: SEO title, description, keywords, locale; optional
   `launched` (`YYYY-MM-DD`) becomes `dateCreated` on the home page's
-  ProfilePage schema, and is omitted when absent
+  ProfilePage schema, and is omitted when absent; optional `repoUrl` turns on
+  the footer's "Make it yours" strip (`MakeItYours.tsx`) with a copyable
+  `git clone` line — the whole strip renders nothing without it
 - `personalInfo`: Name, title, bio, email, status, social links; optional
   `knowsAbout` (array of strings) becomes the Person schema's `knowsAbout`,
   and is omitted when absent
@@ -279,6 +281,22 @@ Projects use a flexible `links` array instead of fixed `liveUrl`/`githubUrl` fie
 - Empty `links: []` array shows "Private / available on request" badge
 - `image: null` or missing image shows a gradient placeholder with folder icon
 - `imageFit: "contain"` suits logos; `"cover"` is the default
+- `platform` is `"web"`, `"mobile"` or `"tools"`. It drives the tabs on the
+  home carousel and the filter pills on `/projects`, so the two surfaces
+  always agree. `tools` covers CLIs, MCP servers and agents — anything whose
+  surface is a terminal or another developer's editor.
+
+  It is optional: `projectPlatform()` in `lib/projects.ts` infers it from an
+  App Store or Play Store link first, then a mobile tag (`Mobile`,
+  `React Native`, `Expo`, `iOS`, `Android`, `Swift`, `Kotlin`, `Flutter`,
+  `Dart`), then a tooling tag (`CLI`, `MCP`, `AI Agents`, `Developer Tools`,
+  `Automation`, …), and falls back to `web`. Tags are a weak tell — set
+  `platform` explicitly and the inference never runs.
+
+  The home rail is deliberately **not** featured-only. It takes each
+  platform's projects in `sortProjects` order, which puts featured first, and
+  caps at `RAIL_LIMIT`. Partitioning featured projects three ways left the
+  `web` tab holding a single card, and a quarter-full row reads as broken.
 
 ### Learnings / Field Notes
 
