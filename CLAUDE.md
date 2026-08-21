@@ -59,7 +59,7 @@ src/
 │   ├── Skills.tsx        # Skills as tags
 │   ├── Experience.tsx    # Work timeline (single role or promotions)
 │   ├── Projects.tsx      # Featured projects on the home page
-│   ├── ProjectsShowcase.tsx # Full grid + filtering on /projects
+│   ├── ProjectsShowcase.tsx # Full grid + search and filtering on /projects
 │   ├── ProjectCard.tsx   # Shared project card
 │   ├── FilterPill.tsx    # Shared filter pill
 │   ├── Learnings.tsx     # Field Notes cards with tabbed code editor

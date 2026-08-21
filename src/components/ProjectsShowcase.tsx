@@ -6,10 +6,11 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { projects } from "@/lib/data";
 import type { ProjectPlatform } from "@/types";
-import { filterByPlatform, sortProjects } from "@/lib/projects";
+import { filterByPlatform, searchProjects, sortProjects } from "@/lib/projects";
 import { gridContainerVariants } from "@/lib/motion";
 import { ProjectCard } from "@/components/ProjectCard";
 import { FilterPill } from "@/components/FilterPill";
+import { ProjectSearch } from "@/components/ProjectSearch";
 import { SectionHeading } from "@/components/SectionHeading";
 
 type FilterOption = "all" | ProjectPlatform;
@@ -22,6 +23,7 @@ const PLATFORM_FILTERS: { label: string; value: ProjectPlatform }[] = [
 
 export const ProjectsShowcase = () => {
   const [activeFilter, setActiveFilter] = useState<FilterOption>("all");
+  const [query, setQuery] = useState("");
 
   const allProjectsSorted = useMemo(() => sortProjects(projects), []);
 
@@ -46,6 +48,16 @@ export const ProjectsShowcase = () => {
     return filterByPlatform(allProjectsSorted, activeFilter);
   }, [allProjectsSorted, activeFilter]);
 
+  const trimmed = query.trim();
+  const isSearching = trimmed.length > 0;
+
+  const results = useMemo(
+    () => (trimmed ? searchProjects(allProjectsSorted, trimmed) : []),
+    [allProjectsSorted, trimmed],
+  );
+
+  const visibleProjects = isSearching ? results : filteredProjects;
+
   return (
     <section className="pt-32 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -66,7 +78,18 @@ export const ProjectsShowcase = () => {
           />
         </div>
 
-        <div className="flex flex-wrap justify-center gap-3 mb-10">
+        <ProjectSearch
+          value={query}
+          onChange={setQuery}
+          resultCount={isSearching ? results.length : null}
+          totalCount={allProjectsSorted.length}
+        />
+
+        <div
+          className={`flex flex-wrap justify-center gap-3 mb-10 ${
+            isSearching ? "hidden" : ""
+          }`}
+        >
           {filters.map((filter) => (
             <FilterPill
               key={filter.value}
@@ -78,18 +101,23 @@ export const ProjectsShowcase = () => {
           ))}
         </div>
 
-        {filteredProjects.length > 0 ? (
+        {visibleProjects.length > 0 ? (
           <motion.div
-            key={activeFilter}
+            key={isSearching ? "results" : activeFilter}
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
             variants={gridContainerVariants}
             initial="hidden"
             animate="visible"
           >
-            {filteredProjects.map((project) => (
+            {visibleProjects.map((project) => (
               <ProjectCard key={project.title} project={project} />
             ))}
           </motion.div>
+        ) : isSearching ? (
+          <p className="text-center text-gray-500 dark:text-gray-400 py-16 text-sm">
+            No project matches{" "}
+            <span className="text-[rgb(var(--accent-rgb))]">{trimmed}</span>.
+          </p>
         ) : (
           <p className="text-center text-gray-500 dark:text-gray-400 py-16">
             No projects in this category yet.
