@@ -81,6 +81,14 @@ export const ProjectCarousel = ({
     };
   }, [sync]);
 
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+    rail.scrollLeft = 0;
+    const frame = requestAnimationFrame(sync);
+    return () => cancelAnimationFrame(frame);
+  }, [projects, sync]);
+
   const scrollToPage = (page: number) => {
     const rail = railRef.current;
     if (!rail) return;

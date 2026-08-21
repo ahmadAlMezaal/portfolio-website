@@ -92,6 +92,8 @@ export type ProjectLinkType =
 
 export type ProjectStatus = "live" | "in_progress" | "private";
 
+export type ProjectPlatform = "mobile" | "web";
+
 export interface ProjectLink {
   type: ProjectLinkType;
   label: string;
@@ -107,6 +109,7 @@ export interface Project {
   links: ProjectLink[];
   featured: boolean;
   status?: ProjectStatus;
+  platform?: ProjectPlatform;
 }
 
 export interface Education {

@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import { useMemo, useState } from "react";
 import { projects } from "@/lib/data";
-import { searchProjects, sortProjects } from "@/lib/projects";
+import { filterByPlatform, searchProjects, sortProjects } from "@/lib/projects";
 import {
   gridContainerVariants,
   cardVariants,
@@ -11,8 +11,12 @@ import {
 } from "@/lib/motion";
 import { ProjectCard } from "@/components/ProjectCard";
 import { ProjectCarousel } from "@/components/ProjectCarousel";
+import { PlatformTabs } from "@/components/PlatformTabs";
 import { ProjectSearch } from "@/components/ProjectSearch";
 import { SectionHeading } from "@/components/SectionHeading";
+import type { ProjectPlatform } from "@/types";
+
+const PLATFORM_ORDER: ProjectPlatform[] = ["web", "mobile"];
 
 export const Projects = () => {
   const { ref, isInView } = useSectionInView();
@@ -24,6 +28,20 @@ export const Projects = () => {
     [sorted]
   );
 
+  const rails = useMemo(() => {
+    const source = featured.length > 0 ? featured : sorted;
+    return PLATFORM_ORDER.map((platform) => ({
+      platform,
+      projects: filterByPlatform(source, platform),
+    })).filter((rail) => rail.projects.length > 0);
+  }, [featured, sorted]);
+
+  const [platform, setPlatform] = useState<ProjectPlatform>(
+    () => rails[0]?.platform ?? "web"
+  );
+
+  const activeRail = rails.find((rail) => rail.platform === platform) ?? rails[0];
+
   const trimmed = query.trim();
   const results = useMemo(
     () => (trimmed ? searchProjects(sorted, trimmed) : []),
@@ -31,7 +49,7 @@ export const Projects = () => {
   );
 
   const isSearching = trimmed.length > 0;
-  const railProjects = featured.length > 0 ? featured : sorted;
+  const railProjects = activeRail?.projects ?? [];
 
   return (
     <section id="projects" className="py-20">
@@ -84,10 +102,25 @@ export const Projects = () => {
               </p>
             )
           ) : (
-            <ProjectCarousel
-              projects={railProjects}
-              remainingCount={projects.length - railProjects.length}
-            />
+            <>
+              {rails.length > 1 && (
+                <motion.div variants={cardVariants}>
+                  <PlatformTabs
+                    tabs={rails.map((rail) => ({
+                      platform: rail.platform,
+                      count: rail.projects.length,
+                    }))}
+                    active={platform}
+                    onChange={setPlatform}
+                  />
+                </motion.div>
+              )}
+
+              <ProjectCarousel
+                projects={railProjects}
+                remainingCount={projects.length - railProjects.length}
+              />
+            </>
           )}
         </motion.div>
       </div>

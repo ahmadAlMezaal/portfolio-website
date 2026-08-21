@@ -100,6 +100,7 @@ const project = z.object({
   links: z.array(projectLink),
   featured: z.boolean(),
   status: z.enum(["live", "in_progress", "private"]).optional(),
+  platform: z.enum(["mobile", "web"]).optional(),
 });
 
 const education = z.object({
