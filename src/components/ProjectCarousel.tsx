@@ -99,7 +99,7 @@ export const ProjectCarousel = ({
         ref={railRef}
         role="region"
         aria-label="Featured projects"
-        className="flex gap-6 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-2"
+        className="flex gap-6 overflow-x-auto snap-x snap-mandatory no-scrollbar px-4 -mx-4 scroll-px-4 py-6 -mt-6 -mb-4"
       >
         {projects.map((project, index) => (
           <motion.div
