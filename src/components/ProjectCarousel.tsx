@@ -49,10 +49,19 @@ export const ProjectCarousel = ({
   const sync = useCallback(() => {
     const rail = railRef.current;
     if (!rail || rail.clientWidth === 0) return;
-    setPageCount(
-      Math.max(1, Math.ceil(rail.scrollWidth / rail.clientWidth - 0.02))
+
+    const pages = Math.max(
+      1,
+      Math.ceil(rail.scrollWidth / rail.clientWidth - 0.02)
     );
-    setActivePage(Math.round(rail.scrollLeft / rail.clientWidth));
+    const scrollable = rail.scrollWidth - rail.clientWidth;
+
+    setPageCount(pages);
+    setActivePage(
+      scrollable <= 0
+        ? 0
+        : Math.round((rail.scrollLeft / scrollable) * (pages - 1))
+    );
   }, []);
 
   useEffect(() => {
@@ -91,9 +100,10 @@ export const ProjectCarousel = ({
 
   const scrollToPage = (page: number) => {
     const rail = railRef.current;
-    if (!rail) return;
+    if (!rail || pageCount <= 1) return;
+    const scrollable = rail.scrollWidth - rail.clientWidth;
     rail.scrollTo({
-      left: page * rail.clientWidth,
+      left: (page / (pageCount - 1)) * scrollable,
       behavior: prefersReducedMotion ? "auto" : "smooth",
     });
   };
