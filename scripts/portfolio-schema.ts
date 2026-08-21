@@ -39,6 +39,7 @@ const siteMetadata = z.object({
   siteUrl: absoluteUrl,
   twitterHandle: z.string().optional(),
   launched: z.iso.date().optional(),
+  repoUrl: absoluteUrl.optional(),
 });
 
 const personalInfo = z.object({

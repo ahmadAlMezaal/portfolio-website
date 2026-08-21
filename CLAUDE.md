@@ -158,7 +158,9 @@ public and contains no personal data beyond deployment infrastructure
 
 - `siteMetadata`: SEO title, description, keywords, locale; optional
   `launched` (`YYYY-MM-DD`) becomes `dateCreated` on the home page's
-  ProfilePage schema, and is omitted when absent
+  ProfilePage schema, and is omitted when absent; optional `repoUrl` turns on
+  the footer's "Make it yours" strip (`MakeItYours.tsx`) with a copyable
+  `git clone` line — the whole strip renders nothing without it
 - `personalInfo`: Name, title, bio, email, status, social links; optional
   `knowsAbout` (array of strings) becomes the Person schema's `knowsAbout`,
   and is omitted when absent

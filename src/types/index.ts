@@ -48,6 +48,7 @@ export interface SiteMetadata {
   siteUrl: string;
   twitterHandle?: string;
   launched?: string;
+  repoUrl?: string;
 }
 
 export interface Stat {
