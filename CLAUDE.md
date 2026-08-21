@@ -281,13 +281,22 @@ Projects use a flexible `links` array instead of fixed `liveUrl`/`githubUrl` fie
 - Empty `links: []` array shows "Private / available on request" badge
 - `image: null` or missing image shows a gradient placeholder with folder icon
 - `imageFit: "contain"` suits logos; `"cover"` is the default
-- `platform` is `"mobile"` or `"web"` and drives the tabs on the home
-  carousel. It is optional: `projectPlatform()` in `lib/projects.ts` infers it
-  from an App Store or Play Store link first, then from a mobile tag
-  (`Mobile`, `React Native`, `Expo`, `iOS`, `Android`, `Swift`, `Kotlin`,
-  `Flutter`, `Dart`). Set it explicitly only to overrule that — a React Native
-  app that ships no store link, say, or a web app tagged `Mobile` because it is
-  mobile-first.
+- `platform` is `"web"`, `"mobile"` or `"tools"`. It drives the tabs on the
+  home carousel and the filter pills on `/projects`, so the two surfaces
+  always agree. `tools` covers CLIs, MCP servers and agents — anything whose
+  surface is a terminal or another developer's editor.
+
+  It is optional: `projectPlatform()` in `lib/projects.ts` infers it from an
+  App Store or Play Store link first, then a mobile tag (`Mobile`,
+  `React Native`, `Expo`, `iOS`, `Android`, `Swift`, `Kotlin`, `Flutter`,
+  `Dart`), then a tooling tag (`CLI`, `MCP`, `AI Agents`, `Developer Tools`,
+  `Automation`, …), and falls back to `web`. Tags are a weak tell — set
+  `platform` explicitly and the inference never runs.
+
+  The home rail is deliberately **not** featured-only. It takes each
+  platform's projects in `sortProjects` order, which puts featured first, and
+  caps at `RAIL_LIMIT`. Partitioning featured projects three ways left the
+  `web` tab holding a single card, and a quarter-full row reads as broken.
 
 ### Learnings / Field Notes
 

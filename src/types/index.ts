@@ -93,7 +93,7 @@ export type ProjectLinkType =
 
 export type ProjectStatus = "live" | "in_progress" | "private";
 
-export type ProjectPlatform = "mobile" | "web";
+export type ProjectPlatform = "mobile" | "web" | "tools";
 
 export interface ProjectLink {
   type: ProjectLinkType;

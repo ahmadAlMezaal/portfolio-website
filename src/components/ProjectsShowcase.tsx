@@ -5,20 +5,19 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { projects } from "@/lib/data";
-import type { ProjectStatus } from "@/types";
-import { sortProjects } from "@/lib/projects";
+import type { ProjectPlatform } from "@/types";
+import { filterByPlatform, sortProjects } from "@/lib/projects";
 import { gridContainerVariants } from "@/lib/motion";
 import { ProjectCard } from "@/components/ProjectCard";
 import { FilterPill } from "@/components/FilterPill";
 import { SectionHeading } from "@/components/SectionHeading";
 
-type FilterOption = "all" | ProjectStatus;
+type FilterOption = "all" | ProjectPlatform;
 
-const FILTERS: { label: string; value: FilterOption }[] = [
-  { label: "All", value: "all" },
-  { label: "Live", value: "live" },
-  { label: "In Progress", value: "in_progress" },
-  { label: "Private", value: "private" },
+const PLATFORM_FILTERS: { label: string; value: ProjectPlatform }[] = [
+  { label: "Web", value: "web" },
+  { label: "Mobile", value: "mobile" },
+  { label: "Tools", value: "tools" },
 ];
 
 export const ProjectsShowcase = () => {
@@ -26,11 +25,25 @@ export const ProjectsShowcase = () => {
 
   const allProjectsSorted = useMemo(() => sortProjects(projects), []);
 
+  const filters = useMemo(
+    () => [
+      {
+        label: "All",
+        value: "all" as FilterOption,
+        count: allProjectsSorted.length,
+      },
+      ...PLATFORM_FILTERS.map((filter) => ({
+        label: filter.label,
+        value: filter.value as FilterOption,
+        count: filterByPlatform(allProjectsSorted, filter.value).length,
+      })).filter((filter) => filter.count > 0),
+    ],
+    [allProjectsSorted],
+  );
+
   const filteredProjects = useMemo(() => {
     if (activeFilter === "all") return allProjectsSorted;
-    return allProjectsSorted.filter(
-      (p) => (p.status || "live") === activeFilter
-    );
+    return filterByPlatform(allProjectsSorted, activeFilter);
   }, [allProjectsSorted, activeFilter]);
 
   return (
@@ -54,10 +67,11 @@ export const ProjectsShowcase = () => {
         </div>
 
         <div className="flex flex-wrap justify-center gap-3 mb-10">
-          {FILTERS.map((filter) => (
+          {filters.map((filter) => (
             <FilterPill
               key={filter.value}
               label={filter.label}
+              badge={filter.count}
               isActive={activeFilter === filter.value}
               onClick={() => setActiveFilter(filter.value)}
             />

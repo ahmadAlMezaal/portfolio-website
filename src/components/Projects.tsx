@@ -16,25 +16,24 @@ import { ProjectSearch } from "@/components/ProjectSearch";
 import { SectionHeading } from "@/components/SectionHeading";
 import type { ProjectPlatform } from "@/types";
 
-const PLATFORM_ORDER: ProjectPlatform[] = ["web", "mobile"];
+const PLATFORM_ORDER: ProjectPlatform[] = ["web", "mobile", "tools"];
+
+const RAIL_LIMIT = 6;
 
 export const Projects = () => {
   const { ref, isInView } = useSectionInView();
   const [query, setQuery] = useState("");
 
   const sorted = useMemo(() => sortProjects(projects), []);
-  const featured = useMemo(
-    () => sorted.filter((project) => project.featured),
+
+  const rails = useMemo(
+    () =>
+      PLATFORM_ORDER.map((platform) => ({
+        platform,
+        projects: filterByPlatform(sorted, platform).slice(0, RAIL_LIMIT),
+      })).filter((rail) => rail.projects.length > 0),
     [sorted]
   );
-
-  const rails = useMemo(() => {
-    const source = featured.length > 0 ? featured : sorted;
-    return PLATFORM_ORDER.map((platform) => ({
-      platform,
-      projects: filterByPlatform(source, platform),
-    })).filter((rail) => rail.projects.length > 0);
-  }, [featured, sorted]);
 
   const [platform, setPlatform] = useState<ProjectPlatform>(
     () => rails[0]?.platform ?? "web"

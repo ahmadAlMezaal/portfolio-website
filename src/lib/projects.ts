@@ -38,13 +38,28 @@ const MOBILE_TAGS = new Set([
   "dart",
 ]);
 
+const TOOL_TAGS = new Set([
+  "cli",
+  "mcp",
+  "agent",
+  "agents",
+  "ai agents",
+  "ai tools",
+  "automation",
+  "developer tools",
+  "devtools",
+]);
+
 const STORE_LINKS = new Set(["appstore", "playstore"]);
+
+const hasTag = (project: Project, tags: Set<string>): boolean =>
+  project.tags.some((tag) => tags.has(tag.toLowerCase()));
 
 export const projectPlatform = (project: Project): ProjectPlatform => {
   if (project.platform) return project.platform;
   if (project.links.some((link) => STORE_LINKS.has(link.type))) return "mobile";
-  if (project.tags.some((tag) => MOBILE_TAGS.has(tag.toLowerCase())))
-    return "mobile";
+  if (hasTag(project, MOBILE_TAGS)) return "mobile";
+  if (hasTag(project, TOOL_TAGS)) return "tools";
   return "web";
 };
 
