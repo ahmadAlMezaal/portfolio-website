@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
-import { ChevronRight, Folder, FolderOpen, Star } from "lucide-react";
+import { Bookmark, ChevronRight, Folder, FolderOpen } from "lucide-react";
 import { bookmarks } from "@/lib/data";
 import {
   KIND_ICONS,
@@ -96,7 +96,7 @@ export const BookmarksMenu = () => {
             : "text-gray-600 dark:text-gray-400 hover:text-purple-500 dark:hover:text-purple-400"
         }`}
       >
-        <Star size={18} className={open ? "fill-current" : ""} />
+        <Bookmark size={18} className={open ? "fill-current" : ""} />
       </motion.button>
 
       <AnimatePresence>
