@@ -26,7 +26,8 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
-# personal assets (CV and project images)
+# personal assets (mirrored from portfolio-data by scripts/sync-data.ts)
+public/assets/
 public/projects/*.jpg
 public/projects/*.png
 public/projects/*.jpeg

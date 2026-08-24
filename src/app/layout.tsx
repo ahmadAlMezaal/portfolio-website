@@ -38,11 +38,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: `${basePath}/icon.svg`, sizes: "any" },
-      { url: `${basePath}/icon.svg`, type: "image/svg+xml" },
+      { url: `${basePath}/assets/icon.svg`, sizes: "any" },
+      { url: `${basePath}/assets/icon.svg`, type: "image/svg+xml" },
     ],
-    shortcut: `${basePath}/icon.svg`,
-    apple: `${basePath}/icon.svg`,
+    shortcut: `${basePath}/assets/icon.svg`,
+    apple: `${basePath}/assets/icon.svg`,
   },
   openGraph: {
     title: siteMetadata.title,
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     siteName: personalInfo.name,
     images: [
       {
-        url: `${siteUrl}/og-image.png`,
+        url: `${siteUrl}/assets/og-image.png`,
         width: 1200,
         height: 630,
         alt: `${personalInfo.name} - ${personalInfo.title}`,
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     title: siteMetadata.title,
     description: siteMetadata.description,
     creator: siteMetadata.twitterHandle,
-    images: [`${siteUrl}/og-image.png`],
+    images: [`${siteUrl}/assets/og-image.png`],
   },
   robots: {
     index: true,
