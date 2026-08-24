@@ -11,7 +11,7 @@ export const metadata: Metadata = pageMetadata({
   description:
     "A filed collection of articles, repositories, packages and tools worth keeping — grouped by topic.",
   path: "/bookmarks/",
-  image: "og-bookmarks.png",
+  image: "assets/og-bookmarks.png",
 });
 
 const BookmarksPage = () => (

@@ -8,7 +8,7 @@ type PageMetadataInput = {
   image?: string;
 };
 
-const DEFAULT_OG_IMAGE = "og-image.png";
+const DEFAULT_OG_IMAGE = "assets/og-image.png";
 
 export const ogImageUrl = `${siteMetadata.siteUrl}/${DEFAULT_OG_IMAGE}`;
 

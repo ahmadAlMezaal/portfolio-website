@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import satori from "satori";
 import { Resvg } from "@resvg/resvg-js";
@@ -18,6 +18,7 @@ const PALE = "#e6f5ec";
 
 const GLYPHS = "01アイウエオカキクケコサシスセソタチツテトナニヌネノ$#{}[]<>/\\*+=";
 
+const outputDir = resolve(process.argv[2] ?? "public/assets");
 const dataPath = resolve("src/lib/portfolio-data.json");
 const raw: PortfolioConfig | null = existsSync(dataPath)
   ? JSON.parse(readFileSync(dataPath, "utf8"))
@@ -295,6 +296,8 @@ const fonts = [
   { name: "JetBrains Mono", data: fontFile(800), weight: 800 as const, style: "normal" as const },
 ];
 
+mkdirSync(outputDir, { recursive: true });
+
 for (const entry of CARDS) {
   const svg = await satori(card(entry) as Parameters<typeof satori>[0], {
     width: WIDTH,
@@ -302,7 +305,6 @@ for (const entry of CARDS) {
     fonts,
   });
   const png = new Resvg(svg).render().asPng();
-  const outputPath = resolve("public", entry.file);
-  writeFileSync(outputPath, png);
+  writeFileSync(resolve(outputDir, entry.file), png);
   console.log(`✓ ${entry.file} (${Math.round(png.length / 1024)} KB)`);
 }

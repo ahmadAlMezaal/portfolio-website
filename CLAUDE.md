@@ -47,7 +47,6 @@ src/
 │   ├── not-found.tsx     # 404 — terminal window, exported as 404.html
 │   ├── robots.ts         # robots.txt
 │   ├── sitemap.ts        # sitemap.xml
-│   ├── icon.svg          # Favicon served by the app router
 │   └── globals.css       # Tailwind entry, theme palettes, motifs, keyframes
 ├── components/
 │   ├── Navbar.tsx        # Top nav + status pill + mobile menu
@@ -105,9 +104,11 @@ src/
 ALL personal content lives outside this repo, in the private
 [`portfolio-data`](https://github.com/ahmadAlMezaal/portfolio-data) repo as
 `portfolio.json` (shaped as `PortfolioConfig` from `@/types`). This repo is
-public and contains no personal data beyond deployment infrastructure
-(`public/CNAME`, the committed `public/og-*.png` cards, and project logos in
-`public/assets/`).
+public and contains no personal data at all. Every image the site serves —
+project cards, the per-route Open Graph cards and the favicon — lives in
+`portfolio-data/assets/` and is mirrored into the gitignored `public/assets/`
+at build time. What remains here is deployment infrastructure: `public/CNAME`
+and the unused Next.js placeholder SVGs.
 
 ### How content is fetched
 
@@ -117,6 +118,17 @@ public and contains no personal data beyond deployment infrastructure
   private repo — validates it against `scripts/portfolio-schema.ts`, and
   writes the gitignored `src/lib/portfolio-data.json`. On fetch or validation
   failure the build fails loudly.
+- It then mirrors the data repo's `assets/` into the gitignored
+  `public/assets/`, finding it by swapping `portfolio.json` for `assets` in the
+  same URL. `deploy.yml` therefore needs no second variable. A URL that does
+  not end in `portfolio.json` cannot be derived from, so mirroring is skipped
+  and whatever sits in `public/assets/` is left alone — that is the path a
+  template clone hosting its JSON on a gist takes.
+- After mirroring, every `image` in the config is checked against
+  `public/assets/`. A reference with no file exits non-zero. Filesystem state is
+  what gets checked, not the download list, so a committed image satisfies the
+  check just as a mirrored one does — and a deploy whose mirroring silently
+  stopped working fails instead of shipping blank cards.
 - Validation is a **zod** schema covering the whole of `PortfolioConfig`, not
   just the fields someone remembered to check. It is deliberately kept beside
   the script rather than in `src/`: nothing in the app imports it, so zod
@@ -151,8 +163,9 @@ public and contains no personal data beyond deployment infrastructure
    URL returning `PortfolioConfig`-shaped JSON works (GitHub contents API,
    gist, object storage, CMS). See the README's "Content" section.
 2. Place your CV at `public/cv.pdf`
-3. Add project images to `public/projects/`
-4. (Optional) Replace `public/icon.svg` with your own favicon
+3. Add project images to `assets/` beside your `portfolio.json` and point
+   entries at `/assets/<filename>`
+4. (Optional) Replace `assets/icon.svg` with your own favicon
 
 **Config includes:**
 
@@ -381,9 +394,13 @@ below that.
 
 ### Favicon
 
-The portfolio uses SVG favicon by default (`public/icon.svg`). To customize:
-- Replace `public/icon.svg` with your own SVG icon
-- For full browser support, also add `public/favicon.ico` and `public/apple-touch-icon.png`
+The favicon is `assets/icon.svg` in the data repo, mirrored to
+`public/assets/icon.svg`. `layout.tsx` declares it explicitly through the
+`icons` metadata, so the App Router `icon` file convention is deliberately
+unused — a `src/app/icon.svg` would be a second source of truth that the
+metadata block silently overrides.
+
+To customize, replace `assets/icon.svg` in `portfolio-data`.
 
 ## Theme System
 
@@ -507,10 +524,12 @@ per-entry URLs. The component returns `null` when `learnings` is empty rather
 than emitting an empty collection.
 
 Each route ships its own Open Graph card. `pageMetadata()` takes an optional
-`image` (a filename in `public/`) and defaults to `og-image.png`.
+`image` (a path under `public/`) and defaults to `assets/og-image.png`.
 
-`public/og-image.png` is **hand-made** and is not produced by any script —
-`scripts/generate-og-images.ts` writes the three sub-page cards only. The
+`assets/og-image.png` is **hand-made** and is not produced by any script —
+`scripts/generate-og-images.ts` writes the three sub-page cards only, into a
+directory given as its first argument (default `public/assets`) — point it at
+a `portfolio-data` checkout to regenerate them where they now live. The
 repo previously carried a `generate-og-image.js` that claimed to produce the
 home card but rendered a purple gradient in system-ui: it predated the
 terminal redesign and had never been re-run, so running it silently replaced
@@ -627,23 +646,29 @@ standing `react-hooks` baseline is cleared; it cannot gate before then.
 
 ```
 public/
-├── icon.svg              # Main favicon (SVG format)
-├── favicon.ico           # (Optional) ICO favicon for older browsers
-├── apple-touch-icon.png  # (Optional) Apple touch icon
+├── CNAME                 # Custom domain for GitHub Pages
 ├── cv.pdf                # Your CV/Resume (not tracked in git)
 ├── CV_README.md          # Instructions for CV setup
-└── projects/             # Project images
-    ├── .gitkeep
-    └── ...
+├── assets/               # Mirrored from portfolio-data (not tracked in git)
+│   ├── icon.svg          # Favicon
+│   ├── og-image.png      # Home Open Graph card (hand-made)
+│   ├── og-*.png          # Per-route cards (generated)
+│   └── ...               # Project cards and logos
+└── projects/             # Legacy project image path used by the example config
+    └── .gitkeep
 ```
 
-**Note:** CV and project images are not tracked in git. Each person cloning the repo should add their own.
+**Note:** nothing under `public/assets/` is tracked. It is rebuilt from
+`portfolio-data` on every sync, so deleting it is always safe. A build with no
+`PORTFOLIO_DATA_URL` — CI, or a fork — leaves it empty and ships without
+images; that build is never deployed.
 
 ## Gitignored Files
 
 - `src/lib/portfolio-data.json` - Fetched portfolio content
 - `src/lib/data.config.ts` - Legacy local config (no longer used; ignored so
   stale local copies don't get committed)
+- `public/assets/` - Images mirrored from portfolio-data
 - `public/cv.pdf` - CV/Resume file
 - `public/projects/*.jpg` - Project images (except .gitkeep)
 - `public/projects/*.png` - Project images
