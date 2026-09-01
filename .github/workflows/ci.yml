@@ -27,6 +27,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Check prose for em dashes
+        run: pnpm check-prose
+
       - name: Build against placeholder content
         run: pnpm build
 

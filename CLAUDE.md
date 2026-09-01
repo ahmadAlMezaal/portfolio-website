@@ -13,7 +13,7 @@ Pages.
 - **Animations**: Motion 12 (imported from `motion/react`, not `framer-motion`)
 - **Smooth scroll**: Lenis
 - **Syntax highlighting**: shiki (build time only)
-- **Icons**: Lucide React (pinned to 0.x — see Dependency Ceilings)
+- **Icons**: Lucide React (pinned to 0.x, see Dependency Ceilings)
 - **Theming**: custom `ThemeProvider` (see Theme System)
 
 ### Dependency Ceilings
@@ -25,11 +25,11 @@ concrete, so bump them only with the matching fix:
   (`Github`, `Linkedin`, `Twitter`, `Youtube`, `Instagram`, `Facebook`,
   `Dribbble`, `Codepen`) for trademark reasons. `lib/social.tsx` and the
   `repo` bookmark icon depend on them, and Simple Icons has since dropped
-  LinkedIn and CodePen too — so moving to 1.x means hand-authoring those
-  marks, not swapping a source.
+  LinkedIn and CodePen too, so moving to 1.x means hand-authoring those
+  marks rather than swapping a source.
 - **typescript** stays on `6.x`. TS 7 (the native port) builds fine with
   `experimental.useTypeScriptCli`, but `typescript-eslint` refuses to load
-  against it, which takes out `pnpm lint` — and lint is what enforces the
+  against it, which takes out `pnpm lint`, and lint is what enforces the
   arrow-function and named-export rules below.
 - **eslint** stays on `9.x`. ESLint 10 crashes `eslint-plugin-react` (pulled
   in transitively by `eslint-config-next`) inside `detectReactVersion`.
@@ -40,11 +40,11 @@ concrete, so bump them only with the matching fix:
 src/
 ├── app/
 │   ├── layout.tsx        # Root layout: metadata, providers, global chrome
-│   ├── page.tsx          # Home — composes Hero/About/Skills/Projects/Contact
-│   ├── projects/page.tsx # /projects — full project collection
-│   ├── learnings/page.tsx# /learnings — Field Notes (build-time shiki)
-│   ├── bookmarks/page.tsx# /bookmarks — browser-style bookmark manager
-│   ├── not-found.tsx     # 404 — terminal window, exported as 404.html
+│   ├── page.tsx          # Home, composing Hero/About/Skills/Projects/Contact
+│   ├── projects/page.tsx # /projects, the full project collection
+│   ├── learnings/page.tsx# /learnings, Field Notes (build-time shiki)
+│   ├── bookmarks/page.tsx# /bookmarks, a browser-style bookmark manager
+│   ├── not-found.tsx     # 404 terminal window, exported as 404.html
 │   ├── robots.ts         # robots.txt
 │   ├── sitemap.ts        # sitemap.xml
 │   └── globals.css       # Tailwind entry, theme palettes, motifs, keyframes
@@ -90,7 +90,7 @@ src/
 │   ├── data.config.example.ts # Placeholder content (fallback)
 │   ├── highlight.ts      # Build-time shiki highlighting for learnings
 │   ├── hooks.ts          # Shared hooks (scroll, mobile, clipboard, fullscreen)
-│   ├── metadata.ts       # pageMetadata() — per-route title/canonical/OG/Twitter
+│   ├── metadata.ts       # pageMetadata() for title/canonical/OG/Twitter
 │   ├── motion.ts         # Shared Motion variants
 │   ├── projects.ts       # Project filtering/sorting helpers
 │   ├── bookmarks.ts      # Folder slugs, URL labels, search filtering
@@ -108,9 +108,9 @@ src/
 ALL personal content lives outside this repo, in the private
 [`portfolio-data`](https://github.com/ahmadAlMezaal/portfolio-data) repo as
 `portfolio.json` (shaped as `PortfolioConfig` from `@/types`). This repo is
-public and contains no personal data at all. Every image the site serves —
-project cards, the per-route Open Graph cards and the favicon — lives in
-`portfolio-data/assets/` and is mirrored into the gitignored `public/assets/`
+public and contains no personal data at all. Every image the site serves,
+including project cards, the per-route Open Graph cards and the favicon, lives
+in `portfolio-data/assets/` and is mirrored into the gitignored `public/assets/`
 at build time. What remains here is deployment infrastructure: `public/CNAME`
 and the unused Next.js placeholder SVGs.
 
@@ -118,20 +118,20 @@ and the unused Next.js placeholder SVGs.
 
 - `scripts/sync-data.ts` runs before `next dev`/`next build` (npm pre-hooks)
   and on `postinstall`. When `PORTFOLIO_DATA_URL` is set (env or `.env.local`),
-  it fetches the JSON — with `PORTFOLIO_DATA_TOKEN` as a Bearer token for the
-  private repo — validates it against `scripts/portfolio-schema.ts`, and
+  it fetches the JSON, sending `PORTFOLIO_DATA_TOKEN` as a Bearer token for
+  the private repo, validates it against `scripts/portfolio-schema.ts`, and
   writes the gitignored `src/lib/portfolio-data.json`. On fetch or validation
   failure the build fails loudly.
 - It then mirrors the data repo's `assets/` into the gitignored
   `public/assets/`, finding it by swapping `portfolio.json` for `assets` in the
   same URL. `deploy.yml` therefore needs no second variable. A URL that does
   not end in `portfolio.json` cannot be derived from, so mirroring is skipped
-  and whatever sits in `public/assets/` is left alone — that is the path a
+  and whatever sits in `public/assets/` is left alone. That is the path a
   template clone hosting its JSON on a gist takes.
 - After mirroring, every `image` in the config is checked against
   `public/assets/`. A reference with no file exits non-zero. Filesystem state is
   what gets checked, not the download list, so a committed image satisfies the
-  check just as a mirrored one does — and a deploy whose mirroring silently
+  check just as a mirrored one does, and a deploy whose mirroring silently
   stopped working fails instead of shipping blank cards.
 - Validation is a **zod** schema covering the whole of `PortfolioConfig`, not
   just the fields someone remembered to check. It is deliberately kept beside
@@ -142,9 +142,9 @@ and the unused Next.js placeholder SVGs.
   inferred type still satisfies the interface. Let them drift and `pnpm build`
   fails with a type error rather than shipping a schema that validates the
   wrong shape.
-- The parsed result is used for logging only — `writeFileSync` receives the
-  **raw** fetched data. Writing `result.data` would silently strip any key the
-  schema does not model.
+- The parsed result is used for logging only, because `writeFileSync`
+  receives the **raw** fetched data. Writing `result.data` would silently
+  strip any key the schema does not model.
 - The scripts are TypeScript run directly by Node 24's type stripping
   (`node scripts/sync-data.ts`), which is why imports between them carry an
   explicit `.ts` extension and `allowImportingTsExtensions` is set in
@@ -163,7 +163,7 @@ and the unused Next.js placeholder SVGs.
 **To customize (when cloning this repo as a template):**
 
 1. Seed a starter file with `node scripts/export-template.mjs > portfolio.json`,
-   fill it in, host it anywhere, and point `PORTFOLIO_DATA_URL` at it — any
+   fill it in, host it anywhere, and point `PORTFOLIO_DATA_URL` at it. Any
    URL returning `PortfolioConfig`-shaped JSON works (GitHub contents API,
    gist, object storage, CMS). See the README's "Content" section.
 2. Place your CV at `public/cv.pdf`
@@ -177,7 +177,7 @@ and the unused Next.js placeholder SVGs.
   `launched` (`YYYY-MM-DD`) becomes `dateCreated` on the home page's
   ProfilePage schema, and is omitted when absent; optional `repoUrl` turns on
   the footer's "Make it yours" strip (`MakeItYours.tsx`) with a copyable
-  `git clone` line — the whole strip renders nothing without it
+  `git clone` line, and the whole strip renders nothing without it
 - `personalInfo`: Name, title, bio, email, status, social links; optional
   `coordinates` (`{ lat, lon }`) pins the contact globe exactly, overriding the
   city lookup described under The Globe; optional
@@ -195,8 +195,8 @@ and the unused Next.js placeholder SVGs.
 - `focusAreas` (optional): qualitative chips in About; replace the numeric stats
 - `bookmarks` (optional): folders of shared links for the /bookmarks page
 
-The canonical shape is `PortfolioConfig` in `src/types/index.ts` — read that
-first, and `data.config.example.ts` for a filled-in example.
+The canonical shape is `PortfolioConfig` in `src/types/index.ts`. Read that
+first, then `data.config.example.ts` for a filled-in example.
 
 ### Status Options
 
@@ -302,14 +302,14 @@ Projects use a flexible `links` array instead of fixed `liveUrl`/`githubUrl` fie
 - `imageFit: "contain"` suits logos; `"cover"` is the default
 - `platform` is `"web"`, `"mobile"` or `"tools"`. It drives the tabs on the
   home carousel and the filter pills on `/projects`, so the two surfaces
-  always agree. `tools` covers CLIs, MCP servers and agents — anything whose
-  surface is a terminal or another developer's editor.
+  always agree. `tools` covers CLIs, MCP servers and agents, meaning anything
+  whose surface is a terminal or another developer's editor.
 
   It is optional: `projectPlatform()` in `lib/projects.ts` infers it from an
   App Store or Play Store link first, then a mobile tag (`Mobile`,
   `React Native`, `Expo`, `iOS`, `Android`, `Swift`, `Kotlin`, `Flutter`,
   `Dart`), then a tooling tag (`CLI`, `MCP`, `AI Agents`, `Developer Tools`,
-  `Automation`, …), and falls back to `web`. Tags are a weak tell — set
+  `Automation`, …), and falls back to `web`. Tags are a weak tell, so set
   `platform` explicitly and the inference never runs.
 
   The home rail is deliberately **not** featured-only. It takes each
@@ -320,8 +320,8 @@ Projects use a flexible `links` array instead of fixed `liveUrl`/`githubUrl` fie
 ### Learnings / Field Notes
 
 The `/learnings` page renders `learnings` entries as expandable cards with a
-code-editor block. Each entry requires code in all three languages —
-`typescript`, `go`, and `python` — which become the editor's filename tabs:
+code-editor block. Each entry requires code in all three languages,
+`typescript`, `go` and `python`, which become the editor's filename tabs.
 
 ```typescript
 {
@@ -368,7 +368,7 @@ sidebar, and rows of links. `bookmarks` is an array of folders:
 ```
 
 `kind` is `"article" | "blog" | "repo" | "package" | "docs" | "video" | "tool"`
-and selects the row icon — it is never rendered as text. Pick it from what the
+and selects the row icon. It is never rendered as text. Pick it from what the
 URL points at, not what the thing conceptually is: a github.com link is a
 `repo` even when the project ships as a package.
 
@@ -377,7 +377,7 @@ Conventions:
 - **One level of folders.** There is no nesting, by design.
 - `name` is lowercase-kebab so it reads as a directory; it also becomes the
   anchor (`/bookmarks#react-native`) that the ⌘K palette links to.
-- `note` is the reason the link earned its place — the part a browser export
+- `note` is the reason the link earned its place, the part a browser export
   cannot give you. `description` and `added` are optional.
 - `sync-data.ts` validates every folder and link, so a malformed `kind` or a
   non-absolute URL fails the build rather than shipping a broken row.
@@ -387,7 +387,7 @@ search box filters across every folder at once and shows which folder each hit
 came from.
 
 Search is token-based, not substring: the query is split on non-alphanumerics
-and every token must match a word in the title, folder, host, kind or note —
+and every token must match a word in the title, folder, host, kind or note,
 so `react n` finds `react-native`. Tokens are scored (exact word > word prefix
 > infix, weighted by field) and hits are ranked. Matches are highlighted in the
 title only, at word starts only; highlighting every infix made single-letter
@@ -395,8 +395,8 @@ tokens light up half the page.
 
 `BookmarksMenu` puts the same content behind the navbar star, like a browser's
 bookmark menu: folders cascade into a submenu on hover, with `All bookmarks`
-opening the full page. It is `lg` and up only — the nav row cannot fit it
-below that.
+opening the full page. It is `lg` and up only, because the nav row cannot fit
+it below that.
 
 ### The Globe
 
@@ -406,18 +406,19 @@ a graticule under a dot matrix of land, spinning on its own and draggable.
 Where the pin comes from, in order: `personalInfo.coordinates` if the config
 sets it, else `lib/places.ts` matches each comma-separated part of
 `personalInfo.location` against a gazetteer of major cities, else the panel
-renders exactly as it did before the globe existed. That fallback is the point
-— the live config has no `coordinates`, so `"London, United Kingdom"` resolves
-through the gazetteer and the globe works without a `portfolio-data` edit.
+renders exactly as it did before the globe existed. That fallback is the
+point, because the live config has no `coordinates`, so `"London, United
+Kingdom"` resolves through the gazetteer and the globe works without a
+`portfolio-data` edit.
 
 `LAND_MASK` in `lib/globe.ts` is a bitmask of Natural Earth's public-domain
 `ne_110m_land` rasterised at 2.5°, one bit per sample. Bands hold
 `360/2.5 · cos(lat)` samples each rather than a fixed count, so dots stay
-evenly spaced instead of crowding at the poles — 1,886 land points in 1.1 KB
-of base64, and no runtime or build-time dependency. It is generated, not
+evenly spaced instead of crowding at the poles, giving 1,886 land points in
+1.1 KB of base64 with no runtime or build-time dependency. It is generated, not
 hand-maintained: re-rasterise from source if you ever need finer detail.
 
-`yaw` increases eastward, so a rightward drag *decreases* it — get that sign
+`yaw` increases eastward, so a rightward drag *decreases* it. Get that sign
 wrong and the globe fights the pointer. Drag deltas come from `clientX`
 rather than `movementX`, which Safari has never reported reliably on pointer
 events.
@@ -432,8 +433,8 @@ still works, since that is user-initiated.
 The favicon is `assets/icon.svg` in the data repo, mirrored to
 `public/assets/icon.svg`. `layout.tsx` declares it explicitly through the
 `icons` metadata, so the App Router `icon` file convention is deliberately
-unused — a `src/app/icon.svg` would be a second source of truth that the
-metadata block silently overrides.
+unused, because a `src/app/icon.svg` would be a second source of truth that
+the metadata block silently overrides.
 
 To customize, replace `assets/icon.svg` in `portfolio-data`.
 
@@ -460,34 +461,35 @@ How it works:
   (`--background`, `--foreground`, `--card-bg`, `--accent-*`, `--accent-rgb`, …).
   `--accent-rgb` and friends are space-separated channels so they can be used
   as `rgb(var(--accent-rgb) / 0.4)`.
-- Each palette block also remaps Tailwind colour tokens — the whole `gray-*`
-  ramp plus the `purple`, `pink`, `blue`, `cyan`, `green` and `emerald` shades
-  the components actually use. That is why `text-purple-400` renders green in
-  matrix and gold in amber. These remaps belong **inside** each
-  `[data-theme]` block, never in a shared `.dark` block: a shared one applies
-  to every palette and is how the matrix greens previously leaked everywhere.
+- Each palette block also remaps Tailwind colour tokens, covering the whole
+  `gray-*` ramp plus the `purple`, `pink`, `blue`, `cyan`, `green` and
+  `emerald` shades the components actually use. That is why
+  `text-purple-400` renders green in matrix and gold in amber. These remaps
+  belong **inside** each `[data-theme]` block, never in a shared `.dark`
+  block: a shared one applies to every palette and is how the matrix greens
+  previously leaked everywhere.
 - Per-theme motifs (grid, scanlines, nameplates) are keyed off
   `[data-theme="…"]` selectors in `globals.css`.
 
 **When adding themed UI:** use a remapped token, a CSS variable, or the active
 theme's `swatch` (from `THEMES` in `ThemeProvider`). Reaching for a colour
-family that is *not* remapped — `red`, `orange`, `amber`, `yellow`, `lime`,
-`teal` — pins that element to one colour in all three palettes. That is only
+family that is *not* remapped (`red`, `orange`, `amber`, `yellow`, `lime`,
+`teal`) pins that element to one colour in all three palettes. That is only
 correct when the colour is semantic rather than decorative: form-validation
 red, the amber "in progress" badge, the rocket flame, and the macOS
 traffic-light dots (pinned to literal `#ff5f57 / #febc2e / #28c840` so the
 remap cannot reach them).
 
 **When adding a palette:** copy a complete existing block. Every variable must
-be defined in every block — a value silently inherited from `matrix` is a bug,
-not a default. `ScrollToTopRocket` also keys its idle animation off the active
-theme (`THEME_IDLE` / `HALO_IDLE`): matrix hovers, cyberpunk neon-flickers,
-amber CRT-glitches. A new palette needs an entry in both records or the
-lookup is `undefined`.
+be defined in every block, because a value silently inherited from `matrix`
+is a bug rather than a default. `ScrollToTopRocket` also keys its idle
+animation off the active theme (`THEME_IDLE` / `HALO_IDLE`): matrix hovers,
+cyberpunk neon-flickers, amber CRT-glitches. A new palette needs an entry in
+both records or the lookup is `undefined`.
 
 Only *some shades* of each remapped family are defined. A badge built as
 `bg-X-100 dark:bg-X-900/30 text-X-400` is safe for `purple` and `emerald`
-only — `blue-900`, `cyan-400` and friends are not remapped and leak literal
+only. `blue-900`, `cyan-400` and friends are not remapped, and leak literal
 Tailwind colour into amber and cyberpunk. Prefer
 `bg-[rgb(var(--accent-rgb)/0.12)] text-[rgb(var(--accent-rgb))]` and let an
 icon carry the meaning, as `Bookmarks.tsx` does.
@@ -496,25 +498,25 @@ icon carry the meaning, as `Bookmarks.tsx` does.
 
 Global chrome lives in `layout.tsx` and is present on every route:
 
-- **`⌘K` / `Ctrl+K`** — command palette (navigation, bookmark folders, theme,
-  actions, social)
-- **`F`** or **`⌘/Ctrl+Shift+F`** — toggle fullscreen
-- **`T`** — cycle palette
-- **`?`** — keyboard cheatsheet
-- **Navbar star** — browser-style bookmark menu; folders cascade on hover
+- **`⌘K` / `Ctrl+K`** opens the command palette (navigation, bookmark folders,
+  theme, actions, social)
+- **`F`** or **`⌘/Ctrl+Shift+F`** toggles fullscreen
+- **`T`** cycles the palette
+- **`?`** opens the keyboard cheatsheet
+- **Navbar star** opens a browser-style bookmark menu; folders cascade on hover
   (`lg` and up)
-- **`StatusBar`** — bottom hint strip advertising the above, with the current
-  section shown as `$ ~/about`. Desktop only.
-- Konami code — easter egg
+- **`StatusBar`** is the bottom hint strip advertising the above, with the
+  current section shown as `$ ~/about`. Desktop only.
+- Konami code triggers an easter egg
 
 Convention: whichever component advertises a shortcut owns its key listener
 (`ThemeSwitcher` owns `T`, `ShortcutsOverlay` owns `?`, `StatusBar` owns `F`).
 Components that need to open another one do it through `shortcutsBus.ts`
 rather than synthesising keystrokes.
 
-Floating controls stack bottom-right and must not overlap: status bar (0–50px),
-scroll-to-top rocket (68px), theme gear (132px) on desktop; the bar is hidden
-below `md`, where the rocket and gear sit at 24px and 88px.
+Floating controls stack bottom-right and must not overlap: status bar
+(0 to 50px), scroll-to-top rocket (68px), theme gear (132px) on desktop; the
+bar is hidden below `md`, where the rocket and gear sit at 24px and 88px.
 
 ## SEO & Metadata
 
@@ -525,13 +527,13 @@ and the entry in `sitemap.ts`. Write paths as `/projects/`, never `/projects`.
 Sub-page metadata goes through `pageMetadata()` in `lib/metadata.ts`. Do not
 hand-write a bare `{ title, description }` object on a page: Next inherits the
 root `openGraph` block wholesale when a route doesn't define its own, so a page
-that sets only `title` still ships the *homepage* title in `og:title` — the
+that sets only `title` still ships the *homepage* title in `og:title`, so the
 link preview is wrong everywhere it's shared. `pageMetadata()` fills the
 canonical, OG and Twitter blocks from one title/description/path.
 
 Every route needs exactly one `<h1>`. The hero renders a different component
 per palette (`MatrixIntro` / `CyberpunkIntro` / `AmberIntro`), so a heading
-added to one variant is missing from the other two — and the prerendered HTML
+added to one variant is missing from the other two, and the prerendered HTML
 only ever contains the default matrix variant. Change all three together.
 
 `sitemap.ts` lists real routes only. Fragment URLs (`/#about`) are collapsed
@@ -547,13 +549,13 @@ alone, because a ProfilePage on `/projects/` asserts that the projects page is
 a profile of the person, which is false. Anything route-specific belongs on
 its page, not in the layout.
 
-Nothing personal is hardcoded in the schemas — `knowsAbout`, `launched` and
+Nothing personal is hardcoded in the schemas. `knowsAbout`, `launched` and
 the address are read from config and omitted when missing, so a fresh clone
 emits valid schema without inheriting someone else's biography.
 
 `/learnings` adds `LearningsJsonLd`: a CollectionPage whose `hasPart` is one
-TechArticle per entry. Entries carry no `url`, deliberately — the cards have
-no `id` anchors, and pointing each article at `#some-slug` would assert a
+TechArticle per entry. Entries carry no `url`, deliberately, because the cards
+have no `id` anchors, and pointing each article at `#some-slug` would assert a
 fragment that does not exist. Give the cards real anchors first if you want
 per-entry URLs. The component returns `null` when `learnings` is empty rather
 than emitting an empty collection.
@@ -561,10 +563,10 @@ than emitting an empty collection.
 Each route ships its own Open Graph card. `pageMetadata()` takes an optional
 `image` (a path under `public/`) and defaults to `assets/og-image.png`.
 
-`assets/og-image.png` is **hand-made** and is not produced by any script —
+`assets/og-image.png` is **hand-made** and is not produced by any script.
 `scripts/generate-og-images.ts` writes the three sub-page cards only, into a
-directory given as its first argument (default `public/assets`) — point it at
-a `portfolio-data` checkout to regenerate them where they now live. The
+directory given as its first argument (default `public/assets`), so point it
+at a `portfolio-data` checkout to regenerate them where they now live. The
 repo previously carried a `generate-og-image.js` that claimed to produce the
 home card but rendered a purple gradient in system-ui: it predated the
 terminal redesign and had never been re-run, so running it silently replaced
@@ -579,10 +581,10 @@ back to whatever monospace exists. Chips are derived from the config
 (featured project tags, learning categories, bookmark folder names) and the
 row is omitted when the source is empty.
 
-The font is loaded as a variable font — `JetBrains_Mono({ subsets, display })`
+The font is loaded as a variable font, `JetBrains_Mono({ subsets, display })`
 with no `weight` array. Listing explicit weights emits five static files and
 preloads one the page may not use; the variable file is a single 40 KB request
-covering 100–800.
+covering weights 100 to 800.
 
 ## Code Style
 
@@ -590,8 +592,8 @@ covering 100–800.
 
 Every function in `src/` and `scripts/` is an arrow function assigned to a
 `const`. There are no `function` declarations and no `function` expressions
-anywhere in the codebase — components, hooks, helpers, callbacks and build
-scripts alike.
+anywhere in the codebase, covering components, hooks, helpers, callbacks and
+build scripts alike.
 
 ```typescript
 export const assetPath = (path: string): string => { ... };
@@ -612,16 +614,17 @@ Components and helpers are named exports, imported as
 `ExportDefaultDeclaration`, with two exemptions where the default export is
 not ours to choose:
 
-- **`src/app/**`** — Next.js resolves `page`, `layout`, `robots` and `sitemap`
-  by default export. A named export there is silently ignored, so the page
-  404s or the route renders blank rather than failing the build. Every file
-  convention Next.js may add later (`not-found`, `error`, `loading`, …) is
-  covered by the same exemption.
-- **`*.config.{mjs,ts,js}`** — `next.config.ts`, `postcss.config.mjs` and
+- **`src/app/**`**, where Next.js resolves `page`, `layout`, `robots` and
+  `sitemap` by default export. A named export there is silently ignored, so
+  the page 404s or the route renders blank rather than failing the build.
+  Every file convention Next.js may add later (`not-found`, `error`,
+  `loading`, …) is covered by the same exemption.
+- **`*.config.{mjs,ts,js}`**, since `next.config.ts`, `postcss.config.mjs` and
   `eslint.config.mjs` are read by their tools as default exports.
 
 Third-party default imports (`next/link`, `next/image`) and JSON modules
-(`portfolio-data.json`) stay default imports — that is their published shape.
+(`portfolio-data.json`) stay default imports, since that is their published
+shape.
 
 ### Define before use
 
@@ -642,7 +645,7 @@ pnpm preview  # Build, then serve out/ locally
 pnpm lint     # Run ESLint
 ```
 
-There is no `pnpm start` — `next start` is incompatible with
+There is no `pnpm start`, because `next start` is incompatible with
 `output: "export"`, so `preview` (`next build && pnpm dlx serve out`) is how
 you look at a production build locally.
 
@@ -672,7 +675,7 @@ Two things about `deploy.yml` that its shape does not show:
 
 `.github/workflows/ci.yml` runs on every pull request. It builds **without**
 `PORTFOLIO_DATA_URL`, so it exercises the placeholder path in
-`data.config.example.ts` — that keeps the check working on forks, where
+`data.config.example.ts`. That keeps the check working on forks, where
 secrets are unavailable, and the code is what it gates. `deploy.yml` is what
 verifies the real content fetch. Lint runs `continue-on-error` until the
 standing `react-hooks` baseline is cleared; it cannot gate before then.
@@ -695,7 +698,7 @@ public/
 
 **Note:** nothing under `public/assets/` is tracked. It is rebuilt from
 `portfolio-data` on every sync, so deleting it is always safe. A build with no
-`PORTFOLIO_DATA_URL` — CI, or a fork — leaves it empty and ships without
+`PORTFOLIO_DATA_URL`, such as CI or a fork, leaves it empty and ships without
 images; that build is never deployed.
 
 ## Gitignored Files
@@ -710,6 +713,31 @@ images; that build is never deployed.
 - `.ai/` - AI assistant working files
 
 ## Notes for AI Assistants
+
+### Prose style
+
+**No em dashes, en dashes, or their HTML entities.** Anywhere: UI copy,
+markdown, commit messages, PR descriptions, code strings, log output, YAML.
+This is enforced twice, because one guard alone would leave a gap:
+
+- `no-restricted-syntax` in `eslint.config.mjs` rejects them in string
+  literals, template literals and JSX text under `src/` and `scripts/`, so the
+  editor flags them as you type.
+- `scripts/check-prose.ts` scans every tracked text file, which is the half
+  ESLint cannot see (markdown, YAML, JSON). It runs on `prebuild` and as its
+  own CI step, and unlike `pnpm lint` it is not `continue-on-error`, so it
+  genuinely gates.
+
+The fix is always to **reword the sentence**, never to swap the character for
+a hyphen. An em dash almost always joins two clauses that read better as two
+sentences, or as one clause with "because", "so", "which" or a comma. The
+check script contains none of the four sequences it looks for, building them
+from `String.fromCharCode` and a small `entity()` helper, so it never flags
+its own source.
+
+Avoid the `Label: explanation` construction in running prose too. A colon
+introducing a list or a fenced code block is fine; a colon standing in for a
+verb is the same tell as the em dash.
 
 ### No comments
 
@@ -728,17 +756,17 @@ something:
 
 This applies to every file you touch: `.ts`, `.tsx`, `.css`, `.mjs`, `.js`,
 and the GitHub Actions workflows in `.github/workflows/`. A `#` comment in a
-YAML step is the same thing as a `//` comment in a component — if a step needs
+YAML step is the same thing as a `//` comment in a component. If a step needs
 explaining, name the step so it explains itself and put the reasoning here.
 Removing a comment while editing nearby code is fine and welcome. Prose belongs
-in this file, the README, or a PR description — not in the source.
+in this file, the README, or a PR description, never in the source.
 
 Markdown, JSON content, and the code samples inside `learnings` entries are
 content, not code: comments there are fine and should be left alone.
 
 ### Everything else
 
-- Arrow functions only — never write a `function` declaration or expression.
+- Arrow functions only. Never write a `function` declaration or expression.
   See "Code Style" above; ESLint rejects them.
 
 - Named exports only. `export default` is reserved for `src/app/**` (Next.js
@@ -751,6 +779,6 @@ content, not code: comments there are fine and should be left alone.
 - The Skills component displays skills as tags (no progress bars/percentages)
 - Metadata in layout.tsx imports from config, not hardcoded
 - Shared hooks live in `lib/hooks.ts` and shared motion variants in
-  `lib/motion.ts` — reach for those before writing a local copy
+  `lib/motion.ts`, so reach for those before writing a local copy
 - Prose (chat, commits, PRs, UI copy) is British English; code identifiers and
   CSS properties keep their required spelling

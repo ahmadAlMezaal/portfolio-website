@@ -9,7 +9,7 @@ import { pageMetadata } from "@/lib/metadata";
 export const metadata: Metadata = pageMetadata({
   title: `Bookmarks | ${personalInfo.name}`,
   description:
-    "A filed collection of articles, repositories, packages and tools worth keeping — grouped by topic.",
+    "A filed collection of articles, repositories, packages and tools worth keeping, grouped by topic.",
   path: "/bookmarks/",
   image: "assets/og-bookmarks.png",
 });

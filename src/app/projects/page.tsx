@@ -8,7 +8,7 @@ import { pageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = pageMetadata({
   title: `Projects | ${personalInfo.name}`,
-  description: `A complete collection of ${personalInfo.name}'s work — live products, in-progress builds, and private engagements.`,
+  description: `A complete collection of ${personalInfo.name}'s work, spanning live products, in-progress builds and private engagements.`,
   path: "/projects/",
   image: "assets/og-projects.png",
 });

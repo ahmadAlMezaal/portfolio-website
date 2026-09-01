@@ -176,7 +176,7 @@ const card = ({ command, heading, subtitle, chips }: Card) => ({
                     type: "div",
                     props: {
                       style: { marginLeft: 14, fontSize: 19, color: DIM },
-                      children: `~ ${handle}@${host} — zsh`,
+                      children: `~ ${handle}@${host} · zsh`,
                     },
                   },
                 ],

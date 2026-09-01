@@ -109,7 +109,7 @@ export const Contact = () => {
                 </div>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">
                   Tell me what you&apos;re building. The form fills in your email
-                  client &mdash; nothing is sent through this site.
+                  client, so nothing is sent through this site.
                 </p>
 
                 <div className="space-y-3">

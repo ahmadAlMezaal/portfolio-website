@@ -16,21 +16,21 @@ Every task's requirements implicitly include this section.
 - **Arrow functions only.** No `function` declarations or expressions anywhere. ESLint blocks both.
 - **Named exports only.** `export default` is reserved for `src/app/**` and root `*.config.*` files.
 - **Define before use.** Arrow consts do not hoist; a helper appears above its first caller, at module scope and inside function bodies alike.
-- **British English in prose** — chat, commits, PR text, and user-facing UI copy. Code identifiers and CSS properties keep their required spelling (`color`, `center`).
+- **British English in prose**, covering chat, commits, PR text and user-facing UI copy. Code identifiers and CSS properties keep their required spelling (`color`, `center`).
 - **Never hardcode personal data** in components. Everything flows from `@/lib/data`.
 - **Never hardcode a themed colour.** Use `rgb(var(--accent-rgb) / …)`, a CSS variable, or a `THEMES` swatch. Of the Tailwind colour families, only `purple` and `emerald` have a usable remapped `bg-*-900` / `text-*-400` pair; `blue`, `cyan`, `red`, `amber` and friends leak literal colour into the amber and cyberpunk palettes.
 - **Package manager is pnpm.** Never run `npm` or `yarn`.
-- **Lint baseline is 6 problems (5 errors, 1 warning)** — all pre-existing `react-hooks/*` errors in `src/lib/hooks.ts`, `src/components/*`. A task passes lint if the count is still 6 and no new file appears in the output. It is not "clean"; do not try to fix the baseline.
+- **Lint baseline is 6 problems (5 errors, 1 warning)**, all pre-existing `react-hooks/*` errors in `src/lib/hooks.ts`, `src/components/*`. A task passes lint if the count is still 6 and no new file appears in the output. It is not "clean"; do not try to fix the baseline.
 
 ## A note on testing
 
-**This repo has no test framework and no test files.** There is no `pnpm test`. Adding vitest/jest is out of scope for this plan — it was not requested and would be a much larger change than the feature itself.
+**This repo has no test framework and no test files.** There is no `pnpm test`. Adding vitest/jest is out of scope for this plan. It was not requested and would be a much larger change than the feature itself.
 
 So the red-green cycle in each task is replaced by a concrete, runnable verification cycle:
 
-1. `pnpm lint` — count must still be 6 problems
-2. `pnpm build` — must exit 0 (this is the type-check *and* the prerender)
-3. A **specific DOM or output assertion** — a `grep` against the built `out/` HTML, or a Playwright interaction against `pnpm dev`
+1. `pnpm lint`, where the count must still be 6 problems
+2. `pnpm build`, which must exit 0 (this is the type-check *and* the prerender)
+3. A **specific DOM or output assertion**, meaning a `grep` against the built `out/` HTML, or a Playwright interaction against `pnpm dev`
 
 Every task below states the exact command and the exact expected output. Do not mark a step done without running it and seeing that output.
 
@@ -40,7 +40,7 @@ Every task below states the exact command and the exact expected output. Do not 
 
 ### Task 1: Add the optional `timezone` config field
 
-The availability panel's clock needs an IANA timezone. `PortfolioConfig` and the zod schema are separate declarations kept honest by `SchemaMatchesPortfolioConfig` at the foot of the schema — add the field to one and not the other and `pnpm build` fails with a type error. That failure is this task's "red" state, and you will deliberately observe it.
+The availability panel's clock needs an IANA timezone. `PortfolioConfig` and the zod schema are separate declarations kept honest by `SchemaMatchesPortfolioConfig` at the foot of the schema. Add the field to one and not the other and `pnpm build` fails with a type error. That failure is this task's "red" state, and you will deliberately observe it.
 
 **Files:**
 - Modify: `src/types/index.ts` (the `PersonalInfo` interface, ~line 27-39)
@@ -49,7 +49,7 @@ The availability panel's clock needs an IANA timezone. `PortfolioConfig` and the
 
 **Interfaces:**
 - Consumes: nothing
-- Produces: `personalInfo.timezone?: string` — an IANA identifier such as `"Europe/London"`. Task 2 reads it. It is optional and may be `undefined` at runtime even though the example config sets it.
+- Produces: `personalInfo.timezone?: string`, an IANA identifier such as `"Europe/London"`. Task 2 reads it. It is optional and may be `undefined` at runtime even though the example config sets it.
 
 - [ ] **Step 1: Add the field to the type only, and watch the build fail**
 
@@ -78,7 +78,7 @@ Run: `pnpm build`
 
 Expected: FAIL with a TypeScript error in `scripts/portfolio-schema.ts` on the `SchemaMatchesPortfolioConfig` assertion, because the inferred schema type no longer satisfies `PortfolioConfig`.
 
-If the build **passes**, stop. The guard is not doing its job and something else is wrong — do not continue and do not "fix" it by skipping to Step 3.
+If the build **passes**, stop. The guard is not doing its job and something else is wrong, so do not continue and do not "fix" it by skipping to Step 3.
 
 - [ ] **Step 3: Add the matching field to the zod schema**
 
@@ -110,7 +110,7 @@ In `src/lib/data.config.example.ts`, add `timezone` to `personalInfo` after `loc
     timezone: "Europe/London",
 ```
 
-This is what a fresh clone renders, so the panel demonstrates the clock out of the box. `knowsAbout` is already present in this file — leave it alone.
+This is what a fresh clone renders, so the panel demonstrates the clock out of the box. `knowsAbout` is already present in this file, so leave it alone.
 
 - [ ] **Step 5: Run the build to verify it passes**
 
@@ -122,7 +122,7 @@ Expected: exit 0, "Compiled successfully", and the static export written to `out
 
 Run: `pnpm lint`
 
-Expected: `✖ 6 problems (5 errors, 1 warning)` — unchanged from baseline.
+Expected: `✖ 6 problems (5 errors, 1 warning)`, unchanged from baseline.
 
 - [ ] **Step 7: Commit**
 
@@ -135,7 +135,7 @@ git commit -m "feat(config): add optional timezone to personalInfo"
 
 ### Task 2: Availability panel with a live local clock
 
-A live clock in a prerendered page is a hydration mismatch by construction: the server renders one time and the client another. `useSyncExternalStore` with a server snapshot of `null` solves it — the prerendered HTML contains no time at all, and the clock appears after mount. It also keeps this out of the standing `react-hooks/set-state-in-effect` baseline, which a `useEffect` + `setInterval` + `setState` would add to.
+A live clock in a prerendered page is a hydration mismatch by construction: the server renders one time and the client another. `useSyncExternalStore` with a server snapshot of `null` solves it, because the prerendered HTML contains no time at all, and the clock appears after mount. It also keeps this out of the standing `react-hooks/set-state-in-effect` baseline, which a `useEffect` + `setInterval` + `setState` would add to.
 
 **Files:**
 - Modify: `src/lib/hooks.ts` (append `formatLocalTime` and `useLocalTime`)
@@ -145,12 +145,12 @@ A live clock in a prerendered page is a hydration mismatch by construction: the 
 **Interfaces:**
 - Consumes: `personalInfo.timezone?: string` from Task 1
 - Produces:
-  - `useLocalTime(timeZone?: string): { time: string; offset: string } | null` — exported from `src/lib/hooks.ts`. Returns `null` during server render, when `timeZone` is `undefined`, and when `timeZone` is not a valid IANA identifier.
-  - `AvailabilityPanel` — a named export from `src/components/AvailabilityPanel.tsx`, takes no props, reads `personalInfo` itself.
+  - `useLocalTime(timeZone?: string): { time: string; offset: string } | null`, exported from `src/lib/hooks.ts`. Returns `null` during server render, when `timeZone` is `undefined`, and when `timeZone` is not a valid IANA identifier.
+  - `AvailabilityPanel`, a named export from `src/components/AvailabilityPanel.tsx`, takes no props, reads `personalInfo` itself.
 
 - [ ] **Step 1: Add the hook to `src/lib/hooks.ts`**
 
-Check the file's existing imports from `react` at the top and extend them — `useCallback` and `useSyncExternalStore` must both be imported. Append this at the **end** of the file. `formatLocalTime` must appear above `useLocalTime` (define before use):
+Check the file's existing imports from `react` at the top and extend them. `useCallback` and `useSyncExternalStore` must both be imported. Append this at the **end** of the file. `formatLocalTime` must appear above `useLocalTime` (define before use):
 
 ```typescript
 const formatLocalTime = (
@@ -248,7 +248,7 @@ In `src/components/Contact.tsx`, add the import beside the other component impor
 import { AvailabilityPanel } from "./AvailabilityPanel";
 ```
 
-Then place `<AvailabilityPanel />` as the **last child** of the left column's `<motion.div variants={sectionItemVariants} className="space-y-8">` — after the `<div>` that contains the "Connect with me" heading and the socials row, still inside the `space-y-8` wrapper.
+Then place `<AvailabilityPanel />` as the **last child** of the left column's `<motion.div variants={sectionItemVariants} className="space-y-8">`, after the `<div>` that contains the "Connect with me" heading and the socials row, still inside the `space-y-8` wrapper.
 
 - [ ] **Step 4: Build, then assert the prerendered HTML has the status and no clock**
 
@@ -263,10 +263,10 @@ Expected: build exits 0, and `grep` prints `1`.
 Now confirm the clock is genuinely absent from the prerender:
 
 ```bash
-grep -oE "[0-9]{2}:[0-9]{2} local" out/index.html || echo "NO CLOCK IN PRERENDER — correct"
+grep -oE "[0-9]{2}:[0-9]{2} local" out/index.html || echo "NO CLOCK IN PRERENDER, correct"
 ```
 
-Expected: `NO CLOCK IN PRERENDER — correct`.
+Expected: `NO CLOCK IN PRERENDER, correct`.
 
 If a time **is** present, `useSyncExternalStore`'s server snapshot is not being used and you have shipped a hydration mismatch. Go back to Step 1.
 
@@ -280,7 +280,7 @@ Also open the browser console and confirm there is **no** hydration warning ("Te
 
 Run: `pnpm lint`
 
-Expected: `✖ 6 problems (5 errors, 1 warning)`. If `useLocalTime` has added a `react-hooks` error, fix it — do not add it to the baseline.
+Expected: `✖ 6 problems (5 errors, 1 warning)`. If `useLocalTime` has added a `react-hooks` error, fix it rather than adding it to the baseline.
 
 - [ ] **Step 7: Commit**
 
@@ -293,7 +293,7 @@ git commit -m "feat(contact): add availability panel with local time"
 
 ### Task 3: "What I can help with" chips
 
-Chips render from `personalInfo.knowsAbout`, which is already declared on `PersonalInfo` and already read by the Person schema in `JsonLd` — this adds its first UI consumer. **The live `portfolio.json` does not currently contain this field**, so on your machine this block will render nothing. That is the correct behaviour and is what Step 3 verifies. The example config does contain it, so a fresh clone shows it.
+Chips render from `personalInfo.knowsAbout`, which is already declared on `PersonalInfo` and already read by the Person schema in `JsonLd`, and this adds its first UI consumer. **The live `portfolio.json` does not currently contain this field**, so on your machine this block will render nothing. That is the correct behaviour and is what Step 3 verifies. The example config does contain it, so a fresh clone shows it.
 
 **Files:**
 - Modify: `src/components/Contact.tsx` (left column)
@@ -336,9 +336,9 @@ Expected: exit 0.
 
 - [ ] **Step 3: Assert the block is absent with the live data**
 
-Run: `grep -c "What I can help with" out/index.html || echo "ABSENT — correct for live data without knowsAbout"`
+Run: `grep -c "What I can help with" out/index.html || echo "ABSENT, correct for live data without knowsAbout"`
 
-Expected: `ABSENT — correct for live data without knowsAbout`, **provided** `src/lib/portfolio-data.json` has no `knowsAbout`. Confirm which case you are in first:
+Expected: `ABSENT, correct for live data without knowsAbout`, **provided** `src/lib/portfolio-data.json` has no `knowsAbout`. Confirm which case you are in first:
 
 ```bash
 node -e "console.log(require('./src/lib/portfolio-data.json').personalInfo.knowsAbout ?? 'absent')"
@@ -357,14 +357,14 @@ pnpm build && grep -c "What I can help with" out/index.html
 
 Expected: `1`.
 
-Then restore the file — it is gitignored and regenerated by the sync script:
+Then restore the file, which is gitignored and regenerated by the sync script.
 
 ```bash
 node scripts/sync-data.ts
-node -e "console.log(require('./src/lib/portfolio-data.json').personalInfo.knowsAbout ?? 'absent — restored')"
+node -e "console.log(require('./src/lib/portfolio-data.json').personalInfo.knowsAbout ?? 'absent, restored')"
 ```
 
-Expected: `absent — restored` (assuming `PORTFOLIO_DATA_URL` is set in `.env.local`; if the sync script reports the URL is unset it keeps the file as-is, in which case remove the key with the same `node -e` technique).
+Expected: `absent, restored` (assuming `PORTFOLIO_DATA_URL` is set in `.env.local`; if the sync script reports the URL is unset it keeps the file as-is, in which case remove the key with the same `node -e` technique).
 
 - [ ] **Step 5: Run lint**
 
@@ -383,7 +383,7 @@ git commit -m "feat(contact): show knowsAbout topics as chips"
 
 ### Task 4: The modal, mounted globally
 
-The modal is created and wired to the bus, but nothing in the UI opens it yet — that is Tasks 5 and 6. This task is verified by dispatching the event by hand. Keeping it separate means the modal can be reviewed and rejected on its own accessibility merits before any trigger depends on it.
+The modal is created and wired to the bus, but nothing in the UI opens it yet, which is Tasks 5 and 6. This task is verified by dispatching the event by hand. Keeping it separate means the modal can be reviewed and rejected on its own accessibility merits before any trigger depends on it.
 
 **Files:**
 - Modify: `src/components/shortcutsBus.ts`
@@ -393,8 +393,8 @@ The modal is created and wired to the bus, but nothing in the UI opens it yet �
 **Interfaces:**
 - Consumes: nothing from earlier tasks
 - Produces:
-  - `openContactModal(): void` and `onOpenContactModal(handler: () => void): () => void` — exported from `src/components/shortcutsBus.ts`. Tasks 5 and 6 both call `openContactModal`.
-  - `ContactModal` — a named export from `src/components/ContactModal.tsx`, takes no props, rendered exactly once, in the layout.
+  - `openContactModal(): void` and `onOpenContactModal(handler: () => void): () => void`, both exported from `src/components/shortcutsBus.ts`. Tasks 5 and 6 both call `openContactModal`.
+  - `ContactModal`, a named export from `src/components/ContactModal.tsx`, takes no props, rendered exactly once, in the layout.
 
 - [ ] **Step 1: Extend the bus**
 
@@ -417,7 +417,7 @@ export const onOpenContactModal = (handler: () => void): () => void => {
 
 - [ ] **Step 2: Create `src/components/ContactModal.tsx`**
 
-The form body is lifted verbatim from `Contact.tsx` — same fields, same `mailto:` construction, same `DecodeText` button. The overlay follows `ShortcutsOverlay.tsx`: same transitions, same backdrop, same `data-lenis-prevent`.
+The form body is lifted verbatim from `Contact.tsx`, with the same fields, the same `mailto:` construction and the same `DecodeText` button. The overlay follows `ShortcutsOverlay.tsx`: same transitions, same backdrop, same `data-lenis-prevent`.
 
 ```tsx
 "use client";
@@ -644,7 +644,7 @@ export const ContactModal = () => {
 Two details that differ from `ShortcutsOverlay` on purpose:
 
 - The `wheel` handler returns early when the event originates **inside** the dialog. `ShortcutsOverlay` blocks every wheel event because its content never scrolls; this dialog has a textarea and can overflow on a short viewport, so blanket prevention would trap the user.
-- Focus restoration lives in the effect **cleanup**, which runs when `open` flips back to `false`. That covers all three ways out — Escape, backdrop, and submit — without repeating the call in each.
+- Focus restoration lives in the effect **cleanup**, which runs when `open` flips back to `false`. That covers all three ways out, meaning Escape, backdrop and submit, without repeating the call in each.
 
 - [ ] **Step 3: Mount it in the layout**
 
@@ -673,9 +673,9 @@ Expected: exit 0.
 
 With `pnpm dev` running, using Playwright:
 
-1. `browser_navigate` to `http://localhost:3000/projects/` — deliberately **not** the home page, to prove the modal is global chrome
+1. `browser_navigate` to `http://localhost:3000/projects/`, deliberately **not** the home page, to prove the modal is global chrome
 2. `browser_evaluate`: `() => window.dispatchEvent(new CustomEvent("portfolio:open-contact-modal"))`
-3. `browser_snapshot` — expect a dialog with the `$ compose` heading and the three fields
+3. `browser_snapshot`, expecting a dialog with the `$ compose` heading and the three fields
 4. Confirm focus is on the name field: `browser_evaluate`: `() => document.activeElement?.id` → expect `"contact-modal-name"`
 5. `browser_press_key` `Escape` → `browser_snapshot` shows the dialog gone
 6. Re-open via step 2, then click the backdrop → dialog closes
@@ -702,7 +702,7 @@ git commit -m "feat(contact): add globally mounted message modal"
 The form now exists in two places. This task removes the original and gives the right column its new job.
 
 **Files:**
-- Modify: `src/components/Contact.tsx` — the right-column `motion.div` (the one wrapping `<form onSubmit={handleSubmit}>`, second child of the `grid lg:grid-cols-2` div), plus the file's imports and the now-unused form state
+- Modify: `src/components/Contact.tsx`, specifically the right-column `motion.div` (the one wrapping `<form onSubmit={handleSubmit}>`, second child of the `grid lg:grid-cols-2` div), plus the file's imports and the now-unused form state
 
 Line numbers are not given here on purpose: Tasks 2 and 3 have already shifted them. Find the element by its content.
 
@@ -712,7 +712,7 @@ Line numbers are not given here on purpose: Tasks 2 and 3 have already shifted t
 
 - [ ] **Step 1: Replace the right column**
 
-Swap the entire `<motion.div variants={sectionItemVariants}>` that wraps the `<form>` — from that opening tag through its matching `</motion.div>` — for this:
+Swap the entire `<motion.div variants={sectionItemVariants}>` that wraps the `<form>`, from that opening tag through its matching `</motion.div>`, for this.
 
 ```tsx
 <motion.div variants={sectionItemVariants}>
@@ -726,8 +726,8 @@ Swap the entire `<motion.div variants={sectionItemVariants}>` that wraps the `<f
       </h3>
     </div>
     <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">
-      Tell me what you&apos;re building. The form fills in your email client —
-      nothing is sent through this site.
+      Tell me what you&apos;re building. The form fills in your email client,
+      so nothing is sent through this site.
     </p>
 
     <div className="space-y-3">
@@ -766,18 +766,18 @@ Swap the entire `<motion.div variants={sectionItemVariants}>` that wraps the `<f
 </motion.div>
 ```
 
-`h-full flex flex-col` plus `mt-auto` on the prompt line is what makes the card match the taller left column instead of floating short. The grid keeps its default stretch alignment — do not add `items-start`.
+`h-full flex flex-col` plus `mt-auto` on the prompt line is what makes the card match the taller left column instead of floating short. The grid keeps its default stretch alignment, so do not add `items-start`.
 
 - [ ] **Step 2: Remove the dead form code**
 
 From `src/components/Contact.tsx`, delete:
 
 - the `formState` `useState` call and the `handleSubmit` arrow function (lines ~38-53)
-- `Send` from the lucide import — it was already unused before this change
+- `Send` from the lucide import, which was already unused before this change
 - `MessageSquare` and `Calendar` stay (both used by the new card); `Mail` stays (CTA icon); `Copy`, `Check`, `Eye`, `MapPin` stay (email and location cards)
 - `DecodeText` stays (CTA button)
 
-Keep the `revealed` state and `useClipboard` — the email card is unchanged.
+Keep the `revealed` state and `useClipboard`, since the email card is unchanged.
 
 Add the bus import:
 
@@ -789,18 +789,18 @@ import { openContactModal } from "./shortcutsBus";
 
 Run: `pnpm build`
 
-Expected: exit 0. A "declared but never read" error here means Step 2 missed an import — fix it rather than adding an eslint-disable.
+Expected: exit 0. A "declared but never read" error here means Step 2 missed an import, so fix it rather than adding an eslint-disable.
 
 - [ ] **Step 4: Assert the inline form is gone from the prerender**
 
 Run:
 
 ```bash
-grep -c 'id="name"' out/index.html || echo "INLINE FORM REMOVED — correct"
+grep -c 'id="name"' out/index.html || echo "INLINE FORM REMOVED, correct"
 grep -c "Start a conversation" out/index.html
 ```
 
-Expected: `INLINE FORM REMOVED — correct`, then `1`.
+Expected: `INLINE FORM REMOVED, correct`, then `1`.
 
 The modal's fields use `contact-modal-*` ids and only exist after it opens, so neither should appear in the static HTML.
 
@@ -810,7 +810,7 @@ With `pnpm dev` running, using Playwright:
 
 1. Navigate to `http://localhost:3000/#contact`
 2. Click "Send me a Message"
-3. `browser_snapshot` — the dialog is open, focus is on `contact-modal-name`
+3. `browser_snapshot`, where the dialog is open and focus is on `contact-modal-name`
 4. Press `Escape`
 5. `browser_evaluate`: `() => document.activeElement?.textContent` → expect it to contain `Send me a Message`
 
@@ -880,9 +880,9 @@ With `pnpm dev` running, using Playwright:
 1. Navigate to `http://localhost:3000/bookmarks/`
 2. `browser_press_key` `Meta+k` (or `Control+k` on Linux/Windows)
 3. Type `message`
-4. `browser_snapshot` — "Send a message" appears under **Actions**
+4. `browser_snapshot`, where "Send a message" appears under **Actions**
 5. Press `Enter`
-6. `browser_snapshot` — the palette has closed and the compose dialog is open
+6. `browser_snapshot`, where the palette has closed and the compose dialog is open
 
 Expected: the dialog opens on a route where `Contact` is not mounted. That is the whole reason the modal lives in the layout.
 
@@ -920,7 +920,7 @@ With `pnpm dev` running, for each theme id in `matrix`, `cyberpunk`, `amber`:
 2. `browser_navigate` to `http://localhost:3000/#contact`
 3. `browser_take_screenshot` of the contact section
 
-Expected: in each screenshot the status dot, the `$ status --now` prompt, the chips, and the `$ awaiting input` cursor all carry **that palette's** accent — green, cyan, gold respectively. Any element still rendering green in the amber shot is a hardcoded colour; find it and convert it to `rgb(var(--accent-rgb) / …)`.
+Expected: in each screenshot the status dot, the `$ status --now` prompt, the chips, and the `$ awaiting input` cursor all carry **that palette's** accent, meaning green, cyan and gold respectively. Any element still rendering green in the amber shot is a hardcoded colour; find it and convert it to `rgb(var(--accent-rgb) / …)`.
 
 - [ ] **Step 2: Screenshot the modal in all three palettes**
 
@@ -936,7 +936,7 @@ Expected: the status dot stops pinging and the cursor stops pulsing. Both are `m
 
 `browser_resize` to 390×844, navigate to `/#contact`, screenshot.
 
-Expected: the grid collapses to one column, the CTA card sits below the info blocks, and the modal fits the viewport with the fields reachable — the dialog's `max-h-full overflow-y-auto` handles the short-viewport case.
+Expected: the grid collapses to one column, the CTA card sits below the info blocks, and the modal fits the viewport with the fields reachable, since the dialog's `max-h-full overflow-y-auto` handles the short-viewport case.
 
 - [ ] **Step 5: Final full check**
 
@@ -968,4 +968,4 @@ git commit -m "fix(contact): correct palette leaks in the new blocks"
 "knowsAbout": ["React Native", "TypeScript", "Open Banking", "AWS"]
 ```
 
-`knowsAbout` also feeds the Person schema in `JsonLd`, so this improves the structured data at the same time. No code change is needed — the sync script picks it up on the next build.
+`knowsAbout` also feeds the Person schema in `JsonLd`, so this improves the structured data at the same time. No code change is needed, because the sync script picks it up on the next build.

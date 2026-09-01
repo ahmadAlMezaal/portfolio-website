@@ -48,8 +48,8 @@ but the rail stretches every card to a common height, so all eight grew 71px
 and the page below shifted down. Taking the hovered card out of flow fixes the
 reflow, but the expanded card is then clipped 65px below the rail, because
 `overflow-x: auto` forces `overflow-y: auto` on the same element. Reserving
-that space with padding puts the resting section at 316px — measured at the
-two-line clamp, the same height as letting it reflow. The expand cannot be
+that space with padding puts the resting section at 316px, measured at the
+two-line clamp, which is the same height as letting it reflow. The expand cannot be
 made free inside a horizontal scroller, so it is gone. Hover reveals the links overlay only, and card height
 never changes.
 
@@ -65,11 +65,11 @@ input become their own components, neither of which knows about the other.
 
 | File | Change |
 | --- | --- |
-| `src/components/ProjectSearch.tsx` | new — terminal-styled input, clear button, result count |
-| `src/components/ProjectCarousel.tsx` | new — scroll-snap rail, arrows, dots, trailing see-all card |
-| `src/components/Projects.tsx` | rewritten — holds query state, switches carousel/grid |
+| `src/components/ProjectSearch.tsx` | new, a terminal-styled input with clear button and result count |
+| `src/components/ProjectCarousel.tsx` | new, a scroll-snap rail with arrows, dots and a trailing see-all card |
+| `src/components/Projects.tsx` | rewritten to hold query state and switch between carousel and grid |
 | `src/components/ProjectCard.tsx` | gains `variant?: "compact" \| "full"`, default `"full"` |
-| `src/lib/search.ts` | new — `queryTokens`, `wordsOf`, `fieldScore` lifted out of `bookmarks.ts` |
+| `src/lib/search.ts` | new, with `queryTokens`, `wordsOf` and `fieldScore` lifted out of `bookmarks.ts` |
 | `src/lib/projects.ts` | gains `searchProjects` |
 | `src/lib/bookmarks.ts` | imports the three helpers instead of declaring them |
 
@@ -90,7 +90,7 @@ that.
 
 ## Components
 
-### `ProjectCard` — the `compact` variant
+### The `compact` variant of `ProjectCard`
 
 `variant` defaults to `"full"`, so `/projects` and `ProjectsShowcase` are
 untouched by the prop's arrival. The compact variant differs only in
@@ -108,7 +108,7 @@ Badges, the hover links overlay, the mobile inline links, the private
 behave identically in both.
 
 **The clamp needs a wrapper element.** `-webkit-line-clamp` requires
-`display: -webkit-box`, and a flex item is blockified — the computed display
+`display: -webkit-box`, and a flex item is blockified, so the computed display
 comes back as `flow-root` and the clamp silently does nothing. The card body
 is a flex column, so the clamped paragraph cannot itself be the flex child.
 Tailwind's `line-clamp-3` fails the same way for the same reason. Wrap it:
@@ -139,7 +139,7 @@ buttons, not decoration. No autoplay.
 The trailing see-all card must stay within the height of a project card. In
 the mockup it was 367px against the cards' 244px, and because the rail
 stretches every item to the tallest, it silently dragged all seven cards up
-with it — undoing the entire point of the compact variant. Keep its content to
+with it, undoing the entire point of the compact variant. Keep its content to
 the prompt line, a heading, one line of prose and the link.
 
 ### `ProjectSearch`
@@ -147,7 +147,7 @@ the prompt line, a heading, one line of prose and the link.
 A controlled input styled as a terminal prompt: a green `$ grep projects`
 prefix, a blinking block caret that hides on focus, and a clear button that
 appears only when the query is non-empty. Use `type="text"`, not
-`type="search"` — the latter renders a native clear affordance that sits
+`type="search"`, since the latter renders a native clear affordance that sits
 beside ours.
 
 Below it, the result count renders only when a query is active, in a
@@ -178,13 +178,13 @@ and text-only; a card already carries an image and a title.
 
 ## Edge cases
 
-- **No matches** — the grid is replaced by a centred line naming the query.
+- **No matches.** The grid is replaced by a centred line naming the query.
   The carousel is not shown; clearing the query brings it back.
-- **Clearing the query** — the carousel returns with its scroll position reset
+- **Clearing the query.** The carousel returns with its scroll position reset
   to the start, so the arrows and dots agree with what is on screen.
-- **Fewer than four featured projects** — the rail renders a short row rather
+- **Fewer than four featured projects.** The rail renders a short row rather
   than stretching cards; the arrows disable and the dots collapse to one.
-- **A project with no image** — the existing placeholder treatments are reused
+- **A project with no image.** The existing placeholder treatments are reused
   at the shorter height.
 
 ## Risks

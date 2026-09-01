@@ -6,7 +6,7 @@ Date: 2026-08-02
 
 The Contact section is a two-column grid. The right column is a long inline
 form; the left column holds a location card, an email reveal card and three
-social icons, and then stops — leaving roughly 300px of empty space beside the
+social icons, and then stops, leaving roughly 300px of empty space beside the
 form's lower half. The form also dominates a section whose real job is to
 offer several ways to make contact, and `Contact.tsx` has grown to 283 lines
 because the form's state, the info cards and the socials all live in one file.
@@ -28,13 +28,13 @@ body and hands off to the visitor's mail client.
 
 The modal must open from ⌘K on any route, but `Contact` renders on the home
 page only. The modal therefore becomes global chrome in `layout.tsx`, beside
-`ShortcutsOverlay`, and is opened through `shortcutsBus` — the existing
+`ShortcutsOverlay`, and is opened through `shortcutsBus`, the existing
 convention for one component opening another.
 
 | File | Change |
 | --- | --- |
-| `src/components/ContactModal.tsx` | new — the form lifted out of `Contact`, rendered once in the layout |
-| `src/components/AvailabilityPanel.tsx` | new — the `$ status --now` block and the live clock |
+| `src/components/ContactModal.tsx` | new, the form lifted out of `Contact` and rendered once in the layout |
+| `src/components/AvailabilityPanel.tsx` | new, the `$ status --now` block and the live clock |
 | `src/components/shortcutsBus.ts` | add `openContactModal` / `onOpenContactModal` |
 | `src/components/Contact.tsx` | form removed; left column gains two blocks; right column becomes a CTA card |
 | `src/components/CommandPalette.tsx` | new `action-message` entry in the Actions group |
@@ -66,13 +66,13 @@ right-hand card's `h-full` resolves against the taller left column.
 ### Left column
 
 Unchanged: the location card, the email card (click to reveal, click again to
-copy — it serves the visitor who wants the raw address for their own client,
+copy. It serves the visitor who wants the raw address for their own client,
 which is a different need from composing, and the masking is the anti-scraping
 measure), and the row of social icons.
 
 Added beneath, in order:
 
-1. **Availability panel** — a terminal-style block:
+1. **Availability panel**, a terminal-style block.
 
    ```
    $ status --now
@@ -85,7 +85,7 @@ Added beneath, in order:
    render only when `personalInfo.timezone` is set; without it the line is
    location alone.
 
-2. **"What I can help with"** — chips from `personalInfo.knowsAbout`. The
+2. **"What I can help with"**, chips from `personalInfo.knowsAbout`. The
    block returns `null` when the field is absent or empty, so a fresh clone
    does not render a heading over nothing.
 
@@ -119,9 +119,9 @@ Beyond that pattern:
 - Focus returns to the element that opened it when it closes
 - Tab is trapped within the dialog while it is open
 
-Contents are today's form unchanged — name, email and message fields, and the
-"Open Email Client" submit button with its `DecodeText` glitch — under a
-header bar reading `$ compose`. Submitting closes the modal and navigates to
+Contents are today's form unchanged, meaning name, email and message fields
+plus the "Open Email Client" submit button with its `DecodeText` glitch, all
+under a header bar reading `$ compose`. Submitting closes the modal and navigates to
 the `mailto:` URL.
 
 ## Command palette
@@ -140,11 +140,11 @@ It sits beside the existing `action-copy-email`, which stays.
 
 Two optional fields, both degrading to nothing when absent:
 
-- **`personalInfo.timezone?: string`** — an IANA identifier such as
+- **`personalInfo.timezone?: string`** takes an IANA identifier such as
   `"Europe/London"`. New. Drives the clock and offset in the availability
   panel. Added to `PersonalInfo`, to the zod schema in
   `scripts/portfolio-schema.ts`, and to `data.config.example.ts`.
-- **`personalInfo.knowsAbout?: string[]`** — already declared on
+- **`personalInfo.knowsAbout?: string[]`** is already declared on
   `PersonalInfo` and already read by the Person schema in `JsonLd`, but absent
   from the live `portfolio.json`. This design adds its first UI consumer. The
   live data is updated separately, in the private `portfolio-data` repo;
@@ -152,7 +152,7 @@ Two optional fields, both degrading to nothing when absent:
   unaffected.
 
 `SchemaMatchesPortfolioConfig` at the foot of the schema keeps the two
-declarations honest — adding `timezone` to one and not the other fails the
+declarations honest, so adding `timezone` to one and not the other fails the
 build.
 
 ## Hydration
@@ -171,10 +171,10 @@ value would actually change.
 ## Theming
 
 Both new blocks use `rgb(var(--accent-rgb) / …)` for accent colour rather than
-a Tailwind colour family. The remap covers only some shades of some families —
-`purple` and `emerald` have a usable `bg-*-900` / `text-*-400` pair, the others
-do not — so a chip built as `bg-blue-900/30 text-blue-400` would leak literal
-blue into the amber and cyberpunk palettes.
+a Tailwind colour family. The remap covers only some shades of some families.
+`purple` and `emerald` have a usable `bg-*-900` / `text-*-400` pair and the
+others do not, so a chip built as `bg-blue-900/30 text-blue-400` would leak
+literal blue into the amber and cyberpunk palettes.
 
 ## Accessibility
 
@@ -194,8 +194,8 @@ The design above shipped, then four changes came out of looking at it:
   their place at the top of the left column.
 - **The panel is now `$ whereami`, not `$ status --now`.** It shows a map
   marker, the location and the local clock. The status line was dropped
-  because the navbar pill already carries `personalInfo.status` — the same
-  words twice on one screen.
+  because the navbar pill already carries `personalInfo.status`, putting the
+  same words twice on one screen.
 - **The chips read a new `personalInfo.helpWith?: string[]`**, not
   `knowsAbout`. The chips want plain-language services ("Mobile Apps",
   "Websites"); the Person schema wants technical terms. One field could not

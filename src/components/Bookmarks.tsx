@@ -213,7 +213,7 @@ export const Bookmarks = ({
           <motion.div variants={cardVariants} className="text-center mb-10">
             <SectionHeading
               title="Bookmarks"
-              subtitle="Things worth keeping — articles, repos and packages I keep coming back to, filed by topic."
+              subtitle="Things worth keeping. Articles, repos and packages I come back to, filed by topic."
               as="h1"
               cycle={3}
             />
@@ -224,7 +224,7 @@ export const Bookmarks = ({
               variants={cardVariants}
               className="text-center font-mono text-sm text-gray-400"
             >
-              {"// nothing here yet — add `bookmarks` to your portfolio data"}
+              {"// nothing here yet. add `bookmarks` to your portfolio data"}
             </motion.p>
           ) : (
             <motion.div
