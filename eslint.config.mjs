@@ -13,6 +13,24 @@ const arrowFunctionsOnly = [
   },
 ];
 
+const noEmDashes = [
+  {
+    selector: "Literal[value=/[\\u2013\\u2014]/]",
+    message:
+      "Reword instead of using an em or en dash. See Prose Style in CLAUDE.md.",
+  },
+  {
+    selector: "TemplateElement[value.raw=/[\\u2013\\u2014]/]",
+    message:
+      "Reword instead of using an em or en dash. See Prose Style in CLAUDE.md.",
+  },
+  {
+    selector: "JSXText[value=/[\\u2013\\u2014]|&[mn]dash;/]",
+    message:
+      "Reword instead of using an em or en dash. See Prose Style in CLAUDE.md.",
+  },
+];
+
 const noDefaultExport = {
   selector: "ExportDefaultDeclaration",
   message:
@@ -37,13 +55,18 @@ const eslintConfig = defineConfig([
           ignoreTypeReferences: true,
         },
       ],
-      "no-restricted-syntax": ["error", ...arrowFunctionsOnly, noDefaultExport],
+      "no-restricted-syntax": [
+        "error",
+        ...arrowFunctionsOnly,
+        ...noEmDashes,
+        noDefaultExport,
+      ],
     },
   },
   {
     files: ["src/app/**", "*.config.{mjs,ts,js}"],
     rules: {
-      "no-restricted-syntax": ["error", ...arrowFunctionsOnly],
+      "no-restricted-syntax": ["error", ...arrowFunctionsOnly, ...noEmDashes],
     },
   },
   // Override default ignores of eslint-config-next.

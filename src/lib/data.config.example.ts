@@ -216,7 +216,7 @@ export const exampleConfig: PortfolioConfig = {
           title: "Article title worth reading",
           url: "https://example.com/an-article",
           kind: "article",
-          note: "Why this one earned a place — the line only you can write.",
+          note: "Why this one earned a place. The line only you can write.",
           added: "2026-01",
         },
         {
@@ -268,7 +268,7 @@ func GetClient() *Client {
 def get_client() -> Client:
     return Client()`,
       },
-      fieldNote: "Where this showed up in your real work — the anecdote.",
+      fieldNote: "Where this showed up in your real work. The anecdote.",
       verdict: "Your one honest line of judgement about the concept.",
     },
   ],

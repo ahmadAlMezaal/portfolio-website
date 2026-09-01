@@ -53,13 +53,13 @@ pnpm build
 pnpm preview
 ```
 
-There is no `pnpm start` — `next start` cannot serve a static export.
+There is no `pnpm start`, because `next start` cannot serve a static export.
 
 ## Content
 
 Everything the site renders comes from a single `portfolio.json`, fetched at
 build time by `scripts/sync-data.ts` from wherever `PORTFOLIO_DATA_URL`
-points. The site itself contains no personal content — without a data source
+points. The site itself contains no personal content. Without a data source
 it renders the placeholder in `src/lib/data.config.example.ts`, so a fresh
 clone builds and runs as a template out of the box.
 
@@ -70,21 +70,21 @@ a public repo, a gist, object storage, or a headless CMS endpoint.
 
 ### Use it with your own content
 
-1. Seed a `portfolio.json` from the template and fill it in — its shape is
-   the `PortfolioConfig` interface in `src/types/index.ts`:
+1. Seed a `portfolio.json` from the template and fill it in. Its shape is
+   the `PortfolioConfig` interface in `src/types/index.ts`.
 
    ```bash
    node scripts/export-template.mjs > portfolio.json
    ```
 
 2. Host it anywhere. For a private GitHub repo, use the contents API URL and
-   a fine-grained PAT with `contents: read` on that repo:
+   a fine-grained PAT with `contents: read` on that repo.
 
    ```
    https://api.github.com/repos/<user>/<data-repo>/contents/portfolio.json
    ```
 
-3. Point the build at it — locally via `.env.local`:
+3. Point the build at it. Locally that means `.env.local`.
 
    ```bash
    PORTFOLIO_DATA_URL=<url>

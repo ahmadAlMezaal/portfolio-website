@@ -42,7 +42,7 @@ const CATEGORY_META: Record<LearningCategory, CategoryMeta> = {
   pattern: {
     label: "Design Patterns",
     description:
-      "Design patterns: reusable, named solutions to recurring design problems — a shared vocabulary for structure.",
+      "Reusable, named solutions to recurring design problems, and a shared vocabulary for structure.",
     reference: {
       label: "refactoring.guru",
       url: "https://refactoring.guru/design-patterns",
@@ -51,12 +51,12 @@ const CATEGORY_META: Record<LearningCategory, CategoryMeta> = {
   law: {
     label: "Laws",
     description:
-      "Empirical observations about how software — and the people building it — actually behave.",
+      "Empirical observations about how software, and the people building it, actually behave.",
   },
   paradigm: {
     label: "Paradigms",
     description:
-      "Whole ways of structuring programs — each a different answer to “where does state live?”",
+      "Whole ways of structuring programs, each a different answer to “where does state live?”",
   },
   principle: {
     label: "Principles",
@@ -229,7 +229,7 @@ export const Learnings = ({
           >
             <SectionHeading
               title="Field Notes"
-              subtitle="Patterns, laws, and paradigms collected in production — with the scars to prove them."
+              subtitle="Patterns, laws and paradigms collected in production, with the scars to prove them."
               as="h1"
               cycle={3}
             />
@@ -260,7 +260,7 @@ export const Learnings = ({
               }}
               className="text-center font-mono text-sm text-gray-400"
             >
-              {"// nothing here yet — add `learnings` to your portfolio data"}
+              {"// nothing here yet. add `learnings` to your portfolio data"}
             </motion.p>
           ) : (
             <>

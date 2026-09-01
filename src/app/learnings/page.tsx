@@ -11,7 +11,7 @@ import { pageMetadata } from "@/lib/metadata";
 export const metadata: Metadata = pageMetadata({
   title: `Field Notes | ${personalInfo.name}`,
   description:
-    "Patterns, laws, and paradigms collected in production — with code examples in TypeScript, Go, and Python.",
+    "Patterns, laws and paradigms collected in production, with code examples in TypeScript, Go and Python.",
   path: "/learnings/",
   image: "assets/og-learnings.png",
 });

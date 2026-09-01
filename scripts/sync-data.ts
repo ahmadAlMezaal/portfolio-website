@@ -109,9 +109,9 @@ const token = fromEnvOrDotenv(TOKEN_KEY);
 if (!url) {
   if (!existsSync(TARGET)) {
     writeFileSync(TARGET, "null\n");
-    console.log(`sync-data: ${ENV_KEY} not set — using placeholder data.config.example.ts`);
+    console.log(`sync-data: ${ENV_KEY} not set, using placeholder data.config.example.ts`);
   } else {
-    console.log(`sync-data: ${ENV_KEY} not set — keeping existing ${TARGET}`);
+    console.log(`sync-data: ${ENV_KEY} not set, keeping existing ${TARGET}`);
   }
   process.exit(0);
 }
@@ -149,7 +149,7 @@ try {
     console.log(`sync-data: mirrored ${mirrored} assets from ${assetsUrl}`);
   } else {
     console.log(
-      `sync-data: ${ENV_KEY} does not end in portfolio.json — leaving public/assets as committed`
+      `sync-data: ${ENV_KEY} does not end in portfolio.json, leaving public/assets as committed`
     );
   }
 

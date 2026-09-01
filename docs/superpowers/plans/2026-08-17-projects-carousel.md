@@ -7,7 +7,7 @@ four-per-view carousel of the featured projects plus a search that reaches all
 eleven.
 
 **Architecture:** `Projects.tsx` becomes a thin orchestrator holding one piece
-of state — the trimmed query. An empty query renders `ProjectCarousel`; any
+of state, the trimmed query. An empty query renders `ProjectCarousel`; any
 other query renders a result grid from `searchProjects`. The rail is native CSS
 scroll-snap with no carousel library. `ProjectCard` gains a `compact` variant
 used by both branches; `/projects` keeps the full-size card and is untouched.
@@ -40,7 +40,7 @@ Copied from `CLAUDE.md` and the spec. These apply to **every** task:
 `preview` and `lint` only. Verification is therefore: `pnpm lint` (compare
 against the standing baseline), `pnpm build`, a runnable Node smoke check for
 pure functions, and measured browser checks for layout. Do not scaffold a test
-runner — that is out of scope.
+runner, which is out of scope.
 
 **Baseline to record before starting:** run `pnpm lint 2>&1 | tail -5` and note
 the problem count. `react-hooks/set-state-in-effect` errors are pre-existing and
@@ -66,7 +66,7 @@ CI runs lint with `continue-on-error`. The rule is: do not *increase* the count.
 
 - [ ] **Step 1: Create `src/lib/search.ts`**
 
-Lift the three helpers out of `bookmarks.ts` verbatim — `wordsOf` and
+Lift the three helpers out of `bookmarks.ts` verbatim. `wordsOf` and
 `fieldScore` are currently private, `queryTokens` is already exported.
 
 ```typescript
@@ -94,7 +94,7 @@ export const fieldScore = (
 - [ ] **Step 2: Rewire `src/lib/bookmarks.ts`**
 
 Delete the local `queryTokens`, `wordsOf` and `fieldScore` declarations
-(lines 43–63) and add the import beside the existing ones at the top:
+(lines 43 to 63) and add the import beside the existing ones at the top.
 
 ```typescript
 import { fieldScore, queryTokens, wordsOf } from "@/lib/search";
@@ -197,8 +197,8 @@ file stays; add the `@/lib/search` import beside it.
 - [ ] **Step 5: Write the smoke check**
 
 Node 24 strips types, and `@/types` is imported as `import type` so it is
-erased at runtime — a plain `.mjs` can import the `.ts` module directly.
-Write to the scratchpad, not the repo:
+erased at runtime, so a plain `.mjs` can import the `.ts` module directly.
+Write to the scratchpad, not the repo.
 
 ```javascript
 import { searchProjects, sortProjects } from "../../../../Users/ahmadalmezaal/Documents/apps/portfolio-website/src/lib/projects.ts";
@@ -231,8 +231,8 @@ console.log(failed === 0 ? "\nall passed" : `\n${failed} failed`);
 process.exit(failed === 0 ? 0 : 1);
 ```
 
-Use absolute paths in the import specifiers if the relative ones are awkward —
-the point is that it runs, not how the path is written.
+Use absolute paths in the import specifiers if the relative ones are awkward.
+The point is that it runs, not how the path is written.
 
 - [ ] **Step 6: Run the smoke check**
 
@@ -245,7 +245,7 @@ that file's placeholder projects.
 
 - [ ] **Step 7: Verify bookmark search still ranks identically**
 
-Run: `pnpm lint 2>&1 | tail -5` — the count must not exceed the recorded
+Run `pnpm lint 2>&1 | tail -5`. The count must not exceed the recorded
 baseline. Then `pnpm build` and confirm it completes.
 
 - [ ] **Step 8: Commit**
@@ -321,7 +321,7 @@ sizes={
 - [ ] **Step 3: Clamp the description behind a wrapper**
 
 This is the step most likely to be got wrong. `-webkit-line-clamp` needs
-`display: -webkit-box`, and a flex item is blockified — its computed display
+`display: -webkit-box`, and a flex item is blockified, so its computed display
 becomes `flow-root` and the clamp silently does nothing. The card body is
 `flex flex-col`, so the clamped paragraph **cannot itself be the flex child**.
 Tailwind's `line-clamp-3` fails the same way. The wrapper carries `flex-1`;
@@ -380,7 +380,7 @@ hovered card out of flow gets it clipped by the rail's forced
 - [ ] **Step 5: Verify**
 
 Run: `pnpm lint 2>&1 | tail -5` (not above baseline) and `pnpm build`.
-`/projects` must be visually unchanged — `variant` defaults to `"full"` and
+`/projects` must be visually unchanged, since `variant` defaults to `"full"` and
 `ProjectsShowcase` passes neither new prop.
 
 - [ ] **Step 6: Commit**
@@ -406,7 +406,7 @@ git commit -m "feat(projects): add a compact card variant"
 
 - [ ] **Step 1: Create the component**
 
-`type="text"`, not `type="search"` — the latter paints a native clear
+`type="text"`, not `type="search"`, since the latter paints a native clear
 affordance next to ours. The count line keeps a fixed height so typing does
 not shift the rail below it.
 
@@ -511,7 +511,7 @@ fits its style. No comment above it.
 
 `SeeAllCard` is declared above `ProjectCarousel` because define-before-use is
 enforced. Keep its content to the prompt line, a heading, one line of prose
-and the link — in the mockup a taller see-all card dragged every project card
+and the link. In the mockup a taller see-all card dragged every project card
 up to its height, because the rail stretches all items to the tallest.
 
 ```tsx
@@ -684,7 +684,7 @@ export const ProjectCarousel = ({
 
 Run: `pnpm lint 2>&1 | tail -5` and `pnpm build`. If lint reports a **new**
 `react-hooks/set-state-in-effect` for the `sync()` call, that matches the
-existing baseline pattern in this codebase — record it in the PR description
+existing baseline pattern in this codebase, so record it in the PR description
 rather than restructuring the component.
 
 - [ ] **Step 4: Commit**
@@ -711,7 +711,7 @@ git commit -m "feat(projects): add the compact project carousel"
 The featured rail is the featured projects in `sortProjects` order; search runs
 over **all** projects, which is why `totalCount` is `projects.length` and not
 the featured count. The old `GLIMPSE_COUNT` slice and the gradient
-"View all projects" pill both go — the see-all card replaces the pill.
+"View all projects" pill both go, because the see-all card replaces the pill.
 
 ```tsx
 "use client";
@@ -839,10 +839,10 @@ git commit -m "feat(projects): browse featured work in a carousel with search"
   it belongs to.
 
 **Interfaces:**
-- Consumes: everything from Tasks 1–5.
+- Consumes: everything from Tasks 1 to 5.
 
 This task is where the layout claims get proved. Assertions are numbers, not
-impressions — the spec's card heights came from measurement and so must these.
+impressions. The spec's card heights came from measurement and so must these.
 
 - [ ] **Step 1: Start the dev server**
 
@@ -859,7 +859,7 @@ console.log("heights", cards, "rail", Math.round(rail.getBoundingClientRect().he
 ```
 
 Expected: every entry equal, ~262px at the three-line clamp, and the see-all
-card the same height as the project cards — **not** taller. If the see-all card
+card the same height as the project cards, and **not** taller. If the see-all card
 is taller, it is dragging the rest up with it; trim its content.
 
 Then hover a card and re-run. Expected: identical numbers. Any change means a
@@ -896,15 +896,15 @@ record it in the PR description.
 
 - [ ] **Step 6: Check search and the empty state**
 
-Type `react n` — expect 3 results and the count line reading `3 of 11 projects`.
-Type `python` — expect The Alfred Brief, which is *not* featured, proving search
-reaches beyond the rail. Type `zzzz` — expect the empty line. Clear the input —
-expect the carousel back with the arrows and dots agreeing with the scroll
+Type `react n` and expect 3 results with the count line reading
+`3 of 11 projects`. Type `python` and expect The Alfred Brief, which is *not*
+featured, proving search reaches beyond the rail. Type `zzzz` and expect the
+empty line. Clear the input and expect the carousel back with the arrows and dots agreeing with the scroll
 position.
 
 - [ ] **Step 7: Check the breakpoints**
 
-At ≥1024px expect 4 cards per view; at 640–1023px expect 2; below 640px expect
+At ≥1024px expect 4 cards per view; at 640 to 1023px expect 2; below 640px expect
 1 with the next card peeking. Confirm the page itself never scrolls
 horizontally at 375px wide.
 

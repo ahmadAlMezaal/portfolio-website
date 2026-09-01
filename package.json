@@ -10,10 +10,11 @@
   "scripts": {
     "predev": "node scripts/sync-data.ts",
     "dev": "next dev",
-    "prebuild": "node scripts/sync-data.ts",
+    "prebuild": "node scripts/sync-data.ts && node scripts/check-prose.ts",
     "build": "next build",
     "preview": "next build && pnpm dlx serve out",
     "lint": "eslint",
+    "check-prose": "node scripts/check-prose.ts",
     "postinstall": "node scripts/sync-data.ts"
   },
   "dependencies": {
