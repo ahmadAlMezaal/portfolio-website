@@ -65,6 +65,8 @@ src/
 │   ├── Bookmarks.tsx     # Bookmark manager: folder sidebar + link rows
 │   ├── BookmarksMenu.tsx # Navbar star menu with cascading folder submenus
 │   ├── Contact.tsx       # Contact form and info
+│   ├── AvailabilityPanel.tsx # "whereami" panel: globe, location, local time
+│   ├── Globe.tsx         # Spinnable dotted globe with a pin on your location
 │   ├── Footer.tsx        # Footer with links
 │   ├── SectionHeading.tsx# Shared section title (glitch cycles)
 │   ├── SectionBackground.tsx # Per-section background accents
@@ -92,6 +94,8 @@ src/
 │   ├── motion.ts         # Shared Motion variants
 │   ├── projects.ts       # Project filtering/sorting helpers
 │   ├── bookmarks.ts      # Folder slugs, URL labels, search filtering
+│   ├── globe.ts          # Land mask + orthographic projection for Globe
+│   ├── places.ts         # City gazetteer; resolves location → coordinates
 │   ├── social.tsx        # Social platform icons + labels
 │   ├── glyphs.ts         # Character sets for decode/rain effects
 │   └── utils.ts          # assetPath, getBasePath, isTyping, isCvAvailable
@@ -175,6 +179,8 @@ and the unused Next.js placeholder SVGs.
   the footer's "Make it yours" strip (`MakeItYours.tsx`) with a copyable
   `git clone` line — the whole strip renders nothing without it
 - `personalInfo`: Name, title, bio, email, status, social links; optional
+  `coordinates` (`{ lat, lon }`) pins the contact globe exactly, overriding the
+  city lookup described under The Globe; optional
   `knowsAbout` (array of strings) becomes the Person schema's `knowsAbout`,
   and is omitted when absent
 - `roles`: Typing animation roles
@@ -391,6 +397,35 @@ tokens light up half the page.
 bookmark menu: folders cascade into a submenu on hover, with `All bookmarks`
 opening the full page. It is `lg` and up only — the nav row cannot fit it
 below that.
+
+### The Globe
+
+`AvailabilityPanel` renders a `Globe`: a 2D canvas orthographic projection with
+a graticule under a dot matrix of land, spinning on its own and draggable.
+
+Where the pin comes from, in order: `personalInfo.coordinates` if the config
+sets it, else `lib/places.ts` matches each comma-separated part of
+`personalInfo.location` against a gazetteer of major cities, else the panel
+renders exactly as it did before the globe existed. That fallback is the point
+— the live config has no `coordinates`, so `"London, United Kingdom"` resolves
+through the gazetteer and the globe works without a `portfolio-data` edit.
+
+`LAND_MASK` in `lib/globe.ts` is a bitmask of Natural Earth's public-domain
+`ne_110m_land` rasterised at 2.5°, one bit per sample. Bands hold
+`360/2.5 · cos(lat)` samples each rather than a fixed count, so dots stay
+evenly spaced instead of crowding at the poles — 1,886 land points in 1.1 KB
+of base64, and no runtime or build-time dependency. It is generated, not
+hand-maintained: re-rasterise from source if you ever need finer detail.
+
+`yaw` increases eastward, so a rightward drag *decreases* it — get that sign
+wrong and the globe fights the pointer. Drag deltas come from `clientX`
+rather than `movementX`, which Safari has never reported reliably on pointer
+events.
+
+Colours are read from `--accent-rgb` with the active theme as an effect
+dependency, so `T` recolours the canvas. Under `prefers-reduced-motion` the
+globe parks with the pin facing the viewer and does not auto-spin; dragging
+still works, since that is user-initiated.
 
 ### Favicon
 

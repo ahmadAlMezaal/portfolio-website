@@ -41,10 +41,18 @@ export const Contact = () => {
             />
           </motion.div>
 
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
-            <motion.div variants={sectionItemVariants} className="space-y-8">
+          <div className="grid lg:grid-cols-2 gap-x-12 gap-y-8">
+            <motion.div
+              variants={sectionItemVariants}
+              className="lg:col-start-1 lg:row-start-1"
+            >
               <AvailabilityPanel />
+            </motion.div>
 
+            <motion.div
+              variants={sectionItemVariants}
+              className="space-y-8 lg:col-start-1 lg:row-start-2"
+            >
               <div>
                 <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
                   Connect with me
@@ -86,8 +94,11 @@ export const Contact = () => {
               )}
             </motion.div>
 
-            <motion.div variants={sectionItemVariants}>
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl border border-gray-200 dark:border-gray-700">
+            <motion.div
+              variants={sectionItemVariants}
+              className="lg:col-start-2 lg:row-start-1"
+            >
+              <div className="h-full bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl border border-gray-200 dark:border-gray-700">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-3 rounded-xl bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-gray-900">
                     <MessageSquare className="w-6 h-6" />

@@ -42,6 +42,11 @@ const siteMetadata = z.object({
   repoUrl: absoluteUrl.optional(),
 });
 
+const coordinates = z.object({
+  lat: z.number().min(-90).max(90),
+  lon: z.number().min(-180).max(180),
+});
+
 const personalInfo = z.object({
   name: z.string(),
   title: z.string(),
@@ -49,6 +54,7 @@ const personalInfo = z.object({
   status: statusOption,
   email: z.string(),
   location: z.string(),
+  coordinates: coordinates.optional(),
   timezone: z.string().optional(),
   bio: z.string(),
   resumeUrl: z.string(),
