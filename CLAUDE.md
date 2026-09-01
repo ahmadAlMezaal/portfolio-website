@@ -143,8 +143,8 @@ and the unused Next.js placeholder SVGs.
   fails with a type error rather than shipping a schema that validates the
   wrong shape.
 - The parsed result is used for logging only, because `writeFileSync`
-  receives the **raw** fetched data. Writing `result.data` would silently strip any key the
-  schema does not model.
+  receives the **raw** fetched data. Writing `result.data` would silently
+  strip any key the schema does not model.
 - The scripts are TypeScript run directly by Node 24's type stripping
   (`node scripts/sync-data.ts`), which is why imports between them carry an
   explicit `.ts` extension and `allowImportingTsExtensions` is set in
@@ -407,8 +407,9 @@ Where the pin comes from, in order: `personalInfo.coordinates` if the config
 sets it, else `lib/places.ts` matches each comma-separated part of
 `personalInfo.location` against a gazetteer of major cities, else the panel
 renders exactly as it did before the globe existed. That fallback is the
-point, because the live config has no `coordinates`, so
-`"London, United Kingdom"` resolves through the gazetteer and the globe works without a `portfolio-data` edit.
+point, because the live config has no `coordinates`, so `"London, United
+Kingdom"` resolves through the gazetteer and the globe works without a
+`portfolio-data` edit.
 
 `LAND_MASK` in `lib/globe.ts` is a bitmask of Natural Earth's public-domain
 `ne_110m_land` rasterised at 2.5°, one bit per sample. Bands hold
@@ -461,11 +462,12 @@ How it works:
   `--accent-rgb` and friends are space-separated channels so they can be used
   as `rgb(var(--accent-rgb) / 0.4)`.
 - Each palette block also remaps Tailwind colour tokens, covering the whole
-  `gray-*` ramp plus the `purple`, `pink`, `blue`, `cyan`, `green` and `emerald` shades
-  the components actually use. That is why `text-purple-400` renders green in
-  matrix and gold in amber. These remaps belong **inside** each
-  `[data-theme]` block, never in a shared `.dark` block: a shared one applies
-  to every palette and is how the matrix greens previously leaked everywhere.
+  `gray-*` ramp plus the `purple`, `pink`, `blue`, `cyan`, `green` and
+  `emerald` shades the components actually use. That is why
+  `text-purple-400` renders green in matrix and gold in amber. These remaps
+  belong **inside** each `[data-theme]` block, never in a shared `.dark`
+  block: a shared one applies to every palette and is how the matrix greens
+  previously leaked everywhere.
 - Per-theme motifs (grid, scanlines, nameplates) are keyed off
   `[data-theme="…"]` selectors in `globals.css`.
 
@@ -479,11 +481,11 @@ traffic-light dots (pinned to literal `#ff5f57 / #febc2e / #28c840` so the
 remap cannot reach them).
 
 **When adding a palette:** copy a complete existing block. Every variable must
-be defined in every block, because a value silently inherited from `matrix` is
-a bug rather than a default. `ScrollToTopRocket` also keys its idle animation off the active
-theme (`THEME_IDLE` / `HALO_IDLE`): matrix hovers, cyberpunk neon-flickers,
-amber CRT-glitches. A new palette needs an entry in both records or the
-lookup is `undefined`.
+be defined in every block, because a value silently inherited from `matrix`
+is a bug rather than a default. `ScrollToTopRocket` also keys its idle
+animation off the active theme (`THEME_IDLE` / `HALO_IDLE`): matrix hovers,
+cyberpunk neon-flickers, amber CRT-glitches. A new palette needs an entry in
+both records or the lookup is `undefined`.
 
 Only *some shades* of each remapped family are defined. A badge built as
 `bg-X-100 dark:bg-X-900/30 text-X-400` is safe for `purple` and `emerald`
@@ -512,9 +514,9 @@ Convention: whichever component advertises a shortcut owns its key listener
 Components that need to open another one do it through `shortcutsBus.ts`
 rather than synthesising keystrokes.
 
-Floating controls stack bottom-right and must not overlap: status bar (0 to 50px),
-scroll-to-top rocket (68px), theme gear (132px) on desktop; the bar is hidden
-below `md`, where the rocket and gear sit at 24px and 88px.
+Floating controls stack bottom-right and must not overlap: status bar
+(0 to 50px), scroll-to-top rocket (68px), theme gear (132px) on desktop; the
+bar is hidden below `md`, where the rocket and gear sit at 24px and 88px.
 
 ## SEO & Metadata
 
@@ -613,10 +615,10 @@ Components and helpers are named exports, imported as
 not ours to choose:
 
 - **`src/app/**`**, where Next.js resolves `page`, `layout`, `robots` and
-  `sitemap` by default export. A named export there is silently ignored, so the page
-  404s or the route renders blank rather than failing the build. Every file
-  convention Next.js may add later (`not-found`, `error`, `loading`, …) is
-  covered by the same exemption.
+  `sitemap` by default export. A named export there is silently ignored, so
+  the page 404s or the route renders blank rather than failing the build.
+  Every file convention Next.js may add later (`not-found`, `error`,
+  `loading`, …) is covered by the same exemption.
 - **`*.config.{mjs,ts,js}`**, since `next.config.ts`, `postcss.config.mjs` and
   `eslint.config.mjs` are read by their tools as default exports.
 
@@ -714,9 +716,9 @@ images; that build is never deployed.
 
 ### Prose style
 
-**No em dashes, en dashes, or their HTML entities.** Anywhere: UI
-copy, markdown, commit messages, PR descriptions, code strings, log output,
-YAML. This is enforced twice, because one guard alone would leave a gap:
+**No em dashes, en dashes, or their HTML entities.** Anywhere: UI copy,
+markdown, commit messages, PR descriptions, code strings, log output, YAML.
+This is enforced twice, because one guard alone would leave a gap:
 
 - `no-restricted-syntax` in `eslint.config.mjs` rejects them in string
   literals, template literals and JSX text under `src/` and `scripts/`, so the
@@ -729,8 +731,9 @@ YAML. This is enforced twice, because one guard alone would leave a gap:
 The fix is always to **reword the sentence**, never to swap the character for
 a hyphen. An em dash almost always joins two clauses that read better as two
 sentences, or as one clause with "because", "so", "which" or a comma. The
-check script itself contains neither character, building its patterns from
-`String.fromCharCode`, so it does not trip over its own source.
+check script contains none of the four sequences it looks for, building them
+from `String.fromCharCode` and a small `entity()` helper, so it never flags
+its own source.
 
 Avoid the `Label: explanation` construction in running prose too. A colon
 introducing a list or a fenced code block is fine; a colon standing in for a
