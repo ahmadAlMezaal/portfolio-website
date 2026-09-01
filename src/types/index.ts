@@ -24,6 +24,11 @@ export interface SocialLink {
   url: string;
 }
 
+export interface Coordinates {
+  lat: number;
+  lon: number;
+}
+
 export interface PersonalInfo {
   name: string;
   title: string;
@@ -31,6 +36,7 @@ export interface PersonalInfo {
   status: StatusOption;
   email: string;
   location: string;
+  coordinates?: Coordinates;
   timezone?: string;
   bio: string;
   resumeUrl: string;
