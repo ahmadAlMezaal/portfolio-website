@@ -36,7 +36,7 @@ statically exported to GitHub Pages.
 
 ## Quick Start
 
-Requires Node 24+ and [pnpm](https://pnpm.io). The `packageManager` field pins
+Requires Node 26+ and [pnpm](https://pnpm.io). The `packageManager` field pins
 the exact pnpm version, so `corepack enable` is enough to get the right one.
 
 ```bash

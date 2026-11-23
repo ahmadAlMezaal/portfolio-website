@@ -145,7 +145,7 @@ and the unused Next.js placeholder SVGs.
 - The parsed result is used for logging only, because `writeFileSync`
   receives the **raw** fetched data. Writing `result.data` would silently
   strip any key the schema does not model.
-- The scripts are TypeScript run directly by Node 24's type stripping
+- The scripts are TypeScript run directly by Node 26's type stripping
   (`node scripts/sync-data.ts`), which is why imports between them carry an
   explicit `.ts` extension and `allowImportingTsExtensions` is set in
   `tsconfig.json`, and why `package.json` declares `"type": "module"`.
